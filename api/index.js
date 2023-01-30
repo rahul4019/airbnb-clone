@@ -100,6 +100,12 @@ app.get("/profile", async (req, res) => {
   }
 });
 
+app.post("/logout", async (req, res) => {
+  try {
+    res.cookie("token", "").json(true);
+  } catch (err) {}
+});
+
 app.listen(4000, (err) => {
   if (err) {
     console.log("Error in connecting to server: ", err);
