@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const User = require("./models/User");
+const Place = require("./models/Place");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
@@ -138,10 +139,48 @@ app.post("/upload", photosMiddleware.array("photos", 100), async (req, res) => {
       const ext = parts[parts.length - 1];
       const newPath = path + "." + ext;
       fs.renameSync(path, newPath);
-      uploadedFiles.push(newPath.replace("uploads",''));
+      uploadedFiles.push(newPath.replace("uploads", ""));
     }
     res.json(uploadedFiles);
   } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
+
+app.post("/places", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    const {
+      title,
+      address,
+      addedPhotos,
+      desc,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    } = req.body;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const place = await Place.create({
+      owner: decoded.id,
+      title,
+      address,
+      photos: addedPhotos,
+      description: desc,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    });
+    res.status(200).json({
+      place,
+    });
+  } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Internal server error",
     });
