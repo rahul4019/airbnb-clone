@@ -187,6 +187,63 @@ app.post("/places", async (req, res) => {
   }
 });
 
+app.get("/places", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const id = decoded.id;
+    res.status(200).json(await Place.find({ owner: id }));
+  } catch (err) {}
+});
+
+app.get("/places/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    res.json(await Place.findById(id));
+  } catch (error) {}
+});
+
+app.put("/places", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
+    const {
+      id,
+      title,
+      address,
+      addedPhotos,
+      desc,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    } = req.body;
+
+    const place = await Place.findById(id);
+    if (userId === place.owner.toString()) {
+      place.set({
+        title,
+        address,
+        photos: addedPhotos,
+        description: desc,
+        perks,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuests,
+      });
+      await place.save();
+      res.status(200).json({
+        message: "place updated!",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.listen(4000, (err) => {
   if (err) {
     console.log("Error in connecting to server: ", err);

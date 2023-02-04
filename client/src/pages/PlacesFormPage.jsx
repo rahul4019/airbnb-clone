@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Perks from "../Perks";
 import PhotosUploader from "../PhotosUploader";
 import AccountNav from "../AccountNav";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 const PlacesFormPage = () => {
+  const { id } = useParams();
+   
+
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
@@ -17,6 +20,24 @@ const PlacesFormPage = () => {
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
 
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    axios.get(`/places/${id}`).then((response) => {
+      const { data } = response;
+      setTitle(data.title);
+      setAddress(data.address);
+      setAddedPhotos(data.photos);
+      setDesc(data.description);
+      setPerks(data.perks);
+      setExtraInfo(data.extraInfo);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuests(data.maxGuests);
+    });
+  }, [id]);
+
   const preInput = (header, description) => {
     return (
       <>
@@ -26,9 +47,8 @@ const PlacesFormPage = () => {
     );
   };
 
-  const addNewPlace = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.post("/places", {
+  const savePlace = async (e) => {
+    const placeData = {
       title,
       address,
       addedPhotos,
@@ -38,7 +58,19 @@ const PlacesFormPage = () => {
       checkIn,
       checkOut,
       maxGuests,
-    });
+    };
+    e.preventDefault();
+    if (id) {
+      // update
+      const { data } = await axios.put("/places", {
+        id,
+        ...placeData,
+      });
+    } else {
+      // new place
+      const { data } = await axios.post("/places", placeData);
+    }
+
     setRedirect(true);
   };
 
@@ -49,7 +81,7 @@ const PlacesFormPage = () => {
   return (
     <div>
       <AccountNav />
-      <form onSubmit={addNewPlace}>
+      <form onSubmit={savePlace}>
         {preInput(
           "Title",
           "title for your place. Should be short and catchy as in advertisement"
@@ -71,7 +103,7 @@ const PlacesFormPage = () => {
 
         {preInput("Photos", "more = better")}
 
-        <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
+        <PhotosUploader addedPhotos={addedPhotos} onChange= {setAddedPhotos} />
 
         {preInput("Description", "description of the place")}
         <textarea value={desc} onChange={(e) => setDesc(e.target.value)} />
