@@ -162,6 +162,7 @@ app.post("/places", async (req, res) => {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     } = req.body;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const place = await Place.create({
@@ -175,6 +176,7 @@ app.post("/places", async (req, res) => {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     });
     res.status(200).json({
       place,
@@ -187,7 +189,7 @@ app.post("/places", async (req, res) => {
   }
 });
 
-app.get("/places", async (req, res) => {
+app.get("/user-places", async (req, res) => {
   try {
     const { token } = req.cookies;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -219,6 +221,7 @@ app.put("/places", async (req, res) => {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     } = req.body;
 
     const place = await Place.findById(id);
@@ -233,12 +236,21 @@ app.put("/places", async (req, res) => {
         checkIn,
         checkOut,
         maxGuests,
+        price,
       });
       await place.save();
       res.status(200).json({
         message: "place updated!",
       });
     }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/places", async (req, res) => {
+  try {
+    res.json(await Place.find());
   } catch (error) {
     console.log(error);
   }

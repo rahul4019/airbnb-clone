@@ -7,7 +7,6 @@ import { Navigate, useParams } from "react-router-dom";
 
 const PlacesFormPage = () => {
   const { id } = useParams();
-   
 
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
@@ -19,6 +18,7 @@ const PlacesFormPage = () => {
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
+  const [price, setPrice] = useState(1500);
 
   useEffect(() => {
     if (!id) {
@@ -35,6 +35,7 @@ const PlacesFormPage = () => {
       setCheckIn(data.checkIn);
       setCheckOut(data.checkOut);
       setMaxGuests(data.maxGuests);
+      setPrice(data.price);
     });
   }, [id]);
 
@@ -58,6 +59,7 @@ const PlacesFormPage = () => {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     };
     e.preventDefault();
     if (id) {
@@ -103,7 +105,7 @@ const PlacesFormPage = () => {
 
         {preInput("Photos", "more = better")}
 
-        <PhotosUploader addedPhotos={addedPhotos} onChange= {setAddedPhotos} />
+        <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
 
         {preInput("Description", "description of the place")}
         <textarea value={desc} onChange={(e) => setDesc(e.target.value)} />
@@ -121,7 +123,7 @@ const PlacesFormPage = () => {
           "Check in&out times",
           "add check in and out times, remember to have some time window forcleaning the room between guests. "
         )}
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-1">Check in time</h3>
             <input
@@ -146,6 +148,15 @@ const PlacesFormPage = () => {
               type="text"
               value={maxGuests}
               onChange={(e) => setMaxGuests(e.target.value)}
+              placeholder="1"
+            />
+          </div>
+          <div>
+            <h3 className="mt-2 -mb-1">Price per night</h3>
+            <input
+              type="text"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
               placeholder="1"
             />
           </div>

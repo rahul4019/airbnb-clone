@@ -31,6 +31,9 @@ const placeSchema = new mongoose.Schema({
   maxGuests: {
     type: Number,
   },
+  price: {
+    type: Number,
+  },
 });
 
 const Place = mongoose.model("Place", placeSchema);
