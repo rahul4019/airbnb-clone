@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const User = require("./models/User");
 const Place = require("./models/Place");
+const Booking = require("./models/Booking");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
@@ -24,6 +25,12 @@ app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
 mongoose.connect(process.env.DB_URL);
+
+const getUserDataFromToken = (req) => {
+  const { token } = req.cookies;
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  return (userData = decoded);
+};
 
 app.get("/test", (req, res) => {
   res.status(200).json({
@@ -255,6 +262,42 @@ app.get("/places", async (req, res) => {
     console.log(error);
   }
 });
+
+app.post("/bookings", async (req, res) => {
+  try {
+    const userData = getUserDataFromToken(req);
+    const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
+      req.body;
+
+    const booking = await Booking.create({
+      user: userData.id,
+      place,
+      checkIn,
+      checkOut,
+      numOfGuests,
+      name,
+      phone,
+      price,
+    });
+
+    res.status(200).json({
+      booking,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/bookings", async (req, res) => {
+  try {
+    const userData = getUserDataFromToken(req);
+     res.json(await Booking.find({ user: userData.id }).populate('place'));
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
 
 app.listen(4000, (err) => {
   if (err) {
