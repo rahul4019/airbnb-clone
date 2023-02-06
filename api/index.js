@@ -1,28 +1,28 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
-const User = require("./models/User");
-const Place = require("./models/Place");
-const Booking = require("./models/Booking");
-const cookieParser = require("cookie-parser");
-const imageDownloader = require("image-downloader");
-const multer = require("multer");
-const fs = require("fs");
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const User = require('./models/User');
+const Place = require('./models/Place');
+const Booking = require('./models/Booking');
+const cookieParser = require('cookie-parser');
+const imageDownloader = require('image-downloader');
+const multer = require('multer');
+const fs = require('fs');
 const app = express();
 
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: 'http://localhost:5173',
   })
 );
 
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 mongoose.connect(process.env.DB_URL);
 
@@ -32,13 +32,13 @@ const getUserDataFromToken = (req) => {
   return (userData = decoded);
 };
 
-app.get("/test", (req, res) => {
+app.get('/test', (req, res) => {
   res.status(200).json({
     success: true,
   });
 });
 
-app.post("/register", async (req, res) => {
+app.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -51,14 +51,14 @@ app.post("/register", async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log("Error: ", error);
+    console.log('Error: ', error);
     res.status(422).json({
       message: error,
     });
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -82,22 +82,22 @@ app.post("/login", async (req, res) => {
           httpOnly: true, // makes the token available only to backend
         };
 
-        res.cookie("token", token, options).json(user);
+        res.cookie('token', token, options).json(user);
       } else {
         res.status(401).json("password didn't match");
       }
     } else {
       res.status(400).json({
-        message: "User not found",
+        message: 'User not found',
       });
     }
   } catch (error) {
-    console.log("Error: ", error);
+    console.log('Error: ', error);
     res.status(500).json({});
   }
 });
 
-app.get("/profile", async (req, res) => {
+app.get('/profile', async (req, res) => {
   try {
     const { token } = req.cookies;
     if (token) {
@@ -112,51 +112,51 @@ app.get("/profile", async (req, res) => {
   }
 });
 
-app.post("/logout", async (req, res) => {
+app.post('/logout', async (req, res) => {
   try {
-    res.cookie("token", "").json(true);
+    res.cookie('token', '').json(true);
   } catch (err) {}
 });
 
-app.post("/upload-by-link", async (req, res) => {
+app.post('/upload-by-link', async (req, res) => {
   try {
     const { link } = req.body;
-    const newName = "photo" + Date.now() + ".jpg";
+    const newName = 'photo' + Date.now() + '.jpg';
     await imageDownloader.image({
       url: link,
-      dest: __dirname + "/uploads/" + newName,
+      dest: __dirname + '/uploads/' + newName,
     });
     res.json(newName);
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Internal server error",
+      message: 'Internal server error',
     });
   }
 });
 
-const photosMiddleware = multer({ dest: "uploads/" });
+const photosMiddleware = multer({ dest: 'uploads/' });
 
-app.post("/upload", photosMiddleware.array("photos", 100), async (req, res) => {
+app.post('/upload', photosMiddleware.array('photos', 100), async (req, res) => {
   try {
     const uploadedFiles = [];
     for (let i = 0; i < req.files.length; i++) {
       const { path, originalname } = req.files[i];
-      const parts = originalname.split(".");
+      const parts = originalname.split('.');
       const ext = parts[parts.length - 1];
-      const newPath = path + "." + ext;
+      const newPath = path + '.' + ext;
       fs.renameSync(path, newPath);
-      uploadedFiles.push(newPath.replace("uploads", ""));
+      uploadedFiles.push(newPath.replace('uploads', ''));
     }
     res.json(uploadedFiles);
   } catch (error) {
     res.status(500).json({
-      message: "Internal server error",
+      message: 'Internal server error',
     });
   }
 });
 
-app.post("/places", async (req, res) => {
+app.post('/places', async (req, res) => {
   try {
     const { token } = req.cookies;
     const {
@@ -191,12 +191,12 @@ app.post("/places", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Internal server error",
+      message: 'Internal server error',
     });
   }
 });
 
-app.get("/user-places", async (req, res) => {
+app.get('/user-places', async (req, res) => {
   try {
     const { token } = req.cookies;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -205,14 +205,14 @@ app.get("/user-places", async (req, res) => {
   } catch (err) {}
 });
 
-app.get("/places/:id", async (req, res) => {
+app.get('/places/:id', async (req, res) => {
   try {
     const { id } = req.params;
     res.json(await Place.findById(id));
   } catch (error) {}
 });
 
-app.put("/places", async (req, res) => {
+app.put('/places', async (req, res) => {
   try {
     const { token } = req.cookies;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -247,7 +247,7 @@ app.put("/places", async (req, res) => {
       });
       await place.save();
       res.status(200).json({
-        message: "place updated!",
+        message: 'place updated!',
       });
     }
   } catch (error) {
@@ -255,7 +255,7 @@ app.put("/places", async (req, res) => {
   }
 });
 
-app.get("/places", async (req, res) => {
+app.get('/places', async (req, res) => {
   try {
     res.json(await Place.find());
   } catch (error) {
@@ -263,7 +263,7 @@ app.get("/places", async (req, res) => {
   }
 });
 
-app.post("/bookings", async (req, res) => {
+app.post('/bookings', async (req, res) => {
   try {
     const userData = getUserDataFromToken(req);
     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
@@ -288,20 +288,20 @@ app.post("/bookings", async (req, res) => {
   }
 });
 
-app.get("/bookings", async (req, res) => {
+app.get('/bookings', async (req, res) => {
   try {
     const userData = getUserDataFromToken(req);
-     res.json(await Booking.find({ user: userData.id }).populate('place'));
+    res.json(await Booking.find({ user: userData.id }).populate('place'));
   } catch (error) {
     console.log(error);
   }
 });
 
-
-
 app.listen(4000, (err) => {
   if (err) {
-    console.log("Error in connecting to server: ", err);
+    console.log('Error in connecting to server: ', err);
   }
   console.log(`Server is running on port no. ${4000}`);
 });
+
+module.exports = app;

@@ -1,16 +1,16 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import AccountNav from "../AccountNav";
-import PlaceImg from "../PlaceImg";
-import { format, differenceInCalendarDays } from "date-fns";
-import { Link } from "react-router-dom";
-import BookingDates from "../BookingDates";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import AccountNav from '../AccountNav';
+import PlaceImg from '../PlaceImg';
+import { format, differenceInCalendarDays } from 'date-fns';
+import { Link } from 'react-router-dom';
+import BookingDates from '../BookingDates';
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
   useEffect(() => {
     const getBookings = async () => {
-      const { data } = await axios.get("/bookings");
+      const { data } = await axios.get('/bookings');
       setBookings(data);
     };
     getBookings();
@@ -34,8 +34,10 @@ const BookingsPage = () => {
                 <div className="text-xl">
                   <div className="flex gap-2 border-t "></div>
                   <div className="text-xl">
-
-                    <BookingDates booking={booking} className="items-center mb-2 mt-4  text-gray-600"/>
+                    <BookingDates
+                      booking={booking}
+                      className="items-center mb-2 mt-4  text-gray-600"
+                    />
 
                     <div className="flex gap-1 items-center">
                       <svg
