@@ -1,4 +1,17 @@
 {
+  "name": "airbnb-api",
+  "version": "1.0.0",
+  "description": "API for airbnb clone app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+   },
+  "keywords": [
+    "api",
+    "backend"
+  ],
+  "author": "rahul4019",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
