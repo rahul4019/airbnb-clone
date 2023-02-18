@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from 'react';
 
 const PlaceGallery = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
@@ -31,7 +31,10 @@ const PlaceGallery = ({ place }) => {
           {place?.photos?.length > 0 &&
             place.photos.map((photo) => (
               <div>
-                <img src={`http://localhost:4000/uploads/${photo}`} alt="" />
+                <img
+                  src={`https://airbnb-clone-api.onrender.com/uploads/${photo}`}
+                  alt=""
+                />
               </div>
             ))}
         </div>
@@ -47,7 +50,7 @@ const PlaceGallery = ({ place }) => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover"
-                src={`http://localhost:4000/uploads/${place.photos[0]}`}
+                src={`https://airbnb-clone-api.onrender.com/uploads/${place.photos[0]}`}
                 alt=""
               />
             </div>
@@ -58,7 +61,7 @@ const PlaceGallery = ({ place }) => {
             <img
               onClick={() => setShowAllPhotos(true)}
               className="cursor-pointer  aspect-square object-cover"
-              src={`http://localhost:4000/uploads/${place.photos[1]}`}
+              src={`https://airbnb-clone-api.onrender.com/uploads/${place.photos[1]}`}
               alt=""
             />
           )}
@@ -67,7 +70,7 @@ const PlaceGallery = ({ place }) => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover relative top-2"
-                src={`http://localhost:4000/uploads/${place.photos[2]}`}
+                src={`https://airbnb-clone-api.onrender.com/uploads/${place.photos[2]}`}
                 alt=""
               />
             )}
