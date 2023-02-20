@@ -293,6 +293,9 @@ app.get('/bookings', async (req, res) => {
     const userData = getUserDataFromToken(req);
     res.json(await Booking.find({ user: userData.id }).populate('place'));
   } catch (error) {
+    res.status(500).json({
+      Error: error,
+    });
     console.log(error);
   }
 });
