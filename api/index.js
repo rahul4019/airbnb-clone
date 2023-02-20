@@ -297,11 +297,11 @@ app.get('/bookings', async (req, res) => {
   }
 });
 
-app.listen(4000, (err) => {
+app.listen(process.env.PORT || 8000, (err) => {
   if (err) {
     console.log('Error in connecting to server: ', err);
   }
-  console.log(`Server is running on port no. ${4000}`);
+  console.log(`Server is running on port no. ${process.env.PORT}`);
 });
 
 module.exports = app;
