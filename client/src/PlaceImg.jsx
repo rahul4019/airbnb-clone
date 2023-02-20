@@ -10,7 +10,7 @@ const PlaceImg = ({ place, index = 0, className = null }) => {
   return (
     <div>
       <img
-        src={`https://airbnb-clone-api.onrender.com/uploads/${place.photos[index]}`}
+        src={`https://airbnb-clone-production.up.railway.app/uploads/${place.photos[index]}`}
         alt=""
         className={className}
       />

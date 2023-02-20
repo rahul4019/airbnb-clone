@@ -61,7 +61,7 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
             <div className="h-32 flex relative" key={link}>
               <img
                 className="rounded-2xl w-full object-cover"
-                src={"https://airbnb-clone-api.onrender.com/uploads/" + link}
+                src={"https://airbnb-clone-production.up.railway.app/uploads/" + link}
                 alt=""
               />
               <button

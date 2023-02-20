@@ -32,7 +32,7 @@ const PlaceGallery = ({ place }) => {
             place.photos.map((photo) => (
               <div>
                 <img
-                  src={`https://airbnb-clone-api.onrender.com/uploads/${photo}`}
+                  src={`https://airbnb-clone-production.up.railway.app/uploads/${photo}`}
                   alt=""
                 />
               </div>
@@ -50,7 +50,7 @@ const PlaceGallery = ({ place }) => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover"
-                src={`https://airbnb-clone-api.onrender.com/uploads/${place.photos[0]}`}
+                src={`https://airbnb-clone-production.up.railway.app/uploads/${place.photos[0]}`}
                 alt=""
               />
             </div>
@@ -61,7 +61,7 @@ const PlaceGallery = ({ place }) => {
             <img
               onClick={() => setShowAllPhotos(true)}
               className="cursor-pointer  aspect-square object-cover"
-              src={`https://airbnb-clone-api.onrender.com/uploads/${place.photos[1]}`}
+              src={`https://airbnb-clone-production.up.railway.app/uploads/${place.photos[1]}`}
               alt=""
             />
           )}
@@ -70,7 +70,7 @@ const PlaceGallery = ({ place }) => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover relative top-2"
-                src={`https://airbnb-clone-api.onrender.com/uploads/${place.photos[2]}`}
+                src={`https://airbnb-clone-production.up.railway.app/uploads/${place.photos[2]}`}
                 alt=""
               />
             )}
