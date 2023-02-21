@@ -12,6 +12,9 @@ const multer = require('multer');
 const fs = require('fs');
 const app = express();
 
+app.use(express.json());
+app.use(cookieParser());
+
 app.use(
   cors({
     credentials: true,
@@ -20,8 +23,6 @@ app.use(
   })
 );
 
-app.use(express.json());
-app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 app.post('/upload-by-link', async (req, res) => {
