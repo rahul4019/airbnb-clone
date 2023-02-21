@@ -64,7 +64,7 @@ exports.login = async (req, res) => {
           httpOnly: true, // makes the token available only to backend
         };
 
-        res.cookie('token', token, options).json(user);
+        res.status(200).cookie('token', token, options).json(user, token);
       } else {
         res.status(401).json({
           message: 'email or password is incorrect',
@@ -86,12 +86,11 @@ exports.login = async (req, res) => {
 exports.profile = async (req, res) => {
   try {
     const userData = userFromToken(req);
-    console.log('userData: ', userData);
     if (userData) {
       const { name, email, _id } = await User.findById(userData.id);
       res.status(200).json({ name, email, _id });
     } else {
-       res.status(200).json(null)
+      res.status(200).json(null);
     }
   } catch (err) {
     res.status(500).json({
