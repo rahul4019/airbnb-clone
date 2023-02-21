@@ -14,11 +14,7 @@ const LoginPage = () => {
   const handlFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        'user/login',
-        { email, password },
-        { withCredentials: true }
-      );
+      const { data } = await axios.post('user/login', { email, password });
       setUser(data);
       alert('Login successfull');
       setRedirect(true);

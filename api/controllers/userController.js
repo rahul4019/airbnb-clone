@@ -57,14 +57,7 @@ exports.login = async (req, res) => {
 
         user.password = undefined;
 
-        const options = {
-          expires: new Date(
-            Date.now() + process.env.COOKIE_TIME * 24 * 60 * 60 * 1000
-          ),
-          httpOnly: true, // makes the token available only to backend
-        };
-
-        res.status(200).cookie('token', token, options).json(user, token);
+        res.status(200).cookie('token', token).json(user);
       } else {
         res.status(401).json({
           message: 'email or password is incorrect',
