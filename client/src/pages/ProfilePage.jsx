@@ -4,7 +4,7 @@ import axios from "axios";
 import { UserContext } from "../components/UserContext";
 import PlacesPage from "./PlacesPage";
 import AccountNav from "../components/AccountNav";
-import Spinner from "../components/spinner";
+import Spinner from "../components/Spinner";
 
 const ProfilePage = () => {
   const [redirect, setRedirect] = useState(null);

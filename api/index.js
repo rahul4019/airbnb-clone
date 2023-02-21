@@ -15,8 +15,8 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    // origin: 'https://airbnb-clone0.netlify.app',
-    origin: 'http://localhost:5173',
+    origin: 'https://airbnb-clone0.netlify.app',
+    // 'http://localhost:5173',
   })
 );
 
