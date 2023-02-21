@@ -1,14 +1,14 @@
-import React from "react";
-import { useContext } from "react";
-import { Link } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import React from 'react';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { UserContext } from './UserContext';
 
 export const Header = () => {
   const { user } = useContext(UserContext);
   return (
     <header className="flex items-center justify-between">
-      <Link to={"/"} className="flex items-center gap-1">
-        <svg
+      <Link to={'/'} className="flex items-center gap-1">
+        {/* <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -21,8 +21,14 @@ export const Header = () => {
             strokeLinejoin="round"
             d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
           />
-        </svg>
-        <span className="font-bold text-xl">airbnb</span>
+        </svg> */}
+        <img
+          className='h-10 w-10'
+          src="https://cdn-icons-png.flaticon.com/512/2111/2111320.png"
+          alt=""
+        />
+
+        <span className="font-bold text-2xl text-red-500">airbnb</span>
       </Link>
 
       <div className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300">
@@ -49,7 +55,7 @@ export const Header = () => {
         </button>
       </div>
       <Link
-        to={user ? "/account" : "/login"}
+        to={user ? '/account' : '/login'}
         className="flex gap-2 items-center border border-gray-300 rounded-full py-2 px-4"
       >
         <svg

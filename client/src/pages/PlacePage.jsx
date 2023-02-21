@@ -1,25 +1,35 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import AddressLink from "../components/AddressLink";
-import BookingWidget from "../components/BookingWidget";
-import PlaceGallery from "../components/PlaceGallery";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import AddressLink from '../components/AddressLink';
+import BookingWidget from '../components/BookingWidget';
+import PlaceGallery from '../components/PlaceGallery';
+import Spinner from '../components/spinner';
 
 const PlacePage = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!id) {
-      return "";
+      return '';
     }
+
+    setLoading(true);
 
     const getPlace = async () => {
       const { data } = await axios.get(`/places/${id}`);
-      setPlace(data);
+      setPlace(data.place);
     };
     getPlace();
+
+    setLoading(false);
   }, [id]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   if (!place) {
     return;

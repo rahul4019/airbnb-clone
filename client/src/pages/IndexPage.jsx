@@ -1,16 +1,24 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
- 
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Spinner from '../components/Spinner';
+
 const IndexPage = () => {
   const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getPlaces = async () => {
-      const { data } = await axios.get("/places");
+      const { data } = await axios.get('/places');
       setPlaces(data.places);
     };
     getPlaces();
+    setLoading(false);
   }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-3 lg:grid-cols-4 ">
       {places.length > 0 &&

@@ -4,6 +4,7 @@ import axios from "axios";
 import { UserContext } from "../components/UserContext";
 import PlacesPage from "./PlacesPage";
 import AccountNav from "../components/AccountNav";
+import Spinner from "../components/spinner";
 
 const ProfilePage = () => {
   const [redirect, setRedirect] = useState(null);
@@ -21,7 +22,7 @@ const ProfilePage = () => {
   };
 
   if (!ready) {
-    return "Loading...";
+    return <Spinner />;
   }
 
   if (ready && !user && !redirect) {
