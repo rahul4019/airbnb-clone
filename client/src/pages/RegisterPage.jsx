@@ -12,7 +12,7 @@ const RegisterPage = () => {
     try {
       e.preventDefault();
       console.log(name, email, password);
-      await axios.post("/register", {
+      await axios.post("user/register", {
         name,
         email,
         password,

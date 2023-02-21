@@ -1,18 +1,19 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './Layout';
+import Layout from './components/Layout';
 import IndexPage from './pages/IndexPage';
 import ProfilePage from './pages/ProfilePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import axios from 'axios';
-import { UserContextProvider } from './UserContext';
+import { UserContextProvider } from './components/UserContext';
 import PlacesPage from './pages/PlacesPage';
 import PlacesFormPage from './pages/PlacesFormPage';
 import PlacePage from './pages/PlacePage';
 import BookingsPage from './pages/BookingsPage';
 import BookingPage from './pages/BookingPage';
 
-axios.defaults.baseURL = 'https://airbnb-clone-production.up.railway.app';
+// axios.defaults.baseURL = 'https://airbnb-clone-production.up.railway.app';
+axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
 
 function App() {

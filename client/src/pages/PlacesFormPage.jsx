@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Perks from "../Perks";
-import PhotosUploader from "../PhotosUploader";
-import AccountNav from "../AccountNav";
-import { Navigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Perks from '../components/Perks';
+import PhotosUploader from '../components/PhotosUploader';
+import AccountNav from '../components/AccountNav';
+import { Navigate, useParams } from 'react-router-dom';
 
 const PlacesFormPage = () => {
   const { id } = useParams();
 
-  const [title, setTitle] = useState("");
-  const [address, setAddress] = useState("");
-  const [desc, setDesc] = useState("");
+  const [title, setTitle] = useState('');
+  const [address, setAddress] = useState('');
+  const [desc, setDesc] = useState('');
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [perks, setPerks] = useState([]);
-  const [extraInfo, setExtraInfo] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [extraInfo, setExtraInfo] = useState('');
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
   const [price, setPrice] = useState(1500);
@@ -64,20 +64,20 @@ const PlacesFormPage = () => {
     e.preventDefault();
     if (id) {
       // update
-      const { data } = await axios.put("/places", {
+      const { data } = await axios.put('/places', {
         id,
         ...placeData,
       });
     } else {
       // new place
-      const { data } = await axios.post("/places", placeData);
+      const { data } = await axios.post('/places', placeData);
     }
 
     setRedirect(true);
   };
 
   if (redirect) {
-    return <Navigate to={"/account/places"} />;
+    return <Navigate to={'/account/places'} />;
   }
 
   return (
@@ -85,8 +85,8 @@ const PlacesFormPage = () => {
       <AccountNav />
       <form onSubmit={savePlace}>
         {preInput(
-          "Title",
-          "title for your place. Should be short and catchy as in advertisement"
+          'Title',
+          'title for your place. Should be short and catchy as in advertisement'
         )}
         <input
           type="text"
@@ -95,7 +95,7 @@ const PlacesFormPage = () => {
           placeholder="title, for example: My lovely apt"
         />
 
-        {preInput("Address", "Address to this place")}
+        {preInput('Address', 'Address to this place')}
         <input
           value={address}
           onChange={(e) => setAddress(e.target.value)}
@@ -103,25 +103,25 @@ const PlacesFormPage = () => {
           placeholder="address"
         />
 
-        {preInput("Photos", "more = better")}
+        {preInput('Photos', 'more = better')}
 
         <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
 
-        {preInput("Description", "description of the place")}
+        {preInput('Description', 'description of the place')}
         <textarea value={desc} onChange={(e) => setDesc(e.target.value)} />
 
-        {preInput("Perks", " select all the perks of your place")}
+        {preInput('Perks', ' select all the perks of your place')}
         <Perks selected={perks} onChange={setPerks} />
 
-        {preInput("Extra info", "house rules, etc ")}
+        {preInput('Extra info', 'house rules, etc ')}
         <textarea
           value={extraInfo}
           onChange={(e) => setExtraInfo(e.target.value)}
         />
 
         {preInput(
-          "Check in&out times",
-          "add check in and out times, remember to have some time window forcleaning the room between guests. "
+          'Check in&out times',
+          'add check in and out times, remember to have some time window forcleaning the room between guests. '
         )}
         <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
           <div>

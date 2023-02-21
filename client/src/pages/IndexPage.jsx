@@ -7,7 +7,7 @@ const IndexPage = () => {
   useEffect(() => {
     const getPlaces = async () => {
       const { data } = await axios.get("/places");
-      setPlaces(data);
+      setPlaces(data.places);
     };
     getPlaces();
   }, []);

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../components/UserContext";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ const LoginPage = () => {
   const handlFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/login", { email, password });
+      const { data } = await axios.post("user/login", { email, password });
       setUser(data);
       alert("Login successfull");
       setRedirect(true);

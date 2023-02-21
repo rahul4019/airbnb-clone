@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import AccountNav from "../AccountNav";
-import PlaceImg from "../PlaceImg";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import AccountNav from '../components/AccountNav';
+import PlaceImg from '../components/PlaceImg';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
@@ -10,7 +10,7 @@ const PlacesPage = () => {
   useEffect(() => {
     const getPlaces = async () => {
       try {
-        const { data } = await axios.get("/user-places");
+        const { data } = await axios.get('places/user-places');
         setPlaces(data);
       } catch (error) {
         console.log(error);
@@ -25,7 +25,7 @@ const PlacesPage = () => {
       <div className="text-center ">
         <Link
           className="inline-flex gap-1 bg-primary text-white py-2 px-6 rounded-full"
-          to={"/account/places/new"}
+          to={'/account/places/new'}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
