@@ -56,9 +56,11 @@ exports.login = async (req, res) => {
         );
 
         const options = {
+          domain: '.https://airbnb-1.netlify.app',
           expires: new Date(
             Date.now() + process.env.COOKIE_TIME * 24 * 60 * 60 * 1000
           ),
+          httpOnly: true, // makes the token available only to backend
         };
 
         user.password = undefined;
