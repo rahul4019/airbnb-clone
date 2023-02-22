@@ -63,7 +63,7 @@ exports.login = async (req, res) => {
           expires: new Date(
             Date.now() + process.env.COOKIE_TIME * 24 * 60 * 60 * 1000
           ),
-          httpOnly: true, // makes the token available only to backend
+          // httpOnly: true, // makes the token available only to backend
         };
 
         res.status(200).cookie('token', token, options).json(user);
