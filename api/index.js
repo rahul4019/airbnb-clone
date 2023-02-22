@@ -14,12 +14,23 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
- 
+
+const whiteList = [
+  'https://airbnb-clone0.netlify.app',
+  'https://airbnb-1.netlify.app',
+  'http://localhost:5173',
+];
+
 app.use(
   cors({
     credentials: true,
-    origin: 'https://airbnb-clone0.netlify.app',
-    // 'http://localhost:5173',
+    origin: function (origin, callback) {
+      if (whiteList.indexOf(origin !== -1)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by cors'));
+      }
+    },
   })
 );
 
