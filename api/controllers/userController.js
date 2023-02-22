@@ -94,6 +94,10 @@ exports.login = async (req, res) => {
 
 exports.profile = async (req, res) => {
   try {
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(200).json(null);
+    }
     const userData = userFromToken(req);
     if (userData) {
       const { name, email, _id } = await User.findById(userData.id);
