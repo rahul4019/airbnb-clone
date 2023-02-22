@@ -31,6 +31,7 @@ app.use(
         callback(new Error('Not allowed by cors'));
       }
     },
+    exposedHeaders: ['set-cookie'],
   })
 );
 
