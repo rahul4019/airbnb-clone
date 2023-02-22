@@ -63,7 +63,7 @@ exports.login = async (req, res) => {
 
         user.password = undefined;
 
-        res.status(200).cookie('token', token, options).json(user);
+        res.cookie('token', token, options).json(user);
       } else {
         res.status(401).json({
           message: 'email or password is incorrect',
