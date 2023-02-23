@@ -25,7 +25,9 @@ const LoginPage = () => {
         body: { email, password } && JSON.stringify(body),
         withCredentials: true, // should be there
         credentials: 'include',
-      }).then((data) => console.log(data));
+      })
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
       setUser(data);
 
       alert('Login successfull');
