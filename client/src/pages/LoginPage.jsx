@@ -22,12 +22,12 @@ const LoginPage = () => {
           Accept: 'applicaiton/json',
           'Content-Type': 'application/json',
         },
-        body: {email, password} && JSON.stringify(body),
+        body: { email, password } && JSON.stringify(body),
         withCredentials: true, // should be there
         credentials: 'include',
-      });
-
+      }).then((data) => console.log(data));
       setUser(data);
+
       alert('Login successfull');
       setRedirect(true);
     } catch (error) {
