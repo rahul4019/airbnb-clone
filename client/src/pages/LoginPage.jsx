@@ -14,7 +14,19 @@ const LoginPage = () => {
   const handlFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('user/login', { email, password });
+      // const { data } = await axios.post('user/login', { email, password });
+
+      await fetch('https://airbnb-clone-production.up.railway.app/user/login', {
+        method: 'POST',
+        headers: {
+          Accept: 'applicaiton/json',
+          'Content-Type': 'application/json',
+        },
+        body: {email, password} && JSON.stringify(body),
+        withCredentials: true, // should be there
+        credentials: 'include',
+      });
+
       setUser(data);
       alert('Login successfull');
       setRedirect(true);
