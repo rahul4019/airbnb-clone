@@ -31,9 +31,13 @@ exports.createBookings = async (req, res) => {
 
 exports.getBookings = async (req, res) => {
   try {
-    const userData = userFromToken(req);
-    res.json(await Booking.find({ user: userData.id }).populate('place'));
+    console.log('In get bookings function');
+    const userData = await userFromToken(req);
+    res
+      .status(200)
+      .json(await Booking.find({ user: userData.id }).populate('place'));
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: 'Internal server error',
       error: err,

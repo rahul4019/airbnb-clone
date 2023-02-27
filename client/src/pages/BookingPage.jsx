@@ -4,14 +4,22 @@ import { useParams } from 'react-router-dom';
 import AddressLink from '../components/AddressLink';
 import BookingDates from '../components/BookingDates';
 import PlaceGallery from '../components/PlaceGallery';
+import { getItemInLocalStorage } from '../utils';
 
 const BookingPage = () => {
   const { id } = useParams();
+  console.log('id in booking page: ', id)
   const [booking, setBooking] = useState(null);
   useEffect(() => {
+    const token = getItemInLocalStorage('token');
     if (id) {
       const getBookings = async () => {
-        const { data } = await axios.get('/bookings');
+        console.log('token in booking: ', token)
+        const { data } = await axios.get('/bookings', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const foundBooking = data.find(({ _id }) => _id === id);
         if (foundBooking) {
           setBooking(foundBooking);

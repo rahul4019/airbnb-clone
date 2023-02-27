@@ -3,14 +3,20 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AccountNav from '../components/AccountNav';
 import PlaceImg from '../components/PlaceImg';
+import { getItemInLocalStorage } from '../utils';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
+    const token = getItemInLocalStorage('token');
     const getPlaces = async () => {
       try {
-        const { data } = await axios.get('places/user-places');
+        const { data } = await axios.get('places/user-places', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setPlaces(data);
       } catch (error) {
         console.log(error);

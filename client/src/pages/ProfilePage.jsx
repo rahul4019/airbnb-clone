@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
-import axios from "axios";
-import { UserContext } from "../components/UserContext";
-import PlacesPage from "./PlacesPage";
-import AccountNav from "../components/AccountNav";
-import Spinner from "../components/Spinner";
+import React, { useContext, useState } from 'react';
+import { Link, Navigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { UserContext } from '../components/UserContext';
+import PlacesPage from './PlacesPage';
+import AccountNav from '../components/AccountNav';
+import Spinner from '../components/Spinner';
+import { setItemsInLocalStorage } from '../utils';
 
 const ProfilePage = () => {
   const [redirect, setRedirect] = useState(null);
@@ -12,13 +13,12 @@ const ProfilePage = () => {
 
   let { subpage } = useParams();
   if (!subpage) {
-    subpage = "profile";
+    subpage = 'profile';
   }
 
   const logout = async () => {
-    await axios.post("/user/logout");
     setUser(null);
-    setRedirect("/");
+    setRedirect('/');
   };
 
   if (!ready) {
@@ -26,10 +26,8 @@ const ProfilePage = () => {
   }
 
   if (ready && !user && !redirect) {
-    return <Navigate to={"/login"} />;
+    return <Navigate to={'/login'} />;
   }
-
-  
 
   if (redirect) {
     return <Navigate to={redirect} />;
@@ -38,7 +36,7 @@ const ProfilePage = () => {
   return (
     <div>
       <AccountNav />
-      {subpage === "profile" && (
+      {subpage === 'profile' && (
         <div className="text-center max-w-lg mx-auto ">
           Logged in as {user.name} ({user.email})
           <br />
@@ -47,7 +45,7 @@ const ProfilePage = () => {
           </button>
         </div>
       )}
-      {subpage === "places" && <PlacesPage />}
+      {subpage === 'places' && <PlacesPage />}
     </div>
   );
 };

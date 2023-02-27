@@ -4,6 +4,7 @@ import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { useContext } from 'react';
 import { UserContext } from '../components/UserContext';
+import { setItemsInLocalStorage } from '../utils';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -14,21 +15,9 @@ const LoginPage = () => {
   const handlFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const { data } = await axios.post('user/login', { email, password });
-
-      await fetch('https://airbnb-clone-production.up.railway.app/user/login', {
-        method: 'POST',
-        headers: {
-          Accept: 'applicaiton/json',
-          'Content-Type': 'application/json',
-        },
-        body: { email, password } && JSON.stringify(body),
-        withCredentials: true, // should be there
-        credentials: 'include',
-      })
-        .then((data) => console.log(data))
-        .catch((err) => console.log(err));
-      setUser(data);
+      const { data } = await axios.post('user/login', { email, password });
+      setItemsInLocalStorage('token', data.token);
+      setUser(data.user);
 
       alert('Login successfull');
       setRedirect(true);
