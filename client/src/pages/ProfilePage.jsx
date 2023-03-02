@@ -5,8 +5,7 @@ import { UserContext } from '../components/UserContext';
 import PlacesPage from './PlacesPage';
 import AccountNav from '../components/AccountNav';
 import Spinner from '../components/Spinner';
-import { setItemsInLocalStorage } from '../utils';
-
+ 
 const ProfilePage = () => {
   const [redirect, setRedirect] = useState(null);
   const { ready, user, setUser } = useContext(UserContext);

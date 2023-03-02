@@ -8,23 +8,25 @@ import { getItemInLocalStorage } from '../utils';
 
 const BookingPage = () => {
   const { id } = useParams();
-  console.log('id in booking page: ', id)
+  console.log('id in booking page: ', id);
   const [booking, setBooking] = useState(null);
   useEffect(() => {
     const token = getItemInLocalStorage('token');
     if (id) {
       const getBookings = async () => {
-        console.log('token in booking: ', token)
+        console.log('token in booking: ', token);
         const { data } = await axios.get('/bookings', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        const foundBooking = data.find(({ _id }) => _id === id);
+        console.log(data);
+        const foundBooking = data.find((booking ) => booking.user === id);
         if (foundBooking) {
           setBooking(foundBooking);
         }
       };
+      console.log('booking: ', booking);
       getBookings();
     }
   }, [id]);

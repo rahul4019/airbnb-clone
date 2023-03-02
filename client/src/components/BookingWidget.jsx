@@ -1,21 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
-import { differenceInDays } from "date-fns";
-import axios from "axios";
-import { Navigate } from "react-router-dom";
-import { UserContext } from "./UserContext";
+import React, { useContext, useEffect, useState } from 'react';
+import { differenceInDays } from 'date-fns';
+import axios from 'axios';
+import { Navigate } from 'react-router-dom';
+import { UserContext } from './UserContext';
 
 const BookingWidget = ({ place }) => {
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
   const [noOfGuests, setNoOfGuests] = useState(1);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [redirect, setRedirect] = useState("");
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [redirect, setRedirect] = useState('');
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    if(user) {
-      setName(user.name)
+    if (user) {
+      setName(user.name);
     }
   }, [user]);
 
@@ -25,8 +25,7 @@ const BookingWidget = ({ place }) => {
   }
 
   const handleBooking = async () => {
-    console.log("clicked");
-    const response = await axios.post("/bookings", {
+    const response = await axios.post('/bookings', {
       checkIn,
       checkOut,
       noOfGuests,

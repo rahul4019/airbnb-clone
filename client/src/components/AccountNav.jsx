@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
- 
+import { UserContext } from "./UserContext";
+  
 const AccountNav = () => {
+  const {user} = useContext(UserContext)
+  console.log('user in account nav: ', user)
   const { pathname } = useLocation();
   let subpage = pathname.split("/")?.[2];
 
@@ -37,7 +40,7 @@ const AccountNav = () => {
         </svg>
         My Profile
       </Link>
-      <Link className={linkClases("bookings")} to={"/account/bookings"}>
+      <Link className={linkClases("bookings")} to={`/account/bookings/${user._id}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

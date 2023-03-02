@@ -12,7 +12,7 @@ const LoginPage = () => {
   const [redirect, setRedirect] = useState(false);
   const { setUser } = useContext(UserContext);
 
-  const handlFormSubmit = async (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post('user/login', { email, password });
@@ -34,7 +34,7 @@ const LoginPage = () => {
     <div className="mt-4 grow flex justify-around items-center">
       <div className="mb-40">
         <h1 className="text-4xl text-center mb-4">Login</h1>
-        <form className="max-w-md mx-auto" onSubmit={handlFormSubmit}>
+        <form className="max-w-md mx-auto" onSubmit={handleFormSubmit}>
           <input
             type="email"
             placeholder="your@email.com"
