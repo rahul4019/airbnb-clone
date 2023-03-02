@@ -3,13 +3,13 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AccountNav from '../components/AccountNav';
 import PlaceImg from '../components/PlaceImg';
-import { getItemInLocalStorage } from '../utils';
+import { getItemFromLocalStorage } from '../utils';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    const token = getItemInLocalStorage('token');
+    const token = getItemFromLocalStorage('token');
     const getPlaces = async () => {
       try {
         const { data } = await axios.get('places/user-places', {

@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { Navigate, useParams } from 'react-router-dom';
 import { UserContext } from '../components/UserContext';
 import PlacesPage from './PlacesPage';
 import AccountNav from '../components/AccountNav';
 import Spinner from '../components/Spinner';
- 
+import { removeItemFromLocalStorage } from '../utils';
+
 const ProfilePage = () => {
-  const [redirect, setRedirect] = useState(null);
   const { ready, user, setUser } = useContext(UserContext);
+  const [redirect, setRedirect] = useState(null);
 
   let { subpage } = useParams();
   if (!subpage) {
@@ -17,6 +17,7 @@ const ProfilePage = () => {
 
   const logout = async () => {
     setUser(null);
+    removeItemFromLocalStorage('token');
     setRedirect('/');
   };
 

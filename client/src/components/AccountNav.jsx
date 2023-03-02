@@ -1,29 +1,28 @@
-import React, { useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { UserContext } from "./UserContext";
-  
+import React, { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { UserContext } from './UserContext';
+
 const AccountNav = () => {
-  const {user} = useContext(UserContext)
-  console.log('user in account nav: ', user)
+  const { user } = useContext(UserContext);
   const { pathname } = useLocation();
-  let subpage = pathname.split("/")?.[2];
+  let subpage = pathname.split('/')?.[2];
 
   if (subpage === undefined) {
-    subpage = "profile";
+    subpage = 'profile';
   }
 
   const linkClases = (type = null) => {
-    let classes = "inline-flex gap-1 py-2 px-6 rounded-full";
+    let classes = 'inline-flex gap-1 py-2 px-6 rounded-full';
     if (type === subpage) {
-      classes += " bg-primary text-white";
+      classes += ' bg-primary text-white';
     } else {
-      classes += " bg-gray-200";
+      classes += ' bg-gray-200';
     }
     return classes;
   };
   return (
     <nav className="w-full flex justify-center mt-8 gap-2 mb-8">
-      <Link className={linkClases("profile")} to={"/account"}>
+      <Link className={linkClases('profile')} to={'/account'}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -40,7 +39,10 @@ const AccountNav = () => {
         </svg>
         My Profile
       </Link>
-      <Link className={linkClases("bookings")} to={`/account/bookings/${user._id}`}>
+      <Link
+        className={linkClases('bookings')}
+        to={`/account/bookings/${user._id}`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -57,7 +59,7 @@ const AccountNav = () => {
         </svg>
         My bookings
       </Link>
-      <Link className={linkClases("places")} to={"/account/places"}>
+      <Link className={linkClases('places')} to={'/account/places'}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

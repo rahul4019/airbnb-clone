@@ -11,12 +11,12 @@ import PlacesFormPage from './pages/PlacesFormPage';
 import PlacePage from './pages/PlacePage';
 import BookingsPage from './pages/BookingsPage';
 import BookingPage from './pages/BookingPage';
-import { getItemInLocalStorage } from './utils';
+import { getItemFromLocalStorage } from './utils';
 
-const token = getItemInLocalStorage('token')
+const token = getItemFromLocalStorage('token')
  
-axios.defaults.baseURL = 'https://airbnb-clone-production.up.railway.app';
-// axios.defaults.baseURL = 'http://localhost:4000';
+// axios.defaults.baseURL = 'https://airbnb-clone-production.up.railway.app';
+axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect, createContext } from 'react';
-import { getItemInLocalStorage } from '../utils';
+import { getItemFromLocalStorage } from '../utils';
 
 export const UserContext = createContext({});
 
@@ -9,12 +9,12 @@ export const UserContextProvider = ({ children }) => {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     if (!user) {
-      const token = getItemInLocalStorage('token');
+      const token = getItemFromLocalStorage('token');
       if (token) {
         axios.get('/user/profile').then(({ data }) => {
           setUser(data);
-          setReady(true);
         });
+        setReady(true);
       }
     }
   }, []);
