@@ -4,7 +4,7 @@ const Image = ({ src, ...rest }) => {
    src =
     src && src.includes('https://')
       ? src
-      : 'http://localhost:4000/uploads/' + src;
+      : 'https://airbnb-clone-production.up.railway.app/uploads/' + src;
   return <img src={src} {...rest} alt={''} />;
 };
 

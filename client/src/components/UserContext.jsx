@@ -6,7 +6,7 @@ export const UserContext = createContext({});
 
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [ready, setReady] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!user) {
       const token = getItemFromLocalStorage('token');
@@ -14,13 +14,13 @@ export const UserContextProvider = ({ children }) => {
         axios.get('/user/profile').then(({ data }) => {
           setUser(data);
         });
-        setReady(true);
+        setLoading(false);
       }
     }
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, ready }}>
+    <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
   );

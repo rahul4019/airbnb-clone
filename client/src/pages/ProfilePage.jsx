@@ -7,7 +7,7 @@ import Spinner from '../components/Spinner';
 import { removeItemFromLocalStorage } from '../utils';
 
 const ProfilePage = () => {
-  const { ready, user, setUser } = useContext(UserContext);
+  const { loading, user, setUser } = useContext(UserContext);
   const [redirect, setRedirect] = useState(null);
 
   let { subpage } = useParams();
@@ -21,11 +21,11 @@ const ProfilePage = () => {
     setRedirect('/');
   };
 
-  if (!ready) {
+  if (loading) {
     return <Spinner />;
   }
 
-  if (ready && !user && !redirect) {
+  if (!loading && !user && !redirect) {
     return <Navigate to={'/login'} />;
   }
 

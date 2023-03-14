@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 // upload photo using image url
-app.post('/upload-by-link', async (req, res) => {
+router.post('/upload-by-link', async (req, res) => {
   try {
     const { link } = req.body;
     let result = await cloudinary.uploader.upload(link, {
@@ -29,7 +29,7 @@ app.post('/upload-by-link', async (req, res) => {
 });
 
 // upload images from local device
-app.post('/upload', upload.array('photos', 100), async (req, res) => {
+router.post('/upload', upload.array('photos', 100), async (req, res) => {
   try {
     let imageArray = [];
 

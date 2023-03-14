@@ -29,8 +29,8 @@ const PlaceGallery = ({ place }) => {
             </button>
           </div>
           {place?.photos?.length > 0 &&
-            place.photos.map((photo) => (
-              <div>
+            place.photos.map((photo,index) => (
+              <div key={index}>
                 <img
                   src={`https://airbnb-clone-production.up.railway.app/uploads/${photo}`}
                   alt=""

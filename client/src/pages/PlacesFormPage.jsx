@@ -4,6 +4,7 @@ import Perks from '../components/Perks';
 import PhotosUploader from '../components/PhotosUploader';
 import AccountNav from '../components/AccountNav';
 import { Navigate, useParams } from 'react-router-dom';
+import Spinner from '../components/Spinner';
 
 const PlacesFormPage = () => {
   const { id } = useParams();
@@ -19,26 +20,27 @@ const PlacesFormPage = () => {
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
   const [price, setPrice] = useState(1500);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!id) {
       return;
     }
+    setLoading(true);
     axios.get(`/places/${id}`).then((response) => {
-      const { data } = response;
-      console.log('single place: ', data);
-      setTitle(data.title);
-      setAddress(data.address);
-      setAddedPhotos(data.photos);
-      setDesc(data.description);
-      setPerks(data.perks);
-      setExtraInfo(data.extraInfo);
-      setCheckIn(data.checkIn);
-      setCheckOut(data.checkOut);
-      setMaxGuests(data.maxGuests);
-      setPrice(data.price);
+      const { place } = response.data;
+      setTitle(place.title);
+      setAddress(place.address);
+      setAddedPhotos(place.photos);
+      setDesc(place.description);
+      setPerks(place.perks);
+      setExtraInfo(place.extraInfo);
+      setCheckIn(place.checkIn);
+      setCheckOut(place.checkOut);
+      setMaxGuests(place.maxGuests);
+      setPrice(place.price);
+      setLoading(false);
     });
-    console.log('AddedPhotos: ', addedPhotos);
   }, [id]);
 
   const preInput = (header, description) => {
@@ -51,6 +53,7 @@ const PlacesFormPage = () => {
   };
 
   const savePlace = async (e) => {
+    e.preventDefault();
     const placeData = {
       title,
       address,
@@ -63,16 +66,15 @@ const PlacesFormPage = () => {
       maxGuests,
       price,
     };
-    e.preventDefault();
     if (id) {
-      // update
-      const { data } = await axios.put('/places', {
+      // update existing place
+      const { data } = await axios.put('/places/update-place', {
         id,
         ...placeData,
       });
     } else {
       // new place
-      const { data } = await axios.post('/places', placeData);
+      const { data } = await axios.post('/places/add-places', placeData);
     }
 
     setRedirect(true);
@@ -80,6 +82,10 @@ const PlacesFormPage = () => {
 
   if (redirect) {
     return <Navigate to={'/account/places'} />;
+  }
+
+  if (loading) {
+    return <Spinner />;
   }
 
   return (

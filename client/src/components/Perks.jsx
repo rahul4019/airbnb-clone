@@ -1,7 +1,7 @@
 import React from "react";
 
 const Perks = ({ selected, onChange }) => {
-  const handleCbClick = (e) => {
+   const handleCbClick = (e) => {
     const { checked, name } = e.target;
     if (checked) {
       onChange([...selected, name]);

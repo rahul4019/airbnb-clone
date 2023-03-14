@@ -41,7 +41,7 @@ const AccountNav = () => {
       </Link>
       <Link
         className={linkClases('bookings')}
-        to={`/account/bookings/${user._id}`}
+        to={`/account/bookings/${user?._id}`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import AccountNav from '../components/AccountNav';
 import PlaceImg from '../components/PlaceImg';
 import { getItemFromLocalStorage } from '../utils';
+import Spinner from '../components/Spinner';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = getItemFromLocalStorage('token');
@@ -18,12 +20,17 @@ const PlacesPage = () => {
           },
         });
         setPlaces(data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
     getPlaces();
   }, []);
+
+  if(loading) {
+    return <Spinner />
+  }
 
   return (
     <div>

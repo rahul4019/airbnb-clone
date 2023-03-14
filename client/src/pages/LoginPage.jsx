@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
-import { useContext } from 'react';
 import { UserContext } from '../components/UserContext';
 import { setItemsInLocalStorage } from '../utils';
+import ProfilePage from './ProfilePage';
+import Spinner from '../components/Spinner';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
-  const { setUser } = useContext(UserContext);
+  const { user, loading, setUser } = useContext(UserContext);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +26,14 @@ const LoginPage = () => {
       alert('Login failed');
     }
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (user) {
+    return <ProfilePage />;
+  }
 
   if (redirect) {
     return <Navigate to={'/'} />;
