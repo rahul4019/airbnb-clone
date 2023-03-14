@@ -31,7 +31,6 @@ exports.createBookings = async (req, res) => {
 
 exports.getBookings = async (req, res) => {
   try {
-    console.log('In get bookings function');
     const userData = await userFromToken(req);
     res
       .status(200)
