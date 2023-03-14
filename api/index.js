@@ -1,30 +1,23 @@
 const express = require('express');
 const cors = require('cors');
 const connectWithDB = require('./config/db');
-const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
-const multer = require('multer');
 
 // connect with database
 connectWithDB();
 
-// cloudinary
+// cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// multer
-// const storage = multer.memoryStorage;
-const upload = multer({ dest: '/temp' });
-
-const fs = require('fs');
 const app = express();
 
+// middleware to handle json
 app.use(express.json());
-app.use(cookieParser());
 
 const whiteList = [
   'https://airbnb-clone0.netlify.app',
@@ -32,6 +25,7 @@ const whiteList = [
   'http://localhost:5173',
 ];
 
+// CORS 
 app.use(
   cors({
     credentials: true,
@@ -45,47 +39,6 @@ app.use(
     exposedHeaders: ['set-cookie'],
   })
 );
-
-app.use('/uploads', express.static(__dirname + '/uploads'));
-
-app.post('/upload-by-link', async (req, res) => {
-  try {
-    const { link } = req.body;
-    let result = await cloudinary.uploader.upload(link, {
-      folder: 'Airbnb/Places',
-    });
-    res.json(result.secure_url);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      message: 'Internal server error',
-    });
-  }
-});
-
-app.post('/upload', upload.array('photos', 100), async (req, res) => {
-  try {
-    let imageArray = [];
-    console.log('multer upload: ');
-
-    for (let index = 0; index < req.files.length; index++) {
-      console.log('Upload started...');
-      let { path } = req.files[index];
-      let result = await cloudinary.uploader.upload(path, {
-        folder: 'Airbnb/Places',
-      });
-      imageArray.push(result.secure_url);
-    }
-
-    res.status(200).json(imageArray);
-  } catch (error) {
-    console.log('Error: ', error);
-    res.status(500).json({
-      error,
-      message: 'Internal server error',
-    });
-  }
-});
 
 // use express router
 app.use('/', require('./routes'));
