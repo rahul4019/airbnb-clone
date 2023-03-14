@@ -27,9 +27,7 @@ const LoginPage = () => {
     }
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  
 
   if (user) {
     return <ProfilePage />;
