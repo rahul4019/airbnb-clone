@@ -3,12 +3,23 @@ const cors = require('cors');
 const connectWithDB = require('./config/db');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
 
 // connect with database
 connectWithDB();
 
-const imageDownloader = require('image-downloader');
-const multer = require('multer');
+// cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// multer
+// const storage = multer.memoryStorage;
+const upload = multer({ dest: '/temp' });
+
 const fs = require('fs');
 const app = express();
 
@@ -40,12 +51,10 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 app.post('/upload-by-link', async (req, res) => {
   try {
     const { link } = req.body;
-    const newName = 'photo' + Date.now() + '.jpg';
-    await imageDownloader.image({
-      url: link,
-      dest: __dirname + '/uploads/' + newName,
+    let result = await cloudinary.uploader.upload(link, {
+      folder: 'Airbnb/Places',
     });
-    res.json(newName);
+    res.json(result.secure_url);
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -54,22 +63,25 @@ app.post('/upload-by-link', async (req, res) => {
   }
 });
 
-const photosMiddleware = multer({ dest: 'uploads/' });
-
-app.post('/upload', photosMiddleware.array('photos', 100), async (req, res) => {
+app.post('/upload', upload.array('photos', 100), async (req, res) => {
   try {
-    const uploadedFiles = [];
-    for (let i = 0; i < req.files.length; i++) {
-      const { path, originalname } = req.files[i];
-      const parts = originalname.split('.');
-      const ext = parts[parts.length - 1];
-      const newPath = path + '.' + ext;
-      fs.renameSync(path, newPath);
-      uploadedFiles.push(newPath.replace('uploads', ''));
+    let imageArray = [];
+    console.log('multer upload: ');
+
+    for (let index = 0; index < req.files.length; index++) {
+      console.log('Upload started...');
+      let { path } = req.files[index];
+      let result = await cloudinary.uploader.upload(path, {
+        folder: 'Airbnb/Places',
+      });
+      imageArray.push(result.secure_url);
     }
-    res.json(uploadedFiles);
+
+    res.status(200).json(imageArray);
   } catch (error) {
+    console.log('Error: ', error);
     res.status(500).json({
+      error,
       message: 'Internal server error',
     });
   }

@@ -26,6 +26,7 @@ const PlacesFormPage = () => {
     }
     axios.get(`/places/${id}`).then((response) => {
       const { data } = response;
+      console.log('single place: ', data);
       setTitle(data.title);
       setAddress(data.address);
       setAddedPhotos(data.photos);
@@ -37,6 +38,7 @@ const PlacesFormPage = () => {
       setMaxGuests(data.maxGuests);
       setPrice(data.price);
     });
+    console.log('AddedPhotos: ', addedPhotos);
   }, [id]);
 
   const preInput = (header, description) => {
@@ -105,7 +107,10 @@ const PlacesFormPage = () => {
 
         {preInput('Photos', 'more = better')}
 
-        <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
+        <PhotosUploader
+          addedPhotos={addedPhotos}
+          setAddedPhotos={setAddedPhotos}
+        />
 
         {preInput('Description', 'description of the place')}
         <textarea value={desc} onChange={(e) => setDesc(e.target.value)} />

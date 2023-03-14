@@ -1,42 +1,48 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
+import Image from './Image';
 
-const PhotosUploader = ({ addedPhotos, onChange }) => {
-  const [photoLink, setphotoLink] = useState("");
+const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
+  const [photoLink, setphotoLink] = useState('');
 
   const addPhotoByLink = async (e) => {
     e.preventDefault();
-    const { data: filename } = await axios.post("/upload-by-link", {
+    const { data: filename } = await axios.post('/upload-by-link', {
       link: photoLink,
     });
-    onChange((prev) => {
+    setAddedPhotos((prev) => {
       return [...prev, filename];
     });
-    setphotoLink("");
+    setphotoLink('');
   };
 
   const uploadPhoto = async (e) => {
     const files = e.target.files;
-    const data = new FormData();
+    console.log('files: ', files);
+    const data = new FormData(); // creating new form data
     for (let i = 0; i < files.length; i++) {
-      data.append("photos", files[i]);
+      data.append('photos', files[i]); // adding all the photos to data one by one
     }
-    const { data: filenames } = await axios.post("/upload", data, {
-      headers: { "Content-type": "multipart/form-data" },
+    const { data: filenames } = await axios.post('/upload', data, {
+      headers: { 'Content-type': 'multipart/form-data' },
     });
-    onChange((prev) => {
+    console.log('filenames: ', filenames);
+    setAddedPhotos((prev) => {
       return [...prev, ...filenames];
     });
   };
 
   const removePhoto = (filename) => {
-    onChange([...addedPhotos.filter((photo) => photo !== filename)]);
+    setAddedPhotos([...addedPhotos.filter((photo) => photo !== filename)]);
   };
 
   const selectAsMainPhoto = (e, filename) => {
     e.preventDefault();
 
-    onChange([filename, ...addedPhotos.filter((photo) => photo !== filename)]);
+    setAddedPhotos([
+      filename,
+      ...addedPhotos.filter((photo) => photo !== filename),
+    ]);
   };
 
   return (
@@ -59,9 +65,9 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
         {addedPhotos.length > 0 &&
           addedPhotos.map((link) => (
             <div className="h-32 flex relative" key={link}>
-              <img
+              <Image
                 className="rounded-2xl w-full object-cover"
-                src={"https://airbnb-clone-production.up.railway.app/uploads/" + link}
+                src={link}
                 alt=""
               />
               <button
