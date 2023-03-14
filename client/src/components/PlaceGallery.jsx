@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from './Image';
 
 const PlaceGallery = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
@@ -29,12 +30,9 @@ const PlaceGallery = ({ place }) => {
             </button>
           </div>
           {place?.photos?.length > 0 &&
-            place.photos.map((photo,index) => (
+            place.photos.map((photo, index) => (
               <div key={index}>
-                <img
-                  src={`https://airbnb-clone-production.up.railway.app/uploads/${photo}`}
-                  alt=""
-                />
+                <Image src={photo} />
               </div>
             ))}
         </div>
@@ -50,7 +48,7 @@ const PlaceGallery = ({ place }) => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover"
-                src={`https://airbnb-clone-production.up.railway.app/uploads/${place.photos[0]}`}
+                src={place.photos[0]}
                 alt=""
               />
             </div>
@@ -61,7 +59,7 @@ const PlaceGallery = ({ place }) => {
             <img
               onClick={() => setShowAllPhotos(true)}
               className="cursor-pointer  aspect-square object-cover"
-              src={`https://airbnb-clone-production.up.railway.app/uploads/${place.photos[1]}`}
+              src={place.photos[1]}
               alt=""
             />
           )}
@@ -70,7 +68,7 @@ const PlaceGallery = ({ place }) => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer aspect-square object-cover relative top-2"
-                src={`https://airbnb-clone-production.up.railway.app/uploads/${place.photos[2]}`}
+                src={place.photos[2]}
                 alt=""
               />
             )}

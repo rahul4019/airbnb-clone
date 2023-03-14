@@ -21,10 +21,9 @@ const PlacePage = () => {
     const getPlace = async () => {
       const { data } = await axios.get(`/places/${id}`);
       setPlace(data.place);
+      setLoading(false);
     };
     getPlace();
-
-    setLoading(false);
   }, [id]);
 
   if (loading) {
