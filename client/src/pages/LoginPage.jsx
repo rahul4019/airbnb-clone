@@ -28,14 +28,14 @@ const LoginPage = () => {
   };
 
   
+  if (redirect) {
+    return <Navigate to={'/'} />;
+  }
 
   if (user) {
     return <ProfilePage />;
   }
 
-  if (redirect) {
-    return <Navigate to={'/'} />;
-  }
 
   return (
     <div className="mt-4 grow flex justify-around items-center">

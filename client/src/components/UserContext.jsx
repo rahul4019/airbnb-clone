@@ -6,15 +6,15 @@ export const UserContext = createContext({});
 
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (!user) {
       const token = getItemFromLocalStorage('token');
       if (token) {
         axios.get('/user/profile').then(({ data }) => {
           setUser(data);
+          setLoading(false);
         });
-        setLoading(false);
       }
     }
   }, []);

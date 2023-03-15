@@ -7,11 +7,7 @@ const PlaceImg = ({ place, index = 0, className = null }) => {
   if (!className) {
     className = 'object-cover';
   }
-  return (
-    <div>
-      <img src={place.photos[index]} alt="" className={className} />
-    </div>
-  );
+  return <img src={place.photos[index]} alt="" className={className} />;
 };
 
 export default PlaceImg;

@@ -1,28 +1,37 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import AccountNav from '../components/AccountNav';
 import AddressLink from '../components/AddressLink';
 import BookingDates from '../components/BookingDates';
 import PlaceGallery from '../components/PlaceGallery';
+import Spinner from '../components/Spinner';
 
 const BookingPage = () => {
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (id) {
       const getBookings = async () => {
+        // TODO : get all the booked places and display
         const { data } = await axios.get('/bookings');
         const foundBooking = data.find((booking) => booking.user === id);
         if (foundBooking) {
           setBooking(foundBooking);
         }
+        setLoading(false);
       };
       getBookings();
     }
   }, [id]);
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   if (!booking) {
-    return '';
+    return 'Hello world!';
   }
 
   return (
