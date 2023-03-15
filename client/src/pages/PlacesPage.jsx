@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AccountNav from '../components/AccountNav';
-import PlaceImg from '../components/PlaceImg';
 import { getItemFromLocalStorage } from '../utils';
 import Spinner from '../components/Spinner';
+import PlaceCard from '../components/PlaceCard';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
@@ -28,8 +28,8 @@ const PlacesPage = () => {
     getPlaces();
   }, []);
 
-  if(loading) {
-    return <Spinner />
+  if (loading) {
+    return <Spinner />;
   }
 
   return (
@@ -59,21 +59,7 @@ const PlacesPage = () => {
       </div>
       <div className="mt-4 ">
         {places.length > 0 &&
-          places.map((place) => (
-            <Link
-              to={`/account/places/${place._id}`}
-              className="flex flex-row gap-4 bg-gray-100 p-4 my-3 rounded-2xl cursor-pointer hover:bg-gray-300 transition-all"
-              key={place._id}
-            >
-              <div className="flex w-32 h-32 bg-gray-500 shrink-0">
-                <PlaceImg place={place} />
-              </div>
-              <div className="">
-                <h2 className="text-xl">{place.title}</h2>
-                <p className="text-sm mt-2">{place.description}</p>
-              </div>
-            </Link>
-          ))}
+          places.map((place) => <PlaceCard place={place} key={place._id} />)}
       </div>
     </div>
   );
