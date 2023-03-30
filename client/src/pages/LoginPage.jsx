@@ -7,8 +7,10 @@ import { setItemsInLocalStorage } from '../utils';
 import ProfilePage from './ProfilePage';
 import Spinner from '../components/Spinner';
 
+
+
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
   const { user, loading, setUser } = useContext(UserContext);
