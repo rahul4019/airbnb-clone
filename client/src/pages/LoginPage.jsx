@@ -6,11 +6,10 @@ import { UserContext } from '../components/UserContext';
 import { setItemsInLocalStorage } from '../utils';
 import ProfilePage from './ProfilePage';
 import Spinner from '../components/Spinner';
-
-
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState(''); 
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
   const { user, loading, setUser } = useContext(UserContext);
@@ -22,14 +21,13 @@ const LoginPage = () => {
       setItemsInLocalStorage('token', data.token);
       setUser(data.user);
 
-      alert('Login successfull');
+      toast.success('Login successfull!');
       setRedirect(true);
     } catch (error) {
-      alert('Login failed');
+      toast.error('Login failed!');
     }
   };
 
-  
   if (redirect) {
     return <Navigate to={'/'} />;
   }
@@ -37,7 +35,6 @@ const LoginPage = () => {
   if (user) {
     return <ProfilePage />;
   }
-
 
   return (
     <div className="mt-4 grow flex justify-around items-center">

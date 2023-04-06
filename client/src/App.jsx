@@ -12,6 +12,8 @@ import PlacePage from './pages/PlacePage';
 import BookingsPage from './pages/BookingsPage';
 import { getItemFromLocalStorage } from './utils';
 import BookedPlacesPage from './pages/BookedPlacesPage';
+import { Slide, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const token = getItemFromLocalStorage('token');
 
@@ -37,6 +39,7 @@ function App() {
           <Route path="/account/bookings/:id" element={<BookedPlacesPage />} />
         </Route>
       </Routes>
+      <ToastContainer autoClose={2000} transition={Slide}/>
     </UserContextProvider>
   );
 }
