@@ -39,7 +39,7 @@ function App() {
           <Route path="/account/bookings/:id" element={<BookedPlacesPage />} />
         </Route>
       </Routes>
-      <ToastContainer autoClose={2000} transition={Slide}/>
+      <ToastContainer autoClose={2000} transition={Slide} />
     </UserContextProvider>
   );
 }

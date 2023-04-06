@@ -1,25 +1,32 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleRegisterForm = async (e) => {
     try {
       e.preventDefault();
-      console.log(name, email, password);
-      await axios.post("user/register", {
+      await axios.post('user/register', {
         name,
         email,
         password,
       });
-      alert("Registration successful. Now you can login");
-    } catch (error) {
-      alert("Registration failed. Please try again later");
+      toast.success('Registration successful. Now you can login');
+    } catch (err) {
+      if (err.response) {
+        const { message } = err.response.data;
+        toast.error(message);
+      } else if (err.request) {
+        toast.error(err.request);
+      } else {
+        console.log('Error: ', err.message);
+      }
     }
   };
 
@@ -48,8 +55,8 @@ const RegisterPage = () => {
           />
           <button className="primary">Register</button>
           <div className="text-center py-2 text-gray-500">
-            Already a member?{" "}
-            <Link className="text-black underline" to={"/login"}>
+            Already a member?{' '}
+            <Link className="text-black underline" to={'/login'}>
               Login
             </Link>
           </div>

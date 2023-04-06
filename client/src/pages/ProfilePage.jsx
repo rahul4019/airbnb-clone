@@ -5,6 +5,7 @@ import PlacesPage from './PlacesPage';
 import AccountNav from '../components/AccountNav';
 import Spinner from '../components/Spinner';
 import { removeItemFromLocalStorage } from '../utils';
+import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
   const { loading, user, setUser } = useContext(UserContext);
@@ -18,6 +19,7 @@ const ProfilePage = () => {
   const logout = async () => {
     setUser(null);
     removeItemFromLocalStorage('token');
+    toast.success("Logged out")
     setRedirect('/');
   };
 

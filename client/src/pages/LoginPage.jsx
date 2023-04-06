@@ -5,7 +5,6 @@ import axios from 'axios';
 import { UserContext } from '../components/UserContext';
 import { setItemsInLocalStorage } from '../utils';
 import ProfilePage from './ProfilePage';
-import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
 
 const LoginPage = () => {
@@ -23,8 +22,15 @@ const LoginPage = () => {
 
       toast.success('Login successfull!');
       setRedirect(true);
-    } catch (error) {
-      toast.error('Login failed!');
+    } catch (err) {
+      if (err.response) {
+        const { message } = err.response.data;
+        toast.error(message);
+      } else if (err.request) {
+        toast.error(err.request);
+      } else {
+        console.log('Error: ', err.message);
+      }
     }
   };
 
