@@ -32,6 +32,11 @@ exports.createBookings = async (req, res) => {
 exports.getBookings = async (req, res) => {
   try {
     const userData = await userFromToken(req);
+    if (!userData) {
+      return res
+        .status(401)
+        .json({ error: 'You are not authorized to access this page!' });
+    }
     res
       .status(200)
       .json(await Booking.find({ user: userData.id }).populate('place'));

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import PlaceImg from './PlaceImg';
 
 const PlaceCard = ({ place }) => {
-    console.log("place: ", place)
   return (
     <Link
       to={`/account/places/${place._id}`}

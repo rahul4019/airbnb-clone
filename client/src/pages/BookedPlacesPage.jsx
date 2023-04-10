@@ -16,6 +16,9 @@ const BookedPlacesPage = () => {
     if (id) {
       const getBookings = async () => {
         const { data } = await axios.get('/bookings');
+        if(data.error){
+          toast.error(data.error.message)
+        }
         setBookings(data);
         setLoading(false);
       };
@@ -31,7 +34,9 @@ const BookedPlacesPage = () => {
     <div>
       <AccountNav />
       {bookings.length > 0 ? (
-        bookings.map((booking) => <PlaceCard place={booking.place} key={booking._id} />)
+        bookings.map((booking) => (
+          <PlaceCard place={booking.place} key={booking._id} />
+        ))
       ) : (
         <div className="flex flex-col gap-4">
           <h1 className="text-3xl font-semibold">No bookings... yet!</h1>
@@ -51,7 +56,7 @@ const BookedPlacesPage = () => {
   // return (
   //   <div className="my-8">
   //     <h1 className="text-3xl">{booking.place.title}</h1>
-  
+
   //     <AddressLink
   //       className="my-2 block"
   //       placeAddress={booking.place.address}
