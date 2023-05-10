@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
-import { UserContext } from '../components/UserContext';
+import { UserContext } from '../providers/UserProvider';
 import { setItemsInLocalStorage } from '../utils';
 import ProfilePage from './ProfilePage';
 import { toast } from 'react-toastify';

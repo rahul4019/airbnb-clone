@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { UserContext } from './UserContext';
-
+import { UserContext } from '../providers/UserProvider';
+ 
 const AccountNav = () => {
   const { user } = useContext(UserContext);
   const { pathname } = useLocation();

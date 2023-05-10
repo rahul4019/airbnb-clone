@@ -1,20 +1,12 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { PlaceContext } from '../providers/PlaceProvider';
 import { Link } from 'react-router-dom';
 import Image from '../components/Image';
 import Spinner from '../components/Spinner';
 
 const IndexPage = () => {
-  const [places, setPlaces] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const getPlaces = async () => {
-      const { data } = await axios.get('/places');
-      setPlaces(data.places);
-      setLoading(false);
-    };
-    getPlaces();
-  }, []);
+  const { places, loading } = useContext(PlaceContext);
 
   if (loading) {
     return <Spinner />;

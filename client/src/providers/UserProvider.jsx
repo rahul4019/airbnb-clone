@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { useState, useEffect, createContext } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { getItemFromLocalStorage } from '../utils';
 
 export const UserContext = createContext({});
 
-export const UserContextProvider = ({ children }) => {
+export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (!user) {
       const token = getItemFromLocalStorage('token');
@@ -22,12 +23,6 @@ export const UserContextProvider = ({ children }) => {
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
-    </UserContext.Provider> 
+    </UserContext.Provider>
   );
 };
-
-
-
-
-
-

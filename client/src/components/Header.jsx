@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from './UserContext';
+import { UserContext } from '../providers/UserProvider';
 import SearchBar from './SearchBar';
 
 export const Header = () => {
@@ -15,7 +15,9 @@ export const Header = () => {
           alt=""
         />
 
-        <span className="hidden md:block font-bold text-2xl text-red-500">airbnb</span>
+        <span className="hidden md:block font-bold text-2xl text-red-500">
+          airbnb
+        </span>
       </Link>
 
       <SearchBar />

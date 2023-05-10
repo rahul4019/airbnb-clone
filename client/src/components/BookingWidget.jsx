@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { differenceInDays } from 'date-fns';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
-import { UserContext } from './UserContext';
-
+import { UserContext } from '../providers/UserProvider';
+ 
 const BookingWidget = ({ place }) => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
