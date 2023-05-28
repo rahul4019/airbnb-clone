@@ -18,8 +18,8 @@ import { PlaceProvider } from './providers/PlaceProvider';
 
 const token = getItemFromLocalStorage('token');
 
-axios.defaults.baseURL = 'https://airbnb-clone-production.up.railway.app';
-// axios.defaults.baseURL = 'http://localhost:4000';
+// axios.defaults.baseURL = 'https://airbnb-clone-production.up.railway.app';
+axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
