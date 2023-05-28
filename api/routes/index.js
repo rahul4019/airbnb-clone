@@ -4,7 +4,7 @@ const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 
 // multer
-const upload = multer({ dest: '/temp' });
+const upload = multer({ dest: '/tmp' });
 
 router.get('/', (req, res) => {
   res.status(200).json({
