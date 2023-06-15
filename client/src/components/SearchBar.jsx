@@ -8,23 +8,20 @@ const SearchBar = () => {
   const { setPlaces, setLoading } = useContext(PlaceContext);
   const handleSearch = async (e) => {
     clearTimeout(searchTimeout);
-    setLoading(true);
     setSearchText(e.target.value);
 
-    // debounce method
-    // setTimeout(async () => {
-    //   const { data } = await axios.get(`/places/search/${searchText}`);
-    //   setPlaces(data);
-    //   setLoading(false);
-    // }, 500);
-    
-    setSearchTimeout(
-      setTimeout(async () => {
-        const { data } = await axios.get(`/places/search/${searchText}`);
-        setPlaces(data);
-        setLoading(false);
-      }, 500)
-    );
+    if (searchText.trimStart() !== '') {
+      setLoading(true);
+      setSearchTimeout(
+        setTimeout(async () => {
+          const { data } = await axios.get(
+            `/places/search/${searchText.trimStart()}`
+          );
+          setPlaces(data);
+          setLoading(false);
+        }, 500)
+      );
+    }
   };
 
   return (
