@@ -12,14 +12,20 @@ const SearchBar = () => {
     setSearchText(e.target.value);
 
     // debounce method
-    setTimeout(async () => {
-      const { data } = await axios.get(`/places/search/${searchText}`);
-      setPlaces(data);
-      setLoading(false);
-    }, 500);
+    // setTimeout(async () => {
+    //   const { data } = await axios.get(`/places/search/${searchText}`);
+    //   setPlaces(data);
+    //   setLoading(false);
+    // }, 500);
+    
+    setSearchTimeout(
+      setTimeout(async () => {
+        const { data } = await axios.get(`/places/search/${searchText}`);
+        setPlaces(data);
+        setLoading(false);
+      }, 500)
+    );
   };
-
-  // if(load)
 
   return (
     <>
