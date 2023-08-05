@@ -10,15 +10,14 @@ import PlacesFormPage from './pages/PlacesFormPage';
 import PlacePage from './pages/PlacePage';
 import BookingsPage from './pages/BookingsPage';
 import { getItemFromLocalStorage } from './utils';
-import BookedPlacesPage from './pages/BookedPlacesPage';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from './providers/UserProvider';
 import { PlaceProvider } from './providers/PlaceProvider';
+import SingleBookedPlace from './pages/SingleBookedPlace';
 
 const token = getItemFromLocalStorage('token');
 
-// axios.defaults.baseURL = 'https://airbnb-clone-production.up.railway.app';
 axios.defaults.baseURL = 'https://airbnb-api-5s7s.onrender.com';
 // axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
@@ -42,7 +41,7 @@ function App() {
             <Route path="/account/bookings" element={<BookingsPage />} />
             <Route
               path="/account/bookings/:id"
-              element={<BookedPlacesPage />}
+              element={<SingleBookedPlace />}
             />
           </Route>
         </Routes>

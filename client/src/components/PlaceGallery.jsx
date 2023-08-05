@@ -5,7 +5,7 @@ const PlaceGallery = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
 
   if (showAllPhotos) {
-    return (
+    return ( 
       <div className="absolute inset-0 bg-white text-white  min-h-full z-20">
         <div className="p-8 bg-white grid gap-4">
           <div>

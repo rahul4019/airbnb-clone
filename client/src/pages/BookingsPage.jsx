@@ -8,23 +8,34 @@ import BookingDates from '../components/BookingDates';
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
-  useEffect(() => {
-    const getBookings = async () => {
+  const [loading, setLoading] = useState(false);
+
+  const getBookings = async () => {
+    try {
+      setLoading(true);
       const { data } = await axios.get('/bookings');
-      setBookings(data);
-    };
+      setBookings(data.booking);
+    } catch (error) {
+      console.log('Error: ', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     getBookings();
   }, []);
 
   return (
-    <div>
+    <div className="p-4">
       <AccountNav />
       <div>
         {bookings?.length > 0 &&
           bookings.map((booking) => (
             <Link
               to={`/account/bookings/${booking._id}`}
-              className="flex gap-4 bg-gray-200 rounded-2xl overflow-hidden my-2"
+              className="flex gap-4 bg-gray-200 rounded-2xl overflow-hidden my-8"
+              key={booking._id}
             >
               <div className="w-48">
                 <PlaceImg place={booking.place} />

@@ -21,7 +21,7 @@ const AccountNav = () => {
     return classes;
   };
   return (
-    <nav className="w-full flex flex-col p-8 md:flex-row md:p-0 justify-center mt-36 gap-2 mb-8">
+    <nav className="w-full flex flex-col p-8 md:flex-row md:p-0 justify-center mt-24 gap-2 mb-8">
       <Link className={linkClases('profile')} to={'/account'}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@ const AccountNav = () => {
       </Link>
       <Link
         className={linkClases('bookings')}
-        to={`/account/bookings/${user?._id}`}
+        to={`/account/bookings`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -26,8 +26,9 @@ const BookingWidget = ({ place }) => {
   }
 
   const handleBooking = async () => {
+    // todo: use try catch block here
     // check for empty input values
-    const allFieldsFilled = name.trim() !== ''
+    const allFieldsFilled = name.trim() !== '';
 
     if (!allFieldsFilled) return toast.error('Please fill all the fields');
 
@@ -41,11 +42,7 @@ const BookingWidget = ({ place }) => {
       price: numberOfNights * place.price,
     });
 
-    if (response.data.success) {
-      toast('Congratulations! Enjoy your trip.');
-    }
-
-    console.log(response);
+    // toast('Congratulations! Enjoy your trip.');
 
     const bookingId = response.data._id;
 

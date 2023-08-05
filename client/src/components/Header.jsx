@@ -74,7 +74,7 @@ export const Header = () => {
             />
           </svg>
         </div>
-        {user && <div>{user.name}</div>}
+        {user && <div className='hidden md:block'>{user.name}</div>}
       </Link>
       <br className="border border-gray-600" />
     </header>
