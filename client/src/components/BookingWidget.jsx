@@ -3,7 +3,7 @@ import { differenceInDays } from 'date-fns';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../providers/UserProvider';
- 
+
 const BookingWidget = ({ place }) => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
@@ -50,13 +50,14 @@ const BookingWidget = ({ place }) => {
         Price: ₹{place.price} / per night
       </div>
       <div className="border rounded-2xl mt-4">
-        <div className="flex">
+        <div className="flex justify-center">
           <div className="py-3 px-4">
             <label>Check In: </label>
             <input
               type="date"
               value={checkIn}
               onChange={(e) => setCheckIn(e.target.value)}
+              className="w-20 sm:w-auto"
             />
           </div>
           <div className="py-3 px-4 border-l">
@@ -65,6 +66,7 @@ const BookingWidget = ({ place }) => {
               type="date"
               value={checkOut}
               onChange={(e) => setCheckOut(e.target.value)}
+              className="w-20 sm:w-auto"
             />
           </div>
         </div>
