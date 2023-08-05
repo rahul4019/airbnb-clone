@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { differenceInDays } from 'date-fns';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../providers/UserProvider';
@@ -25,6 +26,11 @@ const BookingWidget = ({ place }) => {
   }
 
   const handleBooking = async () => {
+    // check for empty input values
+    const allFieldsFilled = name.trim() !== ''
+
+    if (!allFieldsFilled) return toast.error('Please fill all the fields');
+
     const response = await axios.post('/bookings', {
       checkIn,
       checkOut,
@@ -34,6 +40,12 @@ const BookingWidget = ({ place }) => {
       place: place._id,
       price: numberOfNights * place.price,
     });
+
+    if (response.data.success) {
+      toast('Congratulations! Enjoy your trip.');
+    }
+
+    console.log(response);
 
     const bookingId = response.data._id;
 
