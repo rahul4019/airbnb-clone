@@ -26,7 +26,7 @@ const SearchBar = () => {
 
   return (
     <>
-      <div className="flex w-3/5 md:w-1/2 bg-gray-300 border border-gray-400 rounded-full overflow-hidden shadow-sm hover:shadow-lg">
+      <div className="flex w-4/6 md:w-1/2 bg-gray-300 border border-gray-400 rounded-full overflow-hidden shadow-sm hover:shadow-lg">
         <div className="grow">
           <input
             type="search"

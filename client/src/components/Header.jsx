@@ -1,13 +1,33 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useEffect } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../providers/UserProvider';
 import SearchBar from './SearchBar';
 
 export const Header = () => {
   const { user } = useContext(UserContext);
+  const [hasShadow, setHasShadow] = useState(false);
+
+  const handleScroll = () => {
+    const shouldHaveShadow = window.scrollY > 0;
+    setHasShadow(shouldHaveShadow);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    // clean up the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="flex items-center justify-between">
+    <header
+      className={`flex w-full items-center justify-evenly fixed top-0 bg-white py-4  z-10 ${
+        hasShadow ? 'shadow-md' : ''
+      }`}
+    >
       <Link to={'/'} className="flex items-center gap-1">
         <img
           className="h-8 w-8 md:h-10 md:w-10"
@@ -24,7 +44,7 @@ export const Header = () => {
 
       <Link
         to={user ? '/account' : '/login'}
-        className="flex gap-2 items-center border border-gray-300 rounded-full py-2 px-4"
+        className="flex gap-2 items-center md:border border-gray-300 rounded-full py-2 px-4"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +52,7 @@ export const Header = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="hidden md:block w-6 h-6"
         >
           <path
             strokeLinecap="round"
@@ -40,12 +60,12 @@ export const Header = () => {
             d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
           />
         </svg>
-        <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden">
+        <div className="bg-gray-500 text-white rounded-full border border-gray-500 overflow-hidden absolute md:static">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="w-6 h-6"
+            className="w-8 h-8 md:w-6 md:h-6"
           >
             <path
               fillRule="evenodd"
@@ -56,6 +76,7 @@ export const Header = () => {
         </div>
         {user && <div>{user.name}</div>}
       </Link>
+      <br className="border border-gray-600" />
     </header>
   );
 };
