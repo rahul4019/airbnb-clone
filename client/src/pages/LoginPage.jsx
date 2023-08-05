@@ -43,7 +43,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="mt-4 grow flex justify-around items-center">
+    <div className="mt-4 grow flex justify-around items-center p-4 md:p-0">
       <div className="mb-40">
         <h1 className="text-4xl text-center mb-4">Login</h1>
         <form className="max-w-md mx-auto" onSubmit={handleFormSubmit}>

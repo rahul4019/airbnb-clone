@@ -5,6 +5,7 @@ import AddressLink from '../components/AddressLink';
 import BookingWidget from '../components/BookingWidget';
 import PlaceGallery from '../components/PlaceGallery';
 import Spinner from '../components/Spinner';
+import PerksWidget from '../components/PerksWidget';
 
 const PlacePage = () => {
   const { id } = useParams();
@@ -35,20 +36,21 @@ const PlacePage = () => {
   }
 
   return (
-    <div className="mt-4 bg-gray-100 px-8 pt-20 overflow-x-hidden">
+    <div className="mt-4 bg-gray-100 px-8 pt-20 overflow-x-hidden ">
       <h1 className="text-3xl">{place.title}</h1>
 
       <AddressLink placeAddress={place.address} />
       <PlaceGallery place={place} />
 
       <div className="mt-8 mb-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
-        <div>
-          <div className="my-4">
+        <div className="">
+          <div className="my-4 ">
             <h2 className="font-semibold text-2xl">Description</h2>
             {place.description}
           </div>
           Check-in: {place.checkIn} <br /> Check-out: {place.checkOut} <br />
           Max number of guests: {place.maxGuests}
+          <PerksWidget perks={place?.perks} />
         </div>
         <div>
           <BookingWidget place={place} />
