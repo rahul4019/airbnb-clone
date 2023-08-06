@@ -50,14 +50,18 @@ const SingleBookedPlace = () => {
             className="my-2 block"
             placeAddress={booking.place?.address}
           />
-          <div className="flex bg-gray-200 p-6 my-6 rounded-2xl justify-between items-center">
-            <div>
-              <h2 className="text-2xl mb-4">Your booking information</h2>
+          <div className="flex flex-col sm:flex-row bg-gray-200 p-6 my-6 rounded-2xl justify-between items-center">
+            <div className=" ">
+              <h2 className="text-2xl md:text-2xl mb-4">
+                Your booking information
+              </h2>
               <BookingDates booking={booking} />
             </div>
-            <div className="bg-primary p-6 text-white rounded-2xl">
-              <div className="">Total price</div>
-              <div className="text-3xl">₹{booking?.price}</div>
+            <div className="bg-primary p-6 mt-5 sm:mt-0 text-white rounded-2xl w-full sm:w-auto">
+              <div className="hidden md:block">Total price</div>
+              <div className="flex justify-center text-3xl">
+                <span>₹{booking?.price}</span>
+              </div>
             </div>
           </div>
           <PlaceGallery place={booking?.place} />
