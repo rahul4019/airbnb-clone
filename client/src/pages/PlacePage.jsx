@@ -1,13 +1,13 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Spinner from '../components/Spinner';
+
 import AddressLink from '../components/AddressLink';
 import BookingWidget from '../components/BookingWidget';
 import PlaceGallery from '../components/PlaceGallery';
-import Spinner from '../components/Spinner';
 import PerksWidget from '../components/PerksWidget';
 import axiosInstance from '../utils/axios';
- 
+
 const PlacePage = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);

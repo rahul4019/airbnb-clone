@@ -5,6 +5,7 @@ import AccountNav from '../components/AccountNav';
 import PlaceImg from '../components/PlaceImg';
 import BookingDates from '../components/BookingDates';
 import Spinner from '../components/Spinner';
+import { getItemFromLocalStorage } from '../utils';
 import axiosInstance from '../utils/axios';
 
 const BookingsPage = () => {
@@ -12,10 +13,15 @@ const BookingsPage = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const token = getItemFromLocalStorage('token');
     const getBookings = async () => {
       try {
         setLoading(true);
-        const { data } = await axiosInstance.get('/bookings');
+        const { data } = await axiosInstance.get('/bookings', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setBookings(data.booking);
       } catch (error) {
         console.log('Error: ', error);

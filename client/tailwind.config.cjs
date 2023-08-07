@@ -3,10 +3,10 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors:{
+      colors: {
         primary: '#F5385D'
       }
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp'),],
 };

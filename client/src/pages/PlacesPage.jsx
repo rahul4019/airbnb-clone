@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 import AccountNav from '../components/AccountNav';
-import { getItemFromLocalStorage } from '../utils';
 import Spinner from '../components/Spinner';
 import PlaceCard from '../components/PlaceCard';
+import { getItemFromLocalStorage } from '../utils';
 import axiosInstance from '../utils/axios';
 
 const PlacesPage = () => {
@@ -57,7 +58,7 @@ const PlacesPage = () => {
           Add new place
         </Link>
       </div>
-      <div className="mt-4 ">
+      <div className="mt-4 mx-4">
         {places.length > 0 &&
           places.map((place) => <PlaceCard place={place} key={place._id} />)}
       </div>

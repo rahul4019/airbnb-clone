@@ -92,7 +92,7 @@ const PlacesFormPage = () => {
   }
 
   return (
-    <div>
+    <div className="p-4">
       <AccountNav />
       <form onSubmit={savePlace}>
         {preInput(
@@ -175,7 +175,9 @@ const PlacesFormPage = () => {
             />
           </div>
         </div>
-        <button className="primary my-4">Save</button>
+        <button className="mx-auto my-4 flex bg-primary text-white py-3 px-20 rounded-full font-semibold text-xl">
+          Save
+        </button>
       </form>
     </div>
   );
