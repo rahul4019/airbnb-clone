@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,8 +15,17 @@ import PlacePage from './pages/PlacePage';
 import SingleBookedPlace from './pages/SingleBookedPlace';
 import { UserProvider } from './providers/UserProvider';
 import { PlaceProvider } from './providers/PlaceProvider';
+import axiosInstance from './utils/axios';
+import { getItemFromLocalStorage } from './utils';
 
 function App() {
+  useEffect(() => {
+    // set the token on refreshing the website
+    axiosInstance.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${getItemFromLocalStorage('token')}`;
+  }, []);
+
   return (
     <UserProvider>
       <PlaceProvider>

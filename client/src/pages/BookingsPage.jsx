@@ -1,38 +1,28 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import AccountNav from '../components/AccountNav';
 import PlaceImg from '../components/PlaceImg';
-import { Link } from 'react-router-dom';
 import BookingDates from '../components/BookingDates';
 import Spinner from '../components/Spinner';
-import { getItemFromLocalStorage } from '../utils';
 import axiosInstance from '../utils/axios';
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const token = getItemFromLocalStorage('token');
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const getBookings = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axiosInstance.get('/bookings');
-      setBookings(data.booking);
-    } catch (error) {
-      console.log('Error: ', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const getBookings = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axiosInstance.get('/bookings');
+        setBookings(data.booking);
+      } catch (error) {
+        console.log('Error: ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     getBookings();
   }, []);
 
@@ -90,7 +80,23 @@ const BookingsPage = () => {
             </Link>
           ))
         ) : (
-          <h1 className="text-3xl">No bookings</h1>
+          <div className="">
+            <div className="flex flex-col justify-start">
+              <h1 className="text-3xl my-6 font-semibold">Trips</h1>
+              <hr className="border border-gray-300" />
+              <h3 className="text-2xl font-semibold pt-6">
+                No trips booked... yet!
+              </h3>
+              <p>
+                Time to dust off you bags and start planning your next adventure
+              </p>
+              <Link to="/" className="my-4">
+                <div className="flex justify-center w-40 p-3 border border-black rounded-lg font-semibold text-lg hover:bg-gray-50">
+                  Start Searching
+                </div>
+              </Link>
+            </div>
+          </div>
         )}
       </div>
     </div>
