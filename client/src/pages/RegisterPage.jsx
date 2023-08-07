@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import axiosInstance from '../utils/axios';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -12,7 +13,7 @@ const RegisterPage = () => {
   const handleRegisterForm = async (e) => {
     try {
       e.preventDefault();
-      await axios.post('user/register', {
+      await axiosInstance.post('user/register', {
         name,
         email,
         password,

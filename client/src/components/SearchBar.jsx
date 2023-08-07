@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { PlaceContext } from '../providers/PlaceProvider';
-import axios from 'axios';
+
+import axiosInstance from '../utils/axios';
 
 const SearchBar = () => {
   const [searchText, setSearchText] = useState('');
@@ -14,7 +15,7 @@ const SearchBar = () => {
       setLoading(true);
       setSearchTimeout(
         setTimeout(async () => {
-          const { data } = await axios.get(
+          const { data } = await axiosInstance.get(
             `/places/search/${searchText.trimStart()}`
           );
           setPlaces(data);

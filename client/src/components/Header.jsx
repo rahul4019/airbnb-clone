@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../providers/UserProvider';
+
 import SearchBar from './SearchBar';
 
 export const Header = () => {

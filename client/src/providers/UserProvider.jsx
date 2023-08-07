@@ -1,9 +1,11 @@
 import { createContext, useEffect, useState } from 'react';
+
 import {
   getItemFromLocalStorage,
   setItemsInLocalStorage,
   removeItemFromLocalStorage,
 } from '../utils';
+import axiosInstance from '../utils/axios';
 
 export const UserContext = createContext({});
 
@@ -26,6 +28,7 @@ export const UserProvider = ({ children }) => {
 
     // Save user data to localStorage when logging in
     setItemsInLocalStorage('user', JSON.stringify(userData));
+
   };
 
   const handleLogout = () => {
@@ -34,6 +37,9 @@ export const UserProvider = ({ children }) => {
 
     // Clear user data from localStorage when logging out
     removeItemFromLocalStorage('user');
+
+    // remove token from axios default values
+    delete axiosInstance.defaults.headers.common['Authorization'];
   };
 
   return (

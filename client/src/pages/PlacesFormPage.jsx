@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Perks from '../components/Perks';
 import PhotosUploader from '../components/PhotosUploader';
 import AccountNav from '../components/AccountNav';
 import { Navigate, useParams } from 'react-router-dom';
 import Spinner from '../components/Spinner';
+import axiosInstance from '../utils/axios';
 
 const PlacesFormPage = () => {
   const { id } = useParams();
@@ -27,7 +27,7 @@ const PlacesFormPage = () => {
       return;
     }
     setLoading(true);
-    axios.get(`/places/${id}`).then((response) => {
+    axiosInstance.get(`/places/${id}`).then((response) => {
       const { place } = response.data;
       setTitle(place.title);
       setAddress(place.address);
@@ -68,13 +68,16 @@ const PlacesFormPage = () => {
     };
     if (id) {
       // update existing place
-      const { data } = await axios.put('/places/update-place', {
+      const { data } = await axiosInstance.put('/places/update-place', {
         id,
         ...placeData,
       });
     } else {
       // new place
-      const { data } = await axios.post('/places/add-places', placeData);
+      const { data } = await axiosInstance.post(
+        '/places/add-places',
+        placeData
+      );
     }
 
     setRedirect(true);

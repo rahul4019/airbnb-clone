@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { createContext, useEffect, useState } from 'react';
+import axiosInstance from '../utils/axios';
 
 export const PlaceContext = createContext([]);
 
@@ -8,7 +8,7 @@ export const PlaceProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getPlaces = async () => {
-      const { data } = await axios.get('/places');
+      const { data } = await axiosInstance.get('/places');
       setPlaces(data.places);
       setLoading(false);
     };
@@ -16,7 +16,7 @@ export const PlaceProvider = ({ children }) => {
   }, []);
 
   return (
-    <PlaceContext.Provider value={{ places, setPlaces, setLoading, loading}}>
+    <PlaceContext.Provider value={{ places, setPlaces, setLoading, loading }}>
       {children}
     </PlaceContext.Provider>
   );

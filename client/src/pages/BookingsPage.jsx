@@ -5,16 +5,25 @@ import PlaceImg from '../components/PlaceImg';
 import { Link } from 'react-router-dom';
 import BookingDates from '../components/BookingDates';
 import Spinner from '../components/Spinner';
+import { getItemFromLocalStorage } from '../utils';
+import axiosInstance from '../utils/axios';
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const token = getItemFromLocalStorage('token');
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const getBookings = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get('/bookings');
-      console.log("User's booking: ", data);
+      const { data } = await axiosInstance.get('/bookings');
       setBookings(data.booking);
     } catch (error) {
       console.log('Error: ', error);
@@ -33,7 +42,7 @@ const BookingsPage = () => {
     <div className="flex flex-col items-center">
       <AccountNav />
       <div>
-        {bookings?.length > 0 &&
+        {bookings?.length > 0 ? (
           bookings.map((booking) => (
             <Link
               to={`/account/bookings/${booking._id}`}
@@ -79,7 +88,10 @@ const BookingsPage = () => {
                 </div>
               </div>
             </Link>
-          ))}
+          ))
+        ) : (
+          <h1 className="text-3xl">No bookings</h1>
+        )}
       </div>
     </div>
   );

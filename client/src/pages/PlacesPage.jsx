@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AccountNav from '../components/AccountNav';
 import { getItemFromLocalStorage } from '../utils';
 import Spinner from '../components/Spinner';
 import PlaceCard from '../components/PlaceCard';
+import axiosInstance from '../utils/axios';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
@@ -14,7 +14,7 @@ const PlacesPage = () => {
     const token = getItemFromLocalStorage('token');
     const getPlaces = async () => {
       try {
-        const { data } = await axios.get('places/user-places', {
+        const { data } = await axiosInstance.get('places/user-places', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

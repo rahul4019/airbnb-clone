@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import axios from 'axios';
 import { UserContext } from '../providers/UserProvider';
-import { setItemsInLocalStorage } from '../utils';
+import { getItemFromLocalStorage, setItemsInLocalStorage } from '../utils';
 import ProfilePage from './ProfilePage';
 import { toast } from 'react-toastify';
+import axiosInstance from '../utils/axios';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,10 +16,16 @@ const LoginPage = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('user/login', { email, password });
+      const { data } = await axiosInstance.post('user/login', {
+        email,
+        password,
+      });
 
       login(data.user);
       setItemsInLocalStorage('token', data.token);
+      axiosInstance.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${getItemFromLocalStorage('token')}`;
 
       toast.success('Login successfull!');
       setRedirect(true);

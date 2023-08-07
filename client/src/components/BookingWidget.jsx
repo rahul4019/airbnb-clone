@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../providers/UserProvider';
+
+import axiosInstance from '../utils/axios';
 
 const BookingWidget = ({ place }) => {
   const [checkIn, setCheckIn] = useState('');
@@ -32,7 +33,7 @@ const BookingWidget = ({ place }) => {
 
     if (!allFieldsFilled) return toast.error('Please fill all the fields');
 
-    const response = await axios.post('/bookings', {
+    const response = await axiosInstance.post('/bookings', {
       checkIn,
       checkOut,
       noOfGuests,

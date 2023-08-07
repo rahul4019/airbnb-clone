@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
 import Image from './Image';
+import axiosInstance from '../utils/axios';
 
 const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   const [photoLink, setphotoLink] = useState('');
 
   const addPhotoByLink = async (e) => {
     e.preventDefault();
-    const { data: filename } = await axios.post('/upload-by-link', {
+    const { data: filename } = await axiosInstance.post('/upload-by-link', {
       link: photoLink,
     });
     setAddedPhotos((prev) => {
@@ -22,7 +23,7 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
     for (let i = 0; i < files.length; i++) {
       data.append('photos', files[i]); // adding all the photos to data one by one
     }
-    const { data: filenames } = await axios.post('/upload', data, {
+    const { data: filenames } = await axiosInstance.post('/upload', data, {
       headers: { 'Content-type': 'multipart/form-data' },
     });
     setAddedPhotos((prev) => {

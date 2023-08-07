@@ -6,7 +6,8 @@ import BookingWidget from '../components/BookingWidget';
 import PlaceGallery from '../components/PlaceGallery';
 import Spinner from '../components/Spinner';
 import PerksWidget from '../components/PerksWidget';
-
+import axiosInstance from '../utils/axios';
+ 
 const PlacePage = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
@@ -20,7 +21,7 @@ const PlacePage = () => {
     setLoading(true);
 
     const getPlace = async () => {
-      const { data } = await axios.get(`/places/${id}`);
+      const { data } = await axiosInstance.get(`/places/${id}`);
       setPlace(data.place);
       setLoading(false);
     };

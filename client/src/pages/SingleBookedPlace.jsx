@@ -7,6 +7,7 @@ import AddressLink from '../components/AddressLink';
 import BookingDates from '../components/BookingDates';
 import PlaceGallery from '../components/PlaceGallery';
 import Spinner from '../components/Spinner';
+import axiosInstance from '../utils/axios';
 
 const SingleBookedPlace = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const SingleBookedPlace = () => {
   const getBookings = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get('/bookings');
+      const { data } = await axiosInstance.get('/bookings');
 
       // filter the data to get current booking
       const filteredBooking = data.booking.filter(
