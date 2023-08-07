@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { PlaceContext } from '../providers/PlaceProvider';
 import { Link } from 'react-router-dom';
 import Image from '../components/Image';
@@ -18,7 +17,7 @@ const IndexPage = () => {
         places.map((place) => (
           <Link to={`/place/${place._id}`} key={place._id}>
             <div className="bg-gray-500 mb-2 rounded-2xl flex">
-              {place.photos?.[0] && <Image  src={place.photos?.[0]} />}
+              {place.photos?.[0] && <Image src={place.photos?.[0]} />}
             </div>
             <h2 className="font-bold">{place.address}</h2>
             <h3 className="text-sm text-gray-500 ">{place.title}</h3>

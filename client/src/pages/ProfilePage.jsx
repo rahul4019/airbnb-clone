@@ -8,7 +8,7 @@ import { removeItemFromLocalStorage } from '../utils';
 import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
-  const { loading, user, setUser } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [redirect, setRedirect] = useState(null);
 
   let { subpage } = useParams();
@@ -16,18 +16,14 @@ const ProfilePage = () => {
     subpage = 'profile';
   }
 
-  const logout = async () => {
-    setUser(null);
+  const handleLogout = () => {
+    logout();
     removeItemFromLocalStorage('token');
     toast.success('Logged out');
     setRedirect('/');
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (!loading && !user && !redirect) {
+  if (!user && !redirect) {
     return <Navigate to={'/login'} />;
   }
 
@@ -44,7 +40,7 @@ const ProfilePage = () => {
           <br />
           <button
             className="w-3/4 md:w-full text-white bg-primary rounded-2xl p-2 mt-2"
-            onClick={logout}
+            onClick={handleLogout}
           >
             Logout
           </button>

@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import AccountNav from '../components/AccountNav';
 import PlaceImg from '../components/PlaceImg';
-import { format, differenceInCalendarDays } from 'date-fns';
 import { Link } from 'react-router-dom';
 import BookingDates from '../components/BookingDates';
 import Spinner from '../components/Spinner';
@@ -15,6 +14,7 @@ const BookingsPage = () => {
     try {
       setLoading(true);
       const { data } = await axios.get('/bookings');
+      console.log("User's booking: ", data);
       setBookings(data.booking);
     } catch (error) {
       console.log('Error: ', error);

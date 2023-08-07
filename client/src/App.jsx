@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from './providers/UserProvider';
 import { PlaceProvider } from './providers/PlaceProvider';
 import SingleBookedPlace from './pages/SingleBookedPlace';
+import { BookingsProvider } from './providers/BookingsProvider';
 
 const token = getItemFromLocalStorage('token');
 
@@ -27,26 +28,26 @@ function App() {
   return (
     <UserProvider>
       <PlaceProvider>
-        {/* <UserContextProvider> */}
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<IndexPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/account" element={<ProfilePage />} />
-            <Route path="/account/places" element={<PlacesPage />} />
-            <Route path="/account/places/new" element={<PlacesFormPage />} />
-            <Route path="/account/places/:id" element={<PlacesFormPage />} />
-            <Route path="/place/:id" element={<PlacePage />} />
-            <Route path="/account/bookings" element={<BookingsPage />} />
-            <Route
-              path="/account/bookings/:id"
-              element={<SingleBookedPlace />}
-            />
-          </Route>
-        </Routes>
-        <ToastContainer autoClose={2000} transition={Slide} />
-        {/* </UserContextProvider> */}
+        <BookingsProvider>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<IndexPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/account" element={<ProfilePage />} />
+              <Route path="/account/places" element={<PlacesPage />} />
+              <Route path="/account/places/new" element={<PlacesFormPage />} />
+              <Route path="/account/places/:id" element={<PlacesFormPage />} />
+              <Route path="/place/:id" element={<PlacePage />} />
+              <Route path="/account/bookings" element={<BookingsPage />} />
+              <Route
+                path="/account/bookings/:id"
+                element={<SingleBookedPlace />}
+              />
+            </Route>
+          </Routes>
+          <ToastContainer autoClose={2000} transition={Slide} />
+        </BookingsProvider>
       </PlaceProvider>
     </UserProvider>
   );

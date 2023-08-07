@@ -11,14 +11,15 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
-  const { user, loading, setUser } = useContext(UserContext);
+  const { user, isLoggedIn, login } = useContext(UserContext);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post('user/login', { email, password });
+
+      login(data.user);
       setItemsInLocalStorage('token', data.token);
-      setUser(data.user);
 
       toast.success('Login successfull!');
       setRedirect(true);
