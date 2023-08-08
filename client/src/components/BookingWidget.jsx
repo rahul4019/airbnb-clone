@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'react-toastify';
 import { Navigate } from 'react-router-dom';
-import { UserContext } from '../providers/UserProvider';
 
+import { UserContext } from '../providers/UserProvider';
 import axiosInstance from '../utils/axios';
 
 const BookingWidget = ({ place }) => {

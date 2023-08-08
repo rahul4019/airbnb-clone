@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-
 import { UserContext } from '../providers/UserProvider';
 import { getItemFromLocalStorage, setItemsInLocalStorage } from '../utils';
 import { toast } from 'react-toastify';
+
 import ProfilePage from './ProfilePage';
 import axiosInstance from '../utils/axios';
 

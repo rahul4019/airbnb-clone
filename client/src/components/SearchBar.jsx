@@ -7,6 +7,7 @@ const SearchBar = () => {
   const [searchText, setSearchText] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(null);
   const { setPlaces, setLoading } = useContext(PlaceContext);
+
   const handleSearch = async (e) => {
     clearTimeout(searchTimeout);
     setSearchText(e.target.value);
@@ -32,12 +33,12 @@ const SearchBar = () => {
           <input
             type="search"
             placeholder="Where you want to go?"
-            className="w-full py-2 px-4 border-none focus:outline-none  text-sm md:text-lg"
+            className="w-full h-full py-2 px-4 border-none focus:outline-none  text-sm md:text-lg"
             onChange={(e) => handleSearch(e)}
             value={searchText}
           />
         </div>
-        <div className="flex  bg-blue text-white cursor-pointer">
+        <div className="flex items-center bg-primary  bg-blue text-white cursor-pointer">
           <button
             className="flex py-2 px-4 md:p-2 bg-primary rounded-r-full"
             onClick={handleSearch}

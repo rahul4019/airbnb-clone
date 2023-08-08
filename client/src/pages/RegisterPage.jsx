@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Navigate } from 'react-router-dom';
 
 import axiosInstance from '../utils/axios';
 
@@ -9,6 +10,7 @@ const RegisterPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [redirect, setRedirect] = useState(false);
 
   const handleRegisterForm = async (e) => {
     try {
@@ -19,6 +21,7 @@ const RegisterPage = () => {
         password,
       });
       toast.success('Registration successful. Now you can login');
+      setRedirect(true);
     } catch (err) {
       if (err.response) {
         const { message } = err.response.data;
@@ -30,6 +33,10 @@ const RegisterPage = () => {
       }
     }
   };
+
+  if (redirect) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <div className="mt-4 grow flex justify-around items-center p-4 md:p-0">
@@ -56,7 +63,7 @@ const RegisterPage = () => {
           />
           <button className="primary">Register</button>
           <div className="text-center py-2 text-gray-500">
-            Already a member?{' '}
+            Already a member?
             <Link className="text-black underline" to={'/login'}>
               Login
             </Link>
