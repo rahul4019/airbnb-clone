@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'react-toastify';
-import { Navigate } from 'react-router-dom';
 
 import { UserContext } from '../providers/UserProvider';
 import axiosInstance from '../utils/axios';
@@ -27,27 +27,27 @@ const BookingWidget = ({ place }) => {
   }
 
   const handleBooking = async () => {
-    // todo: use try catch block here
-    // check for empty input values
     const allFieldsFilled = name.trim() !== '';
 
     if (!allFieldsFilled) return toast.error('Please fill all the fields');
+    try {
+      const response = await axiosInstance.post('/bookings', {
+        checkIn,
+        checkOut,
+        noOfGuests,
+        name,
+        phone,
+        place: place._id,
+        price: numberOfNights * place.price,
+      });
 
-    const response = await axiosInstance.post('/bookings', {
-      checkIn,
-      checkOut,
-      noOfGuests,
-      name,
-      phone,
-      place: place._id,
-      price: numberOfNights * place.price,
-    });
+      const bookingId = response.data.booking._id;
 
-    // toast('Congratulations! Enjoy your trip.');
-
-    const bookingId = response.data._id;
-
-    setRedirect(`/account/bookings/${bookingId}`);
+      setRedirect(`/account/bookings/${bookingId}`);
+      toast('Congratulations! Enjoy your trip.');
+    } catch (error) {
+      console.log('Error: ', error);
+    }
   };
 
   if (redirect) {
