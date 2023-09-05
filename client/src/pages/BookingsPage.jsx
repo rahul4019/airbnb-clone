@@ -10,22 +10,21 @@ import axiosInstance from '../utils/axios';
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = getItemFromLocalStorage('token');
     const getBookings = async () => {
       try {
-        setLoading(true);
         const { data } = await axiosInstance.get('/bookings', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setBookings(data.booking);
+        setLoading(false);
       } catch (error) {
         console.log('Error: ', error);
-      } finally {
         setLoading(false);
       }
     };
@@ -46,13 +45,15 @@ const BookingsPage = () => {
               key={booking._id}
             >
               <div className="w-2/6 md:w-1/6">
-                <PlaceImg
-                  place={booking.place}
-                  className={'w-full h-full object-cover'}
-                />
+                {booking?.place?.photos[0] && (
+                  <PlaceImg
+                    place={booking?.place}
+                    className={'w-full h-full object-cover'}
+                  />
+                )}
               </div>
               <div className="py-3 pr-3 grow">
-                <h2 className="md:text-2xl">{booking.place.title}</h2>
+                <h2 className="md:text-2xl">{booking?.place?.title}</h2>
                 <div className="md:text-xl">
                   <div className="flex gap-2 border-t "></div>
                   <div className="md:text-xl">
