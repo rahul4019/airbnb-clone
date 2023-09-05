@@ -11,7 +11,7 @@ textarea {
   @apply w-full border my-2 py-2 px-3 rounded-2xl;
 }
 
-textarea{
+textarea {
   height: 140px;
 }
 
@@ -22,4 +22,8 @@ button {
 button.primary {
   background-color: "#F5385D";
   @apply bg-primary p-2 w-full text-white rounded-2xl;
+}
+
+.card {
+  @apply bg-gray-500 mb-2 rounded-2xl flex w-[400px] h-[300px] sm:w-[500px] sm:h-[350px] md:w-[350px]   md:h-[250px] lg:h-[250px] lg:w-[320px] xl:max-w-[290px]
 }

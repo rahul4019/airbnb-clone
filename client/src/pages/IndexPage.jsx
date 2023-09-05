@@ -12,11 +12,11 @@ const IndexPage = () => {
   }
 
   return (
-    <div className="mt-24 px-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-x-6 gap-y-8 ">
+    <div className="my-32 p-4 gap-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4 xl:p-0  justify-items-center">
       {places.length > 0 ? (
         places.map((place) => (
-          <Link to={`/place/${place._id}`} key={place._id}>
-            <div className="bg-gray-500 mb-2 rounded-2xl flex">
+          <Link to={`/place/${place._id}`} key={place._id} className='flex flex-col'>
+            <div className="card">
               {place.photos?.[0] && <Image src={place.photos?.[0]} />}
             </div>
             <h2 className="font-bold">{place.address}</h2>
