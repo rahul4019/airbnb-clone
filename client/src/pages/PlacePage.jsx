@@ -37,7 +37,7 @@ const PlacePage = () => {
   }
 
   return (
-    <div className="mt-4 bg-gray-100 px-8 pt-20 overflow-x-hidden ">
+    <div className="mt-4 px-8 pt-20 overflow-x-hidden ">
       <h1 className="text-3xl">{place.title}</h1>
 
       <AddressLink placeAddress={place.address} />
