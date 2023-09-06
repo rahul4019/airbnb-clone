@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import AccountNav from '../components/AccountNav';
 import Spinner from '../components/Spinner';
-import PlaceCard from '../components/PlaceCard';
+import InfoCard from '../components/InfoCard';
 import { getItemFromLocalStorage } from '../utils';
 import axiosInstance from '../utils/axios';
 
@@ -60,7 +60,7 @@ const PlacesPage = () => {
       </div>
       <div className="mt-4 mx-4">
         {places.length > 0 &&
-          places.map((place) => <PlaceCard place={place} key={place._id} />)}
+          places.map((place) => <InfoCard place={place} key={place._id} />)}
       </div>
     </div>
   );

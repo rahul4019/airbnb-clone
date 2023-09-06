@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { PlaceContext } from '../providers/PlaceProvider';
-import { Link } from 'react-router-dom';
-import Image from '../components/Image';
 import Spinner from '../components/Spinner';
+import PlaceCard from '../components/PlaceCard';
 
 const IndexPage = () => {
   const { places, loading } = useContext(PlaceContext);
@@ -12,21 +11,9 @@ const IndexPage = () => {
   }
 
   return (
-    <div className="my-32 p-4 gap-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4 xl:p-0  justify-items-center">
+    <div className="py-32 px-4 grid grid-cols-1 md:grid-cols-2 md:gap-0 lg:grid-cols-3 xl:grid-cols-4 justify-items-center lg:gap-2 xl:gap-10">
       {places.length > 0 ? (
-        places.map((place) => (
-          <Link to={`/place/${place._id}`} key={place._id} className='flex flex-col'>
-            <div className="card">
-              {place.photos?.[0] && <Image src={place.photos?.[0]} />}
-            </div>
-            <h2 className="font-bold">{place.address}</h2>
-            <h3 className="text-sm text-gray-500 ">{place.title}</h3>
-            <div className="mt-1">
-              <span className="font-semibold">₹{place.price} </span>
-              per night
-            </div>
-          </Link>
-        ))
+        places.map((place) => <PlaceCard place={place} key={place._id} />)
       ) : (
         <div className="flex flex-col w-full p-10 md:w-1/2  absolute left-1/2 right-1/2 transform -translate-x-1/2  top-40">
           <h1 className="font-semibold text-3xl">Result not found!</h1>

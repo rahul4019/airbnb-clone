@@ -25,5 +25,5 @@ button.primary {
 }
 
 .card {
-  @apply bg-gray-500 mb-2 rounded-2xl flex w-[400px] h-[300px] sm:w-[500px] sm:h-[350px] md:w-[350px]   md:h-[250px] lg:h-[250px] lg:w-[320px] xl:max-w-[290px]
+  @apply w-[327px] h-[410px] sm:w-[435px] sm:h-[500px] md:w-[350px] md:h-[400px] lg:h-[400px] lg:w-[330px] xl:w-[300px] xl:h-[350px]
 }
