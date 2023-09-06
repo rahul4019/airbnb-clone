@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const PlaceCard = ({ place }) => {
   const { _id: placeId, photos, address, title, price } = place;
   return (
-    <Link to={`/place/${placeId}`} className="flex flex-col">
+    <Link to={`/place/${placeId}`} className="flex flex-col m-4 md:m-2 xl:m-0">
       <div className="card ">
         {photos?.[0] && (
           <img
