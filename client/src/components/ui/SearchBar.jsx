@@ -1,7 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { PlaceContext } from '../providers/PlaceProvider';
 
-import axiosInstance from '../utils/axios';
+import { PlaceContext } from '@/providers/PlaceProvider';
+import axiosInstance from '@/utils/axios';
+
+ 
+ 
 
 const SearchBar = () => {
   const [searchText, setSearchText] = useState('');

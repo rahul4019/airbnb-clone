@@ -3,8 +3,9 @@ import { Navigate } from 'react-router-dom';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'react-toastify';
 
-import { UserContext } from '../providers/UserProvider';
-import axiosInstance from '../utils/axios';
+import { UserContext } from '@/providers/UserProvider';
+import axiosInstance from '@/utils/axios';
+import DatePickerWithRange from './DatePickerWithRange';
 
 const BookingWidget = ({ place }) => {
   const [checkIn, setCheckIn] = useState('');
@@ -60,7 +61,7 @@ const BookingWidget = ({ place }) => {
         Price: ₹{place.price} / per night
       </div>
       <div className="border rounded-2xl mt-4">
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <div className="py-3 px-4">
             <label>Check In: </label>
             <input
@@ -79,6 +80,9 @@ const BookingWidget = ({ place }) => {
               className="w-20 sm:w-auto"
             />
           </div>
+        </div> */}
+        <div className='flex w-full '>
+          <DatePickerWithRange />
         </div>
         <div className="py-3 px-4 border-t">
           <label>Number of guests: </label>

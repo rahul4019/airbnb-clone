@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import AccountNav from '../components/AccountNav';
-import AddressLink from '../components/AddressLink';
-import BookingDates from '../components/BookingDates';
-import PlaceGallery from '../components/PlaceGallery';
-import Spinner from '../components/Spinner';
+import AccountNav from '../components/ui/AccountNav';
+import AddressLink from '../components/ui/AddressLink';
+import BookingDates from '../components/ui/BookingDates';
+import PlaceGallery from '../components/ui/PlaceGallery';
+import Spinner from '../components/ui/Spinner';
 import axiosInstance from '../utils/axios';
 
 const SingleBookedPlace = () => {

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Perks from '../components/Perks';
-import PhotosUploader from '../components/PhotosUploader';
-import AccountNav from '../components/AccountNav';
 import { Navigate, useParams } from 'react-router-dom';
-import Spinner from '../components/Spinner';
-import axiosInstance from '../utils/axios';
+
+import axiosInstance from '@/utils/axios';
+
+import AccountNav from '@/components/ui/AccountNav';
+import Perks from '@/components/ui/Perks';
+import PhotosUploader from '@/components/ui/PhotosUploader';
+import Spinner from '@/components/ui/Spinner';
 
 const PlacesFormPage = () => {
   const { id } = useParams();

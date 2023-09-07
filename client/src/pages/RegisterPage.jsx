@@ -1,10 +1,9 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Navigate } from 'react-router-dom';
 
-import axiosInstance from '../utils/axios';
+import axiosInstance from '@/utils/axios';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');

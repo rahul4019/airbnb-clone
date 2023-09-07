@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { UserContext } from '../providers/UserProvider';
-import { getItemFromLocalStorage, setItemsInLocalStorage } from '../utils';
 import { toast } from 'react-toastify';
 
+
+import { UserContext } from '@/providers/UserProvider';
+import { getItemFromLocalStorage, setItemsInLocalStorage } from '@/utils';
+import axiosInstance from '@/utils/axios';
+
 import ProfilePage from './ProfilePage';
-import axiosInstance from '../utils/axios';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');

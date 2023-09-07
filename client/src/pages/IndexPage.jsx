@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { PlaceContext } from '../providers/PlaceProvider';
-import Spinner from '../components/Spinner';
-import PlaceCard from '../components/PlaceCard';
+
+import { PlaceContext } from '@/providers/PlaceProvider';
+import Spinner from '@/components/ui/Spinner';
+import PlaceCard from '@/components/ui/PlaceCard';
 
 const IndexPage = () => {
   const { places, loading } = useContext(PlaceContext);

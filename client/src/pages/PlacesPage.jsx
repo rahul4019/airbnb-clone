@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import AccountNav from '../components/AccountNav';
-import Spinner from '../components/Spinner';
-import InfoCard from '../components/InfoCard';
-import { getItemFromLocalStorage } from '../utils';
-import axiosInstance from '../utils/axios';
+import axiosInstance from '@/utils/axios';
+
+import AccountNav from '@/components/ui/AccountNav';
+import InfoCard from '@/components/ui/InfoCard';
+import Spinner from '@/components/ui/Spinner';
+import { getItemFromLocalStorage } from '@/utils';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);

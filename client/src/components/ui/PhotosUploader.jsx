@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Image from './Image';
-import axiosInstance from '../utils/axios';
+import axiosInstance from '../../utils/axios';
 
 const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   const [photoLink, setphotoLink] = useState('');

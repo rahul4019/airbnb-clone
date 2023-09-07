@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Navigate, useParams } from 'react-router-dom';
-import { UserContext } from '../providers/UserProvider';
 
+import { removeItemFromLocalStorage } from '@/utils';
+import { UserContext } from '@/providers/UserProvider';
+
+import AccountNav from '@/components/ui/AccountNav';
 import PlacesPage from './PlacesPage';
-import AccountNav from '../components/AccountNav';
-import Spinner from '../components/Spinner';
-import { removeItemFromLocalStorage } from '../utils';
 
 const ProfilePage = () => {
   const { user, logout } = useContext(UserContext);

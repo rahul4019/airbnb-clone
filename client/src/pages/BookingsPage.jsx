@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import AccountNav from '../components/AccountNav';
-import PlaceImg from '../components/PlaceImg';
-import BookingDates from '../components/BookingDates';
-import Spinner from '../components/Spinner';
-import { getItemFromLocalStorage } from '../utils';
-import axiosInstance from '../utils/axios';
+import AccountNav from '@/components/ui/AccountNav';
+import PlaceImg from '@/components/ui/PlaceImg';
+import BookingDates from '@/components/ui/BookingDates';
+import Spinner from '@/components/ui/Spinner';
+import { getItemFromLocalStorage } from '@/utils';
+import axiosInstance from '@/utils/axios';
 
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
