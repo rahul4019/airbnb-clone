@@ -155,7 +155,7 @@ const Footer = () => {
 
           <div className="text-gray-700 font-normal flex flex-col md:flex-row md:gap-8 md:items-center w-full md:w-auto gap-2 px-1">
             <p className="text-sm">&copy; 2023 Airbnb, Inc.</p>
-            <p>
+            <div>
               <ul className=" flex gap-6 text-sm text-gray-700">
                 <li className="md:list-disc cursor-pointer hover:underline underline-offset-1 decoration-1 text-gray-700">
                   Privacy
@@ -170,7 +170,7 @@ const Footer = () => {
                   Company details
                 </li>
               </ul>
-            </p>
+            </div>
           </div>
         </div>
       </div>

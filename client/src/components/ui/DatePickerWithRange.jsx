@@ -1,9 +1,6 @@
-'use client';
-
 import * as React from 'react';
 import { addDays, format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
-// import { DateRange } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -14,7 +11,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 
-export default function DatePickerWithRange({ className }) {
+export default function DatePickerWithRange({ className, setDateRange }) {
   const [date, setDate] = React.useState({
     from: new Date(),
     to: addDays(Date.now(), 5),
@@ -25,7 +22,12 @@ export default function DatePickerWithRange({ className }) {
   yesterday.setDate(today.getDate() - 1);
 
   React.useEffect(() => {
-    console.log(date);
+    //  if user hasn't selected a date range (instead selected a single date)
+    if (!date) {
+      setDate({ from: new Date(), to: new Date() });
+    } else {
+      setDateRange(date);
+    }
   }, [date]);
 
   return (
@@ -64,9 +66,9 @@ export default function DatePickerWithRange({ className }) {
             mode="range"
             defaultMonth={date?.from}
             selected={date}
+            // onSelect={setDate}
             onSelect={setDate}
-            numberOfMonths={2}
-            // disabled dates before today
+            numberOfMonths={1}
             disabled={(date) =>
               date < new Date().setDate(new Date().getDate() - 1)
             }

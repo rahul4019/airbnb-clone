@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { differenceInDays } from 'date-fns';
+import { add, addDays, differenceInDays } from 'date-fns';
 import { toast } from 'react-toastify';
 
 import { UserContext } from '@/providers/UserProvider';
@@ -8,8 +8,9 @@ import axiosInstance from '@/utils/axios';
 import DatePickerWithRange from './DatePickerWithRange';
 
 const BookingWidget = ({ place }) => {
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
+  // const [checkIn, setCheckIn] = useState('');
+  // const [checkOut, setCheckOut] = useState('');
+  const [dateRange, setDateRange] = useState({ from: null, to: null });
   const [noOfGuests, setNoOfGuests] = useState(1);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -22,19 +23,26 @@ const BookingWidget = ({ place }) => {
     }
   }, [user]);
 
-  let numberOfNights = 0;
-  if (checkIn && checkOut) {
-    numberOfNights = differenceInDays(new Date(checkOut), new Date(checkIn));
-  }
+  const numberOfNights =
+    dateRange.from && dateRange.to
+      ? differenceInDays(
+          new Date(dateRange.to).setHours(0, 0, 0, 0),
+          new Date(dateRange.from).setHours(0, 0, 0, 0)
+        )
+      : 0;
 
   const handleBooking = async () => {
+    // check for date range selction
+    if (numberOfNights < 1) {
+      return window.alert('Please select valid dates');
+    }
     const allFieldsFilled = name.trim() !== '';
 
     if (!allFieldsFilled) return toast.error('Please fill all the fields');
     try {
       const response = await axiosInstance.post('/bookings', {
-        checkIn,
-        checkOut,
+        checkIn: dateRange.from,
+        checkOut: dateRange.to,
         noOfGuests,
         name,
         phone,
@@ -56,33 +64,13 @@ const BookingWidget = ({ place }) => {
   }
 
   return (
-    <div className="bg-white shadow p-4 rounded-2xl">
+    <div className="bg-white shadow-xl p-4 rounded-2xl">
       <div className="text-xl text-center">
-        Price: ₹{place.price} / per night
+        Price: <span className="font-semibold">₹{place.price}</span> / per night
       </div>
       <div className="border rounded-2xl mt-4">
-        {/* <div className="flex justify-center">
-          <div className="py-3 px-4">
-            <label>Check In: </label>
-            <input
-              type="date"
-              value={checkIn}
-              onChange={(e) => setCheckIn(e.target.value)}
-              className="w-20 sm:w-auto"
-            />
-          </div>
-          <div className="py-3 px-4 border-l">
-            <label>Check out: </label>
-            <input
-              type="date"
-              value={checkOut}
-              onChange={(e) => setCheckOut(e.target.value)}
-              className="w-20 sm:w-auto"
-            />
-          </div>
-        </div> */}
-        <div className='flex w-full '>
-          <DatePickerWithRange />
+        <div className="flex w-full ">
+          <DatePickerWithRange setDateRange={setDateRange} />
         </div>
         <div className="py-3 px-4 border-t">
           <label>Number of guests: </label>
@@ -92,22 +80,20 @@ const BookingWidget = ({ place }) => {
             onChange={(e) => setNoOfGuests(e.target.value)}
           />
         </div>
-        {numberOfNights > 0 && (
-          <div className="py-3 px-4 border-t">
-            <label>Your full name: </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label>Phone number: </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-        )}
+        <div className="py-3 px-4 border-t">
+          <label>Your full name: </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <label>Phone number: </label>
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
       </div>
       <button onClick={handleBooking} className="primary mt-4">
         Book this place
