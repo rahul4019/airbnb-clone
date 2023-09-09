@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { add, addDays, differenceInDays } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import { toast } from 'react-toastify';
 
 import { UserContext } from '@/providers/UserProvider';
@@ -8,18 +8,21 @@ import axiosInstance from '@/utils/axios';
 import DatePickerWithRange from './DatePickerWithRange';
 
 const BookingWidget = ({ place }) => {
-  // const [checkIn, setCheckIn] = useState('');
-  // const [checkOut, setCheckOut] = useState('');
   const [dateRange, setDateRange] = useState({ from: null, to: null });
-  const [noOfGuests, setNoOfGuests] = useState(1);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [bookingData, setBookingData] = useState({
+    noOfGuests: 1,
+    name: '',
+    phone: '',
+  });
   const [redirect, setRedirect] = useState('');
   const { user } = useContext(UserContext);
 
+  const { noOfGuests, name, phone } = bookingData;
+  const { _id: id, price } = place;
+
   useEffect(() => {
     if (user) {
-      setName(user.name);
+      setBookingData({ ...bookingData, name: user.name });
     }
   }, [user]);
 
@@ -31,14 +34,33 @@ const BookingWidget = ({ place }) => {
         )
       : 0;
 
-  const handleBooking = async () => {
-    // check for date range selction
-    if (numberOfNights < 1) {
-      return window.alert('Please select valid dates');
-    }
-    const allFieldsFilled = name.trim() !== '';
+  // handle booking form
+  const handleBookingData = (e) => {
+    setBookingData({
+      ...bookingData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    if (!allFieldsFilled) return toast.error('Please fill all the fields');
+  const handleBooking = async () => {
+    // User must be signed in to book place
+    if (!user) {
+      setRedirect(`/login`);
+    }
+
+    // BOOKING DATA VALIDATION
+    if (numberOfNights < 1) {
+      return toast.error('Please select valid dates');
+    } else if (noOfGuests < 1) {
+      return toast.error("No. of guests can't be less than 1");
+    } else if (noOfGuests > place.maxGuests) {
+      return toast.error(`Allowed max. no. of guests: ${place.maxGuests}`);
+    } else if (name.trim() === '') {
+      return toast.error("Name can't be empty");
+    } else if (phone.trim() === '') {
+      return toast.error("Phone can't be empty");
+    }
+
     try {
       const response = await axiosInstance.post('/bookings', {
         checkIn: dateRange.from,
@@ -46,8 +68,8 @@ const BookingWidget = ({ place }) => {
         noOfGuests,
         name,
         phone,
-        place: place._id,
-        price: numberOfNights * place.price,
+        place: id,
+        price: numberOfNights * price,
       });
 
       const bookingId = response.data.booking._id;
@@ -55,6 +77,7 @@ const BookingWidget = ({ place }) => {
       setRedirect(`/account/bookings/${bookingId}`);
       toast('Congratulations! Enjoy your trip.');
     } catch (error) {
+      toast.error('Something went wrong!');
       console.log('Error: ', error);
     }
   };
@@ -76,22 +99,28 @@ const BookingWidget = ({ place }) => {
           <label>Number of guests: </label>
           <input
             type="number"
+            name="noOfGuests"
+            placeholder={`Max. guests: ${place.maxGuests}`}
+            min={1}
+            max={place.maxGuests}
             value={noOfGuests}
-            onChange={(e) => setNoOfGuests(e.target.value)}
+            onChange={handleBookingData}
           />
         </div>
         <div className="py-3 px-4 border-t">
           <label>Your full name: </label>
           <input
             type="text"
+            name="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleBookingData}
           />
           <label>Phone number: </label>
           <input
             type="tel"
+            name="phone"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handleBookingData}
           />
         </div>
       </div>
