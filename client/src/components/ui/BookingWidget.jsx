@@ -45,7 +45,7 @@ const BookingWidget = ({ place }) => {
   const handleBooking = async () => {
     // User must be signed in to book place
     if (!user) {
-      setRedirect(`/login`);
+      return setRedirect(`/login`);
     }
 
     // BOOKING DATA VALIDATION
