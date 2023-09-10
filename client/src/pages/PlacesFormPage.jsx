@@ -10,19 +10,56 @@ import Spinner from '@/components/ui/Spinner';
 
 const PlacesFormPage = () => {
   const { id } = useParams();
-
-  const [title, setTitle] = useState('');
-  const [address, setAddress] = useState('');
-  const [desc, setDesc] = useState('');
-  const [addedPhotos, setAddedPhotos] = useState([]);
-  const [perks, setPerks] = useState([]);
-  const [extraInfo, setExtraInfo] = useState('');
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
-  const [price, setPrice] = useState(1500);
   const [loading, setLoading] = useState(false);
+  const [addedPhotos, setAddedPhotos] = useState([]);
+
+  const [formData, setFormData] = useState({
+    title: '',
+    address: '',
+    description: '',
+    perks: [],
+    extraInfo: '',
+    checkIn: '',
+    checkOut: '',
+    maxGuests: '',
+    price: '',
+  });
+
+  const {
+    title,
+    address,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+    price,
+  } = formData;
+
+  const handleFormData = (e) => {
+    const { name, value, type } = e.target;
+    // If the input is not a checkbox, update 'formData' directly
+    if (type !== 'checkbox') {
+      setFormData({ ...formData, [name]: value });
+      return;
+    }
+
+    // If type is checkbox (perks)
+    if (type === 'checkbox') {
+      const currentPerks = [...perks];
+      let updatedPerks = [];
+
+      // Check if the perk is already in perks array
+      if (currentPerks.includes(name)) {
+        updatedPerks = currentPerks.filter((perk) => perk !== name);
+      } else {
+        updatedPerks = [...currentPerks, name];
+      }
+      setFormData({ ...formData, perks: updatedPerks });
+    }
+  };
 
   useEffect(() => {
     if (!id) {
@@ -31,16 +68,20 @@ const PlacesFormPage = () => {
     setLoading(true);
     axiosInstance.get(`/places/${id}`).then((response) => {
       const { place } = response.data;
-      setTitle(place.title);
-      setAddress(place.address);
-      setAddedPhotos(place.photos);
-      setDesc(place.description);
-      setPerks(place.perks);
-      setExtraInfo(place.extraInfo);
-      setCheckIn(place.checkIn);
-      setCheckOut(place.checkOut);
-      setMaxGuests(place.maxGuests);
-      setPrice(place.price);
+      console.log(place);
+      // update the state of formData
+      for (let key in formData) {
+        if (place.hasOwnProperty(key)) {
+          setFormData((prev) => ({
+            ...prev,
+            [key]: place[key],
+          }));
+        }
+      }
+
+      // update photos state separately
+      setAddedPhotos([...place.photos]);
+
       setLoading(false);
     });
   }, [id]);
@@ -56,18 +97,9 @@ const PlacesFormPage = () => {
 
   const savePlace = async (e) => {
     e.preventDefault();
-    const placeData = {
-      title,
-      address,
-      addedPhotos,
-      desc,
-      perks,
-      extraInfo,
-      checkIn,
-      checkOut,
-      maxGuests,
-      price,
-    };
+
+    const placeData = { ...formData, addedPhotos };
+
     if (id) {
       // update existing place
       const { data } = await axiosInstance.put('/places/update-place', {
@@ -76,10 +108,7 @@ const PlacesFormPage = () => {
       });
     } else {
       // new place
-      const { data } = await axiosInstance.post(
-        '/places/add-places',
-        placeData
-      );
+      const { data } = await axiosInstance.post('/places/add-places', formData);
     }
 
     setRedirect(true);
@@ -103,16 +132,18 @@ const PlacesFormPage = () => {
         )}
         <input
           type="text"
+          name="title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleFormData}
           placeholder="title, for example: My lovely apt"
         />
 
-        {preInput('Address', 'Address to this place')}
+        {preInput('Address', 'address to this place')}
         <input
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
           type="text"
+          name="address"
+          value={address}
+          onChange={handleFormData}
           placeholder="address"
         />
 
@@ -123,16 +154,21 @@ const PlacesFormPage = () => {
           setAddedPhotos={setAddedPhotos}
         />
 
-        {preInput('Description', 'description of the place')}
-        <textarea value={desc} onChange={(e) => setDesc(e.target.value)} />
+        {preInput('Description', 'discription of the place')}
+        <textarea
+          value={description}
+          name="description"
+          onChange={handleFormData}
+        />
 
         {preInput('Perks', ' select all the perks of your place')}
-        <Perks selected={perks} onChange={setPerks} />
+        <Perks selected={perks} handleFormData={handleFormData} />
 
         {preInput('Extra info', 'house rules, etc ')}
         <textarea
           value={extraInfo}
-          onChange={(e) => setExtraInfo(e.target.value)}
+          name="extraInfo"
+          onChange={handleFormData}
         />
 
         {preInput(
@@ -144,8 +180,9 @@ const PlacesFormPage = () => {
             <h3 className="mt-2 -mb-1">Check in time</h3>
             <input
               type="text"
+              name="checkIn"
               value={checkIn}
-              onChange={(e) => setCheckIn(e.target.value)}
+              onChange={handleFormData}
               placeholder="14"
             />
           </div>
@@ -153,8 +190,9 @@ const PlacesFormPage = () => {
             <h3 className="mt-2 -mb-1">Check out time</h3>
             <input
               type="text"
+              name="checkOut"
               value={checkOut}
-              onChange={(e) => setCheckOut(e.target.value)}
+              onChange={handleFormData}
               placeholder="11"
             />
           </div>
@@ -162,17 +200,19 @@ const PlacesFormPage = () => {
             <h3 className="mt-2 -mb-1">Max no. of guests</h3>
             <input
               type="text"
+              name="maxGuests"
               value={maxGuests}
-              onChange={(e) => setMaxGuests(e.target.value)}
+              onChange={handleFormData}
               placeholder="1"
             />
           </div>
           <div>
             <h3 className="mt-2 -mb-1">Price per night</h3>
             <input
-              type="text"
+              type="number"
+              name="price"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={handleFormData}
               placeholder="1"
             />
           </div>
