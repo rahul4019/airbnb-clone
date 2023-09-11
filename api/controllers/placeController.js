@@ -11,8 +11,6 @@ exports.addPlace = async (req, res) => {
       description,
       perks,
       extraInfo,
-      checkIn,
-      checkOut,
       maxGuests,
       price,
     } = req.body;
@@ -24,8 +22,6 @@ exports.addPlace = async (req, res) => {
       description,
       perks,
       extraInfo,
-      checkIn,
-      checkOut,
       maxGuests,
       price,
     });
@@ -65,8 +61,6 @@ exports.updatePlace = async (req, res) => {
       description,
       perks,
       extraInfo,
-      checkIn,
-      checkOut,
       maxGuests,
       price,
     } = req.body;
@@ -80,8 +74,6 @@ exports.updatePlace = async (req, res) => {
         description,
         perks,
         extraInfo,
-        checkIn,
-        checkOut,
         maxGuests,
         price,
       });
