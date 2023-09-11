@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import axiosInstance from '@/utils/axios';
 
@@ -22,8 +23,8 @@ const PlacesFormPage = () => {
     extraInfo: '',
     checkIn: '',
     checkOut: '',
-    maxGuests: '',
-    price: '',
+    maxGuests: 10,
+    price: 500,
   });
 
   const {
@@ -37,6 +38,30 @@ const PlacesFormPage = () => {
     maxGuests,
     price,
   } = formData;
+
+  const isValidPlaceData = () => {
+    if (title.trim() === '') {
+      toast.error("Title can't be empty!");
+      return false;
+    } else if (address.trim() === '') {
+      toast.error("Address can't be empty!");
+      return false;
+    } else if (addedPhotos.length < 5) {
+      toast.error('Upload at least 5 photos!');
+      return false;
+    } else if (description.trim() === '') {
+      toast.error("Description can't be empty!");
+      return false;
+    } else if (maxGuests < 1) {
+      toast.error('At least one guests is required!');
+      return false;
+    } else if (maxGuests > 10) {
+      toast.error("Max. guests can't be greater than 10");
+      return false;
+    }
+
+    return true;
+  };
 
   const handleFormData = (e) => {
     const { name, value, type } = e.target;
@@ -68,7 +93,6 @@ const PlacesFormPage = () => {
     setLoading(true);
     axiosInstance.get(`/places/${id}`).then((response) => {
       const { place } = response.data;
-      console.log(place);
       // update the state of formData
       for (let key in formData) {
         if (place.hasOwnProperty(key)) {
@@ -98,20 +122,27 @@ const PlacesFormPage = () => {
   const savePlace = async (e) => {
     e.preventDefault();
 
+    const formDataIsValid = isValidPlaceData();
+    // console.log(isValidPlaceData());
     const placeData = { ...formData, addedPhotos };
 
-    if (id) {
-      // update existing place
-      const { data } = await axiosInstance.put('/places/update-place', {
-        id,
-        ...placeData,
-      });
-    } else {
-      // new place
-      const { data } = await axiosInstance.post('/places/add-places', formData);
+    // Make API call only if formData is valid
+    if (formDataIsValid) {
+      if (id) {
+        // update existing place
+        const { data } = await axiosInstance.put('/places/update-place', {
+          id,
+          ...placeData,
+        });
+      } else {
+        // new place
+        const { data } = await axiosInstance.post(
+          '/places/add-places',
+          placeData
+        );
+      }
+      setRedirect(true);
     }
-
-    setRedirect(true);
   };
 
   if (redirect) {
@@ -172,11 +203,12 @@ const PlacesFormPage = () => {
         />
 
         {preInput(
-          'Check in&out times',
-          'add check in and out times, remember to have some time window forcleaning the room between guests. '
+          'Number of guests & Price',
+          // 'add check in and out times, remember to have some time window forcleaning the room between guests. '
+          'Specify the maximum number of guests so that the client stays within the limit.'
         )}
         <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-          <div>
+          {/* <div>
             <h3 className="mt-2 -mb-1">Check in time</h3>
             <input
               type="text"
@@ -195,7 +227,7 @@ const PlacesFormPage = () => {
               onChange={handleFormData}
               placeholder="11"
             />
-          </div>
+          </div> */}
           <div>
             <h3 className="mt-2 -mb-1">Max no. of guests</h3>
             <input
