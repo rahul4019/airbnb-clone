@@ -6,13 +6,12 @@ const PlaceGallery = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
 
   if (showAllPhotos) {
-    return ( 
-      <div className="absolute inset-0 bg-white text-white  min-h-full z-20">
-        <div className="p-8 bg-white grid gap-4">
+    return (
+      <div className="fixed inset-0 bg-white text-white z-20 overflow-auto">
+        <div className="px-2 py-20 md:p-8 bg-white grid gap-4">
           <div>
-            <h2 className="text-3xl mr-36">Photos of {place.title}</h2>
             <button
-              className="fixed right-12 top-8 flex gap-1 py-2 px-4 rounded-2xl bg-white text-black shadow-sm shadow-gray-500"
+              className="fixed right-2 md:right-12 top-8 flex gap-1 py-2 px-4 rounded-2xl bg-white text-black shadow-sm shadow-gray-500"
               onClick={() => setShowAllPhotos(false)}
             >
               <svg
@@ -32,8 +31,9 @@ const PlaceGallery = ({ place }) => {
           </div>
           {place?.photos?.length > 0 &&
             place.photos.map((photo, index) => (
-              <div key={index}>
-                <Image src={photo} />
+              <div key={index} className="max-w-full">
+                {/* <Image src={photo} /> */}
+                <img src={photo} alt="" />
               </div>
             ))}
         </div>
@@ -42,40 +42,95 @@ const PlaceGallery = ({ place }) => {
   }
   return (
     <div className="relative">
-      <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-3xl overflow-hidden">
-        <div>
+      {/* Medium devices */}
+      <div className="grid-cols-4 gap-2 overflow-hidden rounded-[12px] max-h-[450px] h-[400px] hidden md:grid">
+        {/* column 1 */}
+        <div className="col-span-2">
           {place.photos?.[0] && (
-            <div>
+            <div className="h-full">
               <img
                 onClick={() => setShowAllPhotos(true)}
-                className="cursor-pointer aspect-square object-cover"
+                className="cursor-pointer object-cover h-full"
                 src={place.photos[0]}
                 alt=""
               />
             </div>
           )}
         </div>
-        <div className="grid">
-          {place.photos?.[1] && (
-            <img
-              onClick={() => setShowAllPhotos(true)}
-              className="cursor-pointer  aspect-square object-cover"
-              src={place.photos[1]}
-              alt=""
-            />
-          )}
-          <div className="  overflow-hidden">
+        {/* column 2 */}
+        <div className="col-span-1">
+          {/* row grid inside column 2 */}
+          <div className="grid grid-rows-2 h-full gap-2">
+            {place.photos?.[1] && (
+              // row 1
+              <div className="h-full">
+                <img
+                  onClick={() => setShowAllPhotos(true)}
+                  className="cursor-pointer object-cover h-full"
+                  src={place.photos[1]}
+                  alt=""
+                />
+              </div>
+            )}
+
             {place.photos?.[2] && (
-              <img
-                onClick={() => setShowAllPhotos(true)}
-                className="cursor-pointer aspect-square object-cover relative top-2"
-                src={place.photos[2]}
-                alt=""
-              />
+              // row 2
+              <div className="h-full">
+                <img
+                  onClick={() => setShowAllPhotos(true)}
+                  className="cursor-pointer object-cover h-full"
+                  src={place.photos[2]}
+                  alt=""
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        {/* column 3 */}
+        <div className="col-span-1">
+          {/* row grid inside column 3 */}
+          <div className="grid grid-rows-2 h-full gap-2">
+            {place.photos?.[3] && (
+              // row 1
+              <div className="h-full">
+                <img
+                  onClick={() => setShowAllPhotos(true)}
+                  className="cursor-pointer object-cover h-full"
+                  src={place.photos[3]}
+                  alt=""
+                />
+              </div>
+            )}
+
+            {place.photos?.[4] && (
+              // row 2
+              <div className="h-full">
+                <img
+                  onClick={() => setShowAllPhotos(true)}
+                  className="cursor-pointer object-cover h-full"
+                  src={place.photos[4]}
+                  alt=""
+                />
+              </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Mobile devices */}
+      <div className="flex rounded-[12px] overflow-hidden md:hidden">
+        {place.photos?.[0] && (
+          <div className="h-full">
+            <img
+              onClick={() => setShowAllPhotos(true)}
+              className="cursor-pointer object-cover h-full"
+              src={place.photos[0]}
+              alt=""
+            />
+          </div>
+        )}
+      </div>
+
       <button
         className="flex gap-1 absolute bottom-2 right-2 py-2 px-4 bg-white rounded-xl shadow-md shadow-gray-500 "
         onClick={() => setShowAllPhotos(true)}
