@@ -41,7 +41,7 @@ const PlaceGallery = ({ place }) => {
   return (
     <div className="relative">
       {/* Medium devices */}
-      <div className="grid-cols-4 gap-2 overflow-hidden rounded-[12px] max-h-[450px] h-[400px] hidden md:grid border-2">
+      <div className="grid-cols-4 gap-2 overflow-hidden rounded-[12px] max-h-[450px] h-[400px] hidden md:grid">
         {/* column 1 */}
         <div className="col-span-2 overflow-hidden">
           {place.photos?.[0] && (
