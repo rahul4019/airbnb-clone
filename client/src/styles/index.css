@@ -53,7 +53,7 @@ input[type="email"],
 input[type="number"],
 input[type="tel"],
 textarea {
-  @apply w-full border my-2 py-2 px-3 rounded-2xl;
+  @apply w-full border my-2 py-2 px-3 rounded-[10px];
 }
 
 textarea {
@@ -65,8 +65,11 @@ button {
 }
 
 button.primary {
-  background-color: "#F5385D";
-  @apply bg-primary p-2 w-full text-white rounded-2xl;
+  @apply bg-primary p-2 w-full text-white rounded-[10px];
+}
+
+button.social {
+  @apply bg-white border-[1px] border-black p-2 w-full text-black rounded-[10px] font-semibold hover:bg-gray-50;
 }
 
 .card {

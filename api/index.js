@@ -1,8 +1,12 @@
 const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
 const connectWithDB = require('./config/db');
-require('dotenv').config();
+const passportConfig = require('./config/passport')
+const passport = require('passport')
+const cookieSession = require('cookie-session')
 const cloudinary = require('cloudinary').v2;
+const cookieParser = require('cookie-parser')
 
 // connect with database
 connectWithDB();
@@ -16,29 +20,58 @@ cloudinary.config({
 
 const app = express();
 
+// For handling cookies
+app.use(cookieParser())
+
+// Initialize cookie-session middleware
+app.use(cookieSession({
+  name: 'session',
+  maxAge: 3 * 24 * 60 * 60 * 1000,
+  keys: [process.env.SESSION_SECRET] //* dotenv
+}))
+
 // middleware to handle json
 app.use(express.json());
 
-const whiteList = [
-  'https://airbnb-clone0.netlify.app',
-  'https://airbnb-1.netlify.app',
-  'http://localhost:5173',
-];
+// passport 
+app.use(passport.initialize())
+app.use(passport.session())
 
-// CORS 
-app.use(
-  cors({
-    credentials: true,
-    origin: function (origin, callback) {
-      if (whiteList.indexOf(origin !== -1)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by cors'));
-      }
-    },
-    exposedHeaders: ['set-cookie'],
-  })
-);
+// const whiteList = [
+//   'https://airbnb-clone0.netlify.app',
+//   'https://airbnb-1.netlify.app',
+//   'http://localhost:5173',
+// ];
+
+
+// // CORS 
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: function (origin, callback) {
+//       if (whiteList.indexOf(origin !== -1)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by cors'));
+//       }
+//     },
+//     exposedHeaders: ['set-cookie'],
+//   })
+// );
+
+
+// CORS
+//* development
+// app.use(cors({
+//   origin: 'http://localhost:5173',
+//   credentials: true,
+// }));
+
+//* production
+app.use(cors({
+  origin: 'https://airbnb-1.netlify.app',
+  credentials: true,
+}));
 
 // use express router
 app.use('/', require('./routes'));

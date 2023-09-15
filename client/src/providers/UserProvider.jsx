@@ -22,13 +22,12 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
-  const handleLogin = (userData) => {
+  const setUserGlobally = (userData) => {
     setUser(userData);
     setIsLoggedIn(true);
 
-    // Save user data to localStorage when logging in
+    // Save user in local storage
     setItemsInLocalStorage('user', JSON.stringify(userData));
-
   };
 
   const handleLogout = () => {
@@ -37,14 +36,16 @@ export const UserProvider = ({ children }) => {
 
     // Clear user data from localStorage when logging out
     removeItemFromLocalStorage('user');
-
-    // remove token from axios default values
-    delete axiosInstance.defaults.headers.common['Authorization'];
   };
 
   return (
     <UserContext.Provider
-      value={{ user, isLoggedIn, login: handleLogin, logout: handleLogout }}
+      value={{
+        user,
+        isLoggedIn,
+        setUserGlobally,
+        logout: handleLogout,
+      }}
     >
       {children}
     </UserContext.Provider>

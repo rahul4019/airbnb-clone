@@ -1,9 +1,9 @@
 const Place = require('../models/Place');
-const userFromToken = require('../utils/userFromToken');
 
+// Adds a place in the DB
 exports.addPlace = async (req, res) => {
   try {
-    const userData = userFromToken(req);
+    const userData = req.user;
     const {
       title,
       address,
@@ -36,22 +36,23 @@ exports.addPlace = async (req, res) => {
   }
 };
 
-exports.getPlaces = async (req, res) => {
+// Returns user specific places
+exports.userPlaces = async (req, res) => {
   try {
-    const places = await Place.find();
-    res.status(200).json({
-      places,
-    });
+    const userData = req.user;
+    const id = userData.id;
+    res.status(200).json(await Place.find({ owner: id }));
   } catch (err) {
     res.status(500).json({
-      message: 'Internal server error',
+      message: 'Internal serever error',
     });
   }
 };
 
+// Updates a place
 exports.updatePlace = async (req, res) => {
   try {
-    const userData = userFromToken(req);
+    const userData = req.user;
     const userId = userData.id;
     const {
       id,
@@ -90,6 +91,21 @@ exports.updatePlace = async (req, res) => {
   }
 };
 
+// Returns all the places in DB
+exports.getPlaces = async (req, res) => {
+  try {
+    const places = await Place.find();
+    res.status(200).json({
+      places,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Internal server error',
+    });
+  }
+};
+
+// Returns single place, based on passed place id
 exports.singlePlace = async (req, res) => {
   try {
     const { id } = req.params;
@@ -109,18 +125,7 @@ exports.singlePlace = async (req, res) => {
   }
 };
 
-exports.userPlaces = async (req, res) => {
-  try {
-    const userData = userFromToken(req);
-    const id = userData.id;
-    res.status(200).json(await Place.find({ owner: id }));
-  } catch (err) {
-    res.status(500).json({
-      message: 'Internal serever error',
-    });
-  }
-};
-
+// Search Places in the DB
 exports.searchPlaces = async (req, res) => {
   try {
     const searchword = req.params.key;

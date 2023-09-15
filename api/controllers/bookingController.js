@@ -1,9 +1,8 @@
 const Booking = require('../models/Booking');
-const userFromToken = require('../utils/userFromToken');
 
 exports.createBookings = async (req, res) => {
   try {
-    const userData = userFromToken(req);
+    const userData = req.user;
     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
       req.body;
 
@@ -31,7 +30,7 @@ exports.createBookings = async (req, res) => {
 
 exports.getBookings = async (req, res) => {
   try {
-    const userData = await userFromToken(req);
+    const userData = req.user;
     if (!userData) {
       return res
         .status(401)

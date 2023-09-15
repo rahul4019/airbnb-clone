@@ -6,21 +6,15 @@ import axiosInstance from '@/utils/axios';
 import AccountNav from '@/components/ui/AccountNav';
 import InfoCard from '@/components/ui/InfoCard';
 import Spinner from '@/components/ui/Spinner';
-import { getItemFromLocalStorage } from '@/utils';
 
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = getItemFromLocalStorage('token');
     const getPlaces = async () => {
       try {
-        const { data } = await axiosInstance.get('places/user-places', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const { data } = await axiosInstance.get('places/user-places');
         setPlaces(data);
         setLoading(false);
       } catch (error) {

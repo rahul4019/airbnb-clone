@@ -2,10 +2,11 @@ import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Navigate, useParams } from 'react-router-dom';
 
-import { removeItemFromLocalStorage } from '@/utils';
 import { UserContext } from '@/providers/UserProvider';
 
 import AccountNav from '@/components/ui/AccountNav';
+import axiosInstance from '@/utils/axios';
+
 import PlacesPage from './PlacesPage';
 
 const ProfilePage = () => {
@@ -17,10 +18,16 @@ const ProfilePage = () => {
     subpage = 'profile';
   }
 
-  const handleLogout = () => {
-    logout();
-    removeItemFromLocalStorage('token');
-    toast.success('Logged out');
+  const handleLogout = async () => {
+    try {
+      const { data } = await axiosInstance.get('/user/logout');
+      if (data.success) {
+        logout();
+        toast.success(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     setRedirect('/');
   };
 

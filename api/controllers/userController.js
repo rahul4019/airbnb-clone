@@ -1,8 +1,5 @@
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const userFromToken = require('../utils/userFromToken');
-
-const jwt = require('jsonwebtoken');
+const cookieToken = require('../utils/cookieToken');
 
 exports.register = async (req, res) => {
   try {
@@ -26,12 +23,11 @@ exports.register = async (req, res) => {
     user = await User.create({
       name,
       email,
-      password: await bcrypt.hash(password, 10),
+      password,
     });
 
-    res.status(200).json({
-      user,
-    });
+    // after creating new user in DB send the token
+    cookieToken(user, res);
   } catch (err) {
     res.status(500).json({
       message: 'Internal server Error',
@@ -43,51 +39,33 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (user) {
-      const validatedPassword = await bcrypt.compare(password, user.password);
-      if (validatedPassword) {
-        const token = jwt.sign(
-          { email: user.email, id: user._id },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: process.env.JWT_EXPIRY,
-          }
-        );
 
-        user.password = undefined;
-
-        res.status(200).json({
-          user,
-          token,
-        });
-      } else {
-        res.status(401).json({
-          message: 'email or password is incorrect',
-        });
-      }
-    } else {
-      res.status(400).json({
-        message: 'User not found',
+    // check for presence of email and password
+    if (!email || !password) {
+      return res.status(400).json({
+        message: 'email and password are required',
       });
     }
-  } catch (err) {
-    res.status(500).json({
-      message: 'Internal server Error',
-      error: err,
-    });
-  }
-};
 
-exports.profile = async (req, res) => {
-  try {
-    const userData = userFromToken(req);
-    if (userData) {
-      const { name, email, _id } = await User.findById(userData.id);
-      res.status(200).json({ name, email, _id });
-    } else {
-      res.status(200).json(null);
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      res.status(400).json({
+        message: 'User does not exist',
+      });
     }
+
+    // match the password
+    const isPasswordCorrect = await user.isValidatedPassword(password);
+
+    if (!isPasswordCorrect) {
+      res.status(401).json({
+        message: 'email or password is incorrect',
+      });
+    }
+
+    // if everything is fine we will send the token
+    cookieToken(user, res);
   } catch (err) {
     res.status(500).json({
       message: 'Internal server Error',
@@ -95,9 +73,15 @@ exports.profile = async (req, res) => {
     });
   }
 };
-
+ 
 exports.logout = async (req, res) => {
-  res.cookie('token', '').json({
-    message: 'logged out successfully!',
+  res.cookie('token', null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+  req.logout();
+  res.status(200).json({
+    success: true,
+    message: 'Successfully logged out',
   });
 };
