@@ -27,9 +27,9 @@ app.use(cookieSession({
   name: 'session',
   maxAge: 3 * 24 * 60 * 60 * 1000,
   keys: [process.env.SESSION_SECRET],
-  secure: true, // Only send over HTTPS
-  sameSite: 'none', // Allow cross-origin requests
-  httpOnly: true, // Makes the cookie accessible only on the server-side
+  // secure: true, // Only send over HTTPS
+  // sameSite: 'none', // Allow cross-origin requests
+  // httpOnly: true, // Makes the cookie accessible only on the server-side
 }))
 
 // middleware to handle json

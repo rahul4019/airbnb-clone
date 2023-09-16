@@ -51,7 +51,7 @@ router.post('/upload', upload.array('photos', 100), async (req, res) => {
   }
 });
 
-router.use('/auth', require('./auth'));
+
 router.use('/user', require('./user'));
 router.use('/places', require('./place'));
 router.use('/bookings', require('./booking'));
