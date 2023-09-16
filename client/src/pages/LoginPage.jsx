@@ -14,7 +14,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
-  const { login } = useContext(UserContext);
+  const { user, login } = useContext(UserContext);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
