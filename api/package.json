@@ -24,8 +24,6 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
     "multer": "^1.4.5-lts.1",
-    "multer-storage-cloudinary": "^4.0.0",
-    "passport": "0.5",
-    "passport-google-oauth20": "^2.0.0"
+    "multer-storage-cloudinary": "^4.0.0"
   }
 }

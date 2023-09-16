@@ -12,7 +12,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
-  const { setUserGlobally } = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
   const handleRegisterForm = async (e) => {
     try {
@@ -24,7 +24,7 @@ const RegisterPage = () => {
       });
 
       if (data.user) {
-        setUserGlobally(data.user);
+        login(data.user, data.token);
       }
       toast.success('Registration successful!');
       setRedirect(true);
@@ -50,7 +50,7 @@ const RegisterPage = () => {
         email: decoded.email,
       });
       if (data.user) {
-        setUserGlobally(data.user);
+        login(data.user, data.token);
       }
       toast.success('Login successfull!');
       setRedirect(true);

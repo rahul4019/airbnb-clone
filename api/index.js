@@ -1,12 +1,11 @@
-const express = require('express');
 require('dotenv').config();
+const express = require('express');
 const cors = require('cors');
 const connectWithDB = require('./config/db');
-// const passportConfig = require('./config/passport')
-// const passport = require('passport')
 const cookieSession = require('cookie-session')
-const cloudinary = require('cloudinary').v2;
 const cookieParser = require('cookie-parser')
+const cloudinary = require('cloudinary').v2;
+
 
 // connect with database
 connectWithDB();
@@ -30,7 +29,7 @@ app.use(cookieSession({
   keys: [process.env.SESSION_SECRET],
   secure: true, // Only send over HTTPS
   sameSite: 'none', // Allow cross-origin requests
-  httpOnly: true, 
+  httpOnly: true, // Makes the cookie accessible only on the server-side
 }))
 
 // middleware to handle json

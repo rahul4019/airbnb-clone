@@ -14,7 +14,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
-  const { user, setUserGlobally } = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ const LoginPage = () => {
       });
 
       if (data.user) {
-        setUserGlobally(data.user);
+        login(data.user, data.token);
       }
 
       toast.success('Login successfull!');
@@ -42,10 +42,6 @@ const LoginPage = () => {
     }
   };
 
-  const googleLogin = () => {
-    window.open('https://airbnb-api.up.railway.app/auth/google', '_self');
-  };
-
   const handleGoogleLogin = async (credential) => {
     const decoded = jwt_decode(credential);
     console.log(decoded);
@@ -56,7 +52,7 @@ const LoginPage = () => {
         email: decoded.email,
       });
       if (data.user) {
-        setUserGlobally(data.user);
+        login(data.user, data.token);
       }
       toast.success('Login successfull!');
       setRedirect(true);

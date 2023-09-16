@@ -22,12 +22,13 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
-  const setUserGlobally = (userData) => {
+  const handleLogin = (userData, token) => {
     setUser(userData);
     setIsLoggedIn(true);
 
     // Save user in local storage
     setItemsInLocalStorage('user', JSON.stringify(userData));
+    setItemsInLocalStorage('token', JSON.stringify(token));
   };
 
   const handleLogout = () => {
@@ -43,7 +44,7 @@ export const UserProvider = ({ children }) => {
       value={{
         user,
         isLoggedIn,
-        setUserGlobally,
+        login:handleLogin,
         logout: handleLogout,
       }}
     >
