@@ -13,7 +13,9 @@ router.route('/login/success').get((req, res) => {
 
 router.route('/google').get(passport.authenticate('google', { scope: ['profile', 'email'] }))
 
-router.get('/google/callback', passport.authenticate('google', { successRedirect: 'https://airbnb-1.netlify.app' }));
+router.get('/google/callback', passport.authenticate('google', { successRedirect: 'https://airbnb-1.netlify.app', failureRedirect: 'https://airbnb-1.netlify.app' }), (req, res) => {
+    res.send(req.user)
+});
 
 
 module.exports = router;
