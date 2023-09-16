@@ -24,20 +24,17 @@ const app = express();
 app.use(cookieParser())
 
 // Initialize cookie-session middleware
-// app.use(cookieSession({
-//   name: 'session',
-//   maxAge: 3 * 24 * 60 * 60 * 1000,
-//   keys: [process.env.SESSION_SECRET],
-//   // secure: true, // Only send over HTTPS
-//   // sameSite: 'none', // Allow cross-origin requests
-// }))
+app.use(cookieSession({
+  name: 'session',
+  maxAge: 3 * 24 * 60 * 60 * 1000,
+  keys: [process.env.SESSION_SECRET],
+  secure: true, // Only send over HTTPS
+  sameSite: 'none', // Allow cross-origin requests
+  httpOnly: true, 
+}))
 
 // middleware to handle json
 app.use(express.json());
-
-// passport 
-// app.use(passport.initialize())
-// app.use(passport.session())
 
 // CORS
 //* development
