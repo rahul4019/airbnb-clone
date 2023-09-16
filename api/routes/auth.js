@@ -7,14 +7,15 @@ router.route('/login/success').get((req, res) => {
         cookieToken(req.user, res)
     }
     else {
-        res.status(400)
+        res.status(400).json({ message: 'user not found' })
     }
 })
 
 router.route('/google').get(passport.authenticate('google', { scope: ['profile', 'email'] }))
 
 router.get('/google/callback', passport.authenticate('google', { successRedirect: 'https://airbnb-1.netlify.app', failureRedirect: 'https://airbnb-1.netlify.app' }), (req, res) => {
-    res.send(req.user)
+    console.log('User: ', req.user)
+    cookieToken(req.user, res)
 });
 
 
