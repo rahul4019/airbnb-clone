@@ -40,7 +40,7 @@ const RegisterPage = () => {
   };
 
   const googleLogin = () => {
-    window.open('http://localhost:4000/auth/google', '_self');
+    window.open('https://airbnb-api.up.railway.app/auth/google', '_self');
   };
 
   if (redirect) {
