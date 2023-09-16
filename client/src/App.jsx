@@ -14,31 +14,34 @@ import PlacePage from './pages/PlacePage';
 import SingleBookedPlace from './pages/SingleBookedPlace';
 import { UserProvider } from './providers/UserProvider';
 import { PlaceProvider } from './providers/PlaceProvider';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   return (
-    <UserProvider>
-      <PlaceProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<IndexPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/account" element={<ProfilePage />} />
-            <Route path="/account/places" element={<PlacesPage />} />
-            <Route path="/account/places/new" element={<PlacesFormPage />} />
-            <Route path="/account/places/:id" element={<PlacesFormPage />} />
-            <Route path="/place/:id" element={<PlacePage />} />
-            <Route path="/account/bookings" element={<BookingsPage />} />
-            <Route
-              path="/account/bookings/:id"
-              element={<SingleBookedPlace />}
-            />
-          </Route>
-        </Routes>
-        <ToastContainer autoClose={2000} transition={Slide} />
-      </PlaceProvider>
-    </UserProvider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <UserProvider>
+        <PlaceProvider>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<IndexPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/account" element={<ProfilePage />} />
+              <Route path="/account/places" element={<PlacesPage />} />
+              <Route path="/account/places/new" element={<PlacesFormPage />} />
+              <Route path="/account/places/:id" element={<PlacesFormPage />} />
+              <Route path="/place/:id" element={<PlacePage />} />
+              <Route path="/account/bookings" element={<BookingsPage />} />
+              <Route
+                path="/account/bookings/:id"
+                element={<SingleBookedPlace />}
+              />
+            </Route>
+          </Routes>
+          <ToastContainer autoClose={2000} transition={Slide} />
+        </PlaceProvider>
+      </UserProvider>
+    </GoogleOAuthProvider>
   );
 }
 

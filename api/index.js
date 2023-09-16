@@ -2,8 +2,8 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const connectWithDB = require('./config/db');
-const passportConfig = require('./config/passport')
-const passport = require('passport')
+// const passportConfig = require('./config/passport')
+// const passport = require('passport')
 const cookieSession = require('cookie-session')
 const cloudinary = require('cloudinary').v2;
 const cookieParser = require('cookie-parser')
@@ -24,43 +24,20 @@ const app = express();
 app.use(cookieParser())
 
 // Initialize cookie-session middleware
-app.use(cookieSession({
-  name: 'session',
-  maxAge: 3 * 24 * 60 * 60 * 1000,
-  keys: [process.env.SESSION_SECRET],
-  secure: 'true', // Only send over HTTPS
-  sameSite: 'none', // Allow cross-origin requests
-}))
+// app.use(cookieSession({
+//   name: 'session',
+//   maxAge: 3 * 24 * 60 * 60 * 1000,
+//   keys: [process.env.SESSION_SECRET],
+//   // secure: true, // Only send over HTTPS
+//   // sameSite: 'none', // Allow cross-origin requests
+// }))
 
 // middleware to handle json
 app.use(express.json());
 
 // passport 
-app.use(passport.initialize())
-app.use(passport.session())
-
-// const whiteList = [
-//   'https://airbnb-clone0.netlify.app',
-//   'https://airbnb-1.netlify.app',
-//   'http://localhost:5173',
-// ];
-
-
-// // CORS 
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: function (origin, callback) {
-//       if (whiteList.indexOf(origin !== -1)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error('Not allowed by cors'));
-//       }
-//     },
-//     exposedHeaders: ['set-cookie'],
-//   })
-// );
-
+// app.use(passport.initialize())
+// app.use(passport.session())
 
 // CORS
 //* development

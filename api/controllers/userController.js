@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const cookieToken = require('../utils/cookieToken');
+const bcrypt = require('bcryptjs')
 
 exports.register = async (req, res) => {
   try {
@@ -81,9 +82,39 @@ exports.logout = async (req, res) => {
     secure: true,   // Only send over HTTPS
     sameSite: 'none' // Allow cross-origin requests
   });
-  req.logout();
   res.status(200).json({
     success: true,
     message: 'Successfully logged out',
   });
 };
+
+exports.googleLogin = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+      return res.status(400), json({
+        message: 'name and email are required'
+      })
+    }
+
+    // check if user already registered
+    let user = await User.findOne({ email });
+
+    // If the user does not exist, create a new user in the DB  
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10)
+      })
+    }
+
+    cookieToken(user, res)
+  } catch (error) {
+    res.status(500).json({
+      message: 'Internal server Error',
+      error: err,
+    });
+  }
+}
