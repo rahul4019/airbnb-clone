@@ -19,14 +19,14 @@ import { PlaceProvider } from './providers/PlaceProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { getItemFromLocalStorage } from './utils';
 
-useEffect(() => {
-  // set the token on refreshing the website
-  axiosInstance.defaults.headers.common[
-    'Authorization'
-  ] = `Bearer ${getItemFromLocalStorage('token')}`;
-}, []);
-
 function App() {
+  useEffect(() => {
+    // set the token on refreshing the website
+    axiosInstance.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${getItemFromLocalStorage('token')}`;
+  }, []);
+
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <UserProvider>
