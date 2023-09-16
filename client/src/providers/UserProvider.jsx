@@ -5,7 +5,6 @@ import {
   setItemsInLocalStorage,
   removeItemFromLocalStorage,
 } from '../utils';
-import axiosInstance from '../utils/axios';
 
 export const UserContext = createContext({});
 
@@ -35,8 +34,9 @@ export const UserProvider = ({ children }) => {
     setUser(null);
     setIsLoggedIn(false);
 
-    // Clear user data from localStorage when logging out
+    // Clear user data and token from localStorage when logging out
     removeItemFromLocalStorage('user');
+    removeItemFromLocalStorage('token');
   };
 
   return (
@@ -44,7 +44,7 @@ export const UserProvider = ({ children }) => {
       value={{
         user,
         isLoggedIn,
-        login:handleLogin,
+        login: handleLogin,
         logout: handleLogout,
       }}
     >

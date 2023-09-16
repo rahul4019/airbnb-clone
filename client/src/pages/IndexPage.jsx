@@ -1,28 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { PlaceContext } from '@/providers/PlaceProvider';
 import Spinner from '@/components/ui/Spinner';
 import PlaceCard from '@/components/ui/PlaceCard';
-import { UserContext } from '@/providers/UserProvider';
-import axiosInstance from '@/utils/axios';
 
 const IndexPage = () => {
   const { places, loading } = useContext(PlaceContext);
-  const { setUserGlobally } = useContext(UserContext);
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const { data } = await axiosInstance.get('auth/login/success');
-        if (data.user) {
-          setUserGlobally(data.user);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUser();
-  }, []);
 
   if (loading) {
     return <Spinner />;
