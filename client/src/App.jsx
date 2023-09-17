@@ -18,6 +18,7 @@ import { UserProvider } from './providers/UserProvider';
 import { PlaceProvider } from './providers/PlaceProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { getItemFromLocalStorage } from './utils';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   useEffect(() => {
@@ -46,6 +47,7 @@ function App() {
                 path="/account/bookings/:id"
                 element={<SingleBookedPlace />}
               />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
           <ToastContainer autoClose={2000} transition={Slide} />
