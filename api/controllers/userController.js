@@ -2,6 +2,7 @@ const User = require('../models/User');
 const cookieToken = require('../utils/cookieToken');
 const bcrypt = require('bcryptjs')
 
+// Register/SignUp user
 exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -12,7 +13,7 @@ exports.register = async (req, res) => {
       });
     }
 
-    // check if user already registered
+    // check if user is already registered
     let user = await User.findOne({ email });
 
     if (user) {
@@ -37,6 +38,7 @@ exports.register = async (req, res) => {
   }
 };
 
+// Login/SignIn user
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -75,26 +77,14 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
-  res.cookie('token', null, {
-    expires: new Date(Date.now()),
-    httpOnly: true,
-    secure: true,   // Only send over HTTPS
-    sameSite: 'none' // Allow cross-origin requests
-  });
-  res.status(200).json({
-    success: true,
-    message: 'Successfully logged out',
-  });
-};
-
+// Google Login
 exports.googleLogin = async (req, res) => {
   try {
     const { name, email } = req.body;
 
     if (!name || !email) {
       return res.status(400), json({
-        message: 'name and email are required'
+        message: 'Name and email are required'
       })
     }
 
@@ -110,11 +100,26 @@ exports.googleLogin = async (req, res) => {
       })
     }
 
+    // send the token
     cookieToken(user, res)
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       message: 'Internal server Error',
       error: err,
     });
   }
 }
+
+// Logout
+exports.logout = async (req, res) => {
+  res.cookie('token', null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+    secure: true,   // Only send over HTTPS
+    sameSite: 'none' // Allow cross-origin requests
+  });
+  res.status(200).json({
+    success: true,
+    message: 'Logged out',
+  });
+};

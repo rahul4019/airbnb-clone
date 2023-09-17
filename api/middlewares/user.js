@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// Checks user is logged in based on passed token and set the user in request
 exports.isLoggedIn = async (req, res, next) => {
+    // token could be found in request cookies or in reqest headers
     const token = req.cookies.token || req.header('Authorization').replace('Bearer ', '');
 
     if (!token) {

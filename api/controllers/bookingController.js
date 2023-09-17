@@ -1,5 +1,6 @@
 const Booking = require('../models/Booking');
 
+// Books a place
 exports.createBookings = async (req, res) => {
   try {
     const userData = req.user;
@@ -28,6 +29,7 @@ exports.createBookings = async (req, res) => {
   }
 };
 
+// Returns user specific bookings
 exports.getBookings = async (req, res) => {
   try {
     const userData = req.user;

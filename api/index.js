@@ -1,11 +1,10 @@
-require('dotenv').config();
+const config = require('./config')
 const express = require('express');
 const cors = require('cors');
 const connectWithDB = require('./config/db');
 const cookieSession = require('cookie-session')
 const cookieParser = require('cookie-parser')
 const cloudinary = require('cloudinary').v2;
-
 
 // connect with database
 connectWithDB();
@@ -25,7 +24,7 @@ app.use(cookieParser())
 // Initialize cookie-session middleware
 app.use(cookieSession({
   name: 'session',
-  maxAge: 3 * 24 * 60 * 60 * 1000,
+  maxAge: process.env.COOKIE_TIME * 24 * 60 * 60 * 1000,
   keys: [process.env.SESSION_SECRET],
   secure: true, // Only send over HTTPS
   sameSite: 'none', // Allow cross-origin requests
@@ -36,15 +35,8 @@ app.use(cookieSession({
 app.use(express.json());
 
 // CORS
-//* development
-// app.use(cors({
-//   origin: 'http://localhost:5173',
-//   credentials: true,
-// }));
-
-//* production
 app.use(cors({
-  origin: 'https://airbnb-1.netlify.app',
+  origin: process.env.CLIENT_URL,
   credentials: true,
 }));
 
