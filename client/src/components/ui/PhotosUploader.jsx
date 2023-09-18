@@ -54,24 +54,24 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
           placeholder="Add using a link ...jpg"
         />
         <button
-          className="bg-gray-200 px-4 rounded-2xl"
+          className="rounded-2xl bg-gray-200 px-4"
           onClick={addPhotoByLink}
         >
           Add&nbsp;photo
         </button>
       </div>
-      <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6 ">
+      <div className="mt-2 grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-6 ">
         {addedPhotos?.length > 0 &&
           addedPhotos.map((link) => (
-            <div className="h-32 flex relative" key={link}>
+            <div className="relative flex h-32" key={link}>
               <Image
-                className="rounded-2xl w-full object-cover"
+                className="w-full rounded-2xl object-cover"
                 src={link}
                 alt=""
               />
               <button
                 onClick={() => removePhoto(link)}
-                className="absolute cursor-pointer bottom-1 right-1 text-white bg-black bg-opacity-50 rounded-full p-1 hover:bg-opacity-70"
+                className="absolute bottom-1 right-1 cursor-pointer rounded-full bg-black bg-opacity-50 p-1 text-white hover:bg-opacity-70"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                 >
                   <path
                     strokeLinecap="round"
@@ -90,14 +90,14 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
               </button>
               <button
                 onClick={(e) => selectAsMainPhoto(e, link)}
-                className="absolute cursor-pointer bottom-1 left-1 text-white bg-black bg-opacity-50 rounded-full p-1 hover:bg-opacity-70"
+                className="absolute bottom-1 left-1 cursor-pointer rounded-full bg-black bg-opacity-50 p-1 text-white hover:bg-opacity-70"
               >
                 {link === addedPhotos[0] && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    className="w-6 h-6"
+                    className="h-6 w-6"
                   >
                     <path
                       fillRule="evenodd"
@@ -114,7 +114,7 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-6 h-6"
+                    className="h-6 w-6"
                   >
                     <path
                       strokeLinecap="round"
@@ -126,7 +126,7 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
               </button>
             </div>
           ))}
-        <label className="flex h-32 cursor-pointer justify-center items-center gap-1 border bg-transparent rounded-2xl p-2 text-2xl text-gray-600">
+        <label className="flex h-32 cursor-pointer items-center justify-center gap-1 rounded-2xl border bg-transparent p-2 text-2xl text-gray-600">
           <input
             type="file"
             multiple
@@ -139,7 +139,7 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-8 h-8"
+            className="h-8 w-8"
           >
             <path
               strokeLinecap="round"

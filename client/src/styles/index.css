@@ -34,7 +34,6 @@
 
     --radius: 2rem;
   }
-
 }
 
 @layer base {
@@ -47,13 +46,13 @@
   }
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="number"],
-input[type="tel"],
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number'],
+input[type='tel'],
 textarea {
-  @apply w-full border my-2 py-2 px-3 rounded-[10px];
+  @apply my-2 w-full rounded-[10px] border py-2 px-3;
 }
 
 textarea {
@@ -65,13 +64,13 @@ button {
 }
 
 button.primary {
-  @apply bg-primary p-2 w-full text-white rounded-[10px];
+  @apply w-full rounded-[10px] bg-primary p-2 text-white;
 }
 
 button.social {
-  @apply bg-white border-[1px] border-black p-2 w-full text-black rounded-[10px] font-semibold hover:bg-gray-50;
+  @apply w-full rounded-[10px] border-[1px] border-black bg-white p-2 font-semibold text-black hover:bg-gray-50;
 }
 
 .card {
-  @apply w-[327px] h-[410px] sm:w-[435px] sm:h-[500px] md:w-[350px] md:h-[400px] lg:h-[400px] lg:w-[330px] xl:w-[300px] xl:h-[350px]
+  @apply h-[410px] w-[327px] sm:h-[500px] sm:w-[435px] md:h-[400px] md:w-[350px] lg:h-[400px] lg:w-[330px] xl:h-[350px] xl:w-[300px];
 }

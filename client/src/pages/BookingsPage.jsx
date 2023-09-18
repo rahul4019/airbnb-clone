@@ -35,35 +35,35 @@ const BookingsPage = () => {
           bookings.map((booking) => (
             <Link
               to={`/account/bookings/${booking._id}`}
-              className="mx-4 lg:mx-0 flex gap-4 bg-gray-200 rounded-2xl overflow-hidden my-8 h-28 md:h-40"
+              className="mx-4 my-8 flex h-28 gap-4 overflow-hidden rounded-2xl bg-gray-200 md:h-40 lg:mx-0"
               key={booking._id}
             >
               <div className="w-2/6 md:w-1/6">
                 {booking?.place?.photos[0] && (
                   <PlaceImg
                     place={booking?.place}
-                    className={'w-full h-full object-cover'}
+                    className={'h-full w-full object-cover'}
                   />
                 )}
               </div>
-              <div className="py-3 pr-3 grow">
+              <div className="grow py-3 pr-3">
                 <h2 className="md:text-2xl">{booking?.place?.title}</h2>
                 <div className="md:text-xl">
                   <div className="flex gap-2 border-t "></div>
                   <div className="md:text-xl">
                     <BookingDates
                       booking={booking}
-                      className="hidden md:flex items-center mb-2 mt-4  text-gray-600"
+                      className="mb-2 mt-4 hidden items-center text-gray-600  md:flex"
                     />
 
-                    <div className="flex gap-1 items-center my-2">
+                    <div className="my-2 flex items-center gap-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-7 h-7"
+                        className="h-7 w-7"
                       >
                         <path
                           strokeLinecap="round"
@@ -83,16 +83,16 @@ const BookingsPage = () => {
         ) : (
           <div className="">
             <div className="flex flex-col justify-start">
-              <h1 className="text-3xl my-6 font-semibold">Trips</h1>
+              <h1 className="my-6 text-3xl font-semibold">Trips</h1>
               <hr className="border border-gray-300" />
-              <h3 className="text-2xl font-semibold pt-6">
+              <h3 className="pt-6 text-2xl font-semibold">
                 No trips booked... yet!
               </h3>
               <p>
                 Time to dust off you bags and start planning your next adventure
               </p>
               <Link to="/" className="my-4">
-                <div className="flex justify-center w-40 p-3 border border-black rounded-lg font-semibold text-lg hover:bg-gray-50">
+                <div className="flex w-40 justify-center rounded-lg border border-black p-3 text-lg font-semibold hover:bg-gray-50">
                   Start Searching
                 </div>
               </Link>

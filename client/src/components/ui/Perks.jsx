@@ -1,11 +1,10 @@
 import React from 'react';
 
 const Perks = ({ selected, handleFormData }) => {
-  
   return (
-    <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+    <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
       <label
-        className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer"
+        className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4"
         key="perks"
       >
         <input
@@ -20,7 +19,7 @@ const Perks = ({ selected, handleFormData }) => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -31,7 +30,7 @@ const Perks = ({ selected, handleFormData }) => {
 
         <span>Wifi</span>
       </label>
-      <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
+      <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
           checked={selected.includes('parking')}
@@ -44,7 +43,7 @@ const Perks = ({ selected, handleFormData }) => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -55,7 +54,7 @@ const Perks = ({ selected, handleFormData }) => {
 
         <span>Free parking spot</span>
       </label>
-      <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
+      <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
           checked={selected.includes('tv')}
@@ -68,7 +67,7 @@ const Perks = ({ selected, handleFormData }) => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -79,7 +78,7 @@ const Perks = ({ selected, handleFormData }) => {
 
         <span>TV</span>
       </label>
-      <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
+      <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
           checked={selected.includes('radio')}
@@ -92,7 +91,7 @@ const Perks = ({ selected, handleFormData }) => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -103,7 +102,7 @@ const Perks = ({ selected, handleFormData }) => {
 
         <span>Radio</span>
       </label>
-      <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
+      <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
           checked={selected.includes('pets')}
@@ -116,7 +115,7 @@ const Perks = ({ selected, handleFormData }) => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -127,7 +126,7 @@ const Perks = ({ selected, handleFormData }) => {
 
         <span>Pets</span>
       </label>
-      <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
+      <label className="flex cursor-pointer items-center gap-2 rounded-2xl border p-4">
         <input
           type="checkbox"
           checked={selected.includes('enterence')}
@@ -140,7 +139,7 @@ const Perks = ({ selected, handleFormData }) => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"

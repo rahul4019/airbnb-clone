@@ -1,63 +1,41 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-import { UserContext } from '@/providers/UserProvider';
-import axiosInstance from '@/utils/axios';
+import { GoogleLogin } from '@react-oauth/google';
 
 import ProfilePage from './ProfilePage';
+import { useAuth } from '../../hooks';
 
-import { GoogleLogin } from '@react-oauth/google';
-import jwt_decode from 'jwt-decode';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [redirect, setRedirect] = useState(false);
-  const { user, login } = useContext(UserContext);
+  const auth = useAuth();
+
+  const handleFormData = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await axiosInstance.post('user/login', {
-        email,
-        password,
-      });
 
-      if (data.user) {
-        login(data.user, data.token);
-      }
-
-      toast.success('Login successfull!');
+    const response = await auth.login(formData);
+    if (response.success) {
+      toast.success(response.message);
       setRedirect(true);
-    } catch (err) {
-      if (err.response) {
-        const { message } = err.response.data;
-        toast.error(message);
-      } else if (err.request) {
-        toast.error(err.request);
-      } else {
-        console.log('Error: ', err.message);
-      }
+    } else {
+      toast.error(response.message);
     }
   };
 
   const handleGoogleLogin = async (credential) => {
-    const decoded = jwt_decode(credential);
-    console.log(decoded);
-
-    try {
-      const { data } = await axiosInstance.post('user/google/login', {
-        name: `${decoded.given_name} ${decoded.family_name}`,
-        email: decoded.email,
-      });
-      if (data.user) {
-        login(data.user, data.token);
-      }
-      toast.success('Login successfull!');
+    const response = await auth.googleLogin(credential);
+    if (response.success) {
+      toast.success(response.message);
       setRedirect(true);
-    } catch (error) {
-      console.log(error);
+    } else {
+      toast.error(response.message);
     }
   };
 
@@ -65,34 +43,36 @@ const LoginPage = () => {
     return <Navigate to={'/'} />;
   }
 
-  if (user) {
+  if (auth.user) {
     return <ProfilePage />;
   }
 
   return (
-    <div className="mt-4 grow flex justify-around items-center p-4 md:p-0">
+    <div className="mt-4 flex grow items-center justify-around p-4 md:p-0">
       <div className="mb-40">
-        <h1 className="text-4xl text-center mb-4">Login</h1>
-        <form className="max-w-md mx-auto" onSubmit={handleFormSubmit}>
+        <h1 className="mb-4 text-center text-4xl">Login</h1>
+        <form className="mx-auto max-w-md" onSubmit={handleFormSubmit}>
           <input
+            name="email"
             type="email"
             placeholder="your@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleFormData}
           />
           <input
+            name="password"
             type="password"
             placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleFormData}
           />
           <button className="primary">Login</button>
         </form>
 
         <div className="flex w-full items-center gap-4">
-          <div className="border-[1px] h-0 w-1/2"></div>
+          <div className="h-0 w-1/2 border-[1px]"></div>
           <p className="small -mt-1">or</p>
-          <div className="border-[1px] h-0 w-1/2"></div>
+          <div className="h-0 w-1/2 border-[1px]"></div>
         </div>
 
         {/* Google login button */}
@@ -138,7 +118,7 @@ const LoginPage = () => {
           </button>
         </GoogleLogin>
 
-        <div className="text-center py-2 text-gray-500">
+        <div className="py-2 text-center text-gray-500">
           Don't have an account yet?{' '}
           <Link className="text-black underline" to={'/register'}>
             Register now

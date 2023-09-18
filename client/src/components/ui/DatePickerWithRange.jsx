@@ -35,14 +35,14 @@ export default function DatePickerWithRange({ className, setDateRange }) {
       <Popover>
         <PopoverTrigger
           asChild
-          className="border-none hover:bg-transparent text-black"
+          className="border-none text-black hover:bg-transparent"
         >
           <Button
             id="date"
             variant={'outline'}
             className={cn(
               'w-[300px] justify-start text-left font-normal',
-              !date && 'text-muted-foreground'
+              !date && 'text-muted-foreground',
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -56,7 +56,7 @@ export default function DatePickerWithRange({ className, setDateRange }) {
                 format(date.from, 'LLL dd, y')
               )
             ) : (
-              <span className="font-semibold text-base">Pick a date</span>
+              <span className="text-base font-semibold">Pick a date</span>
             )}
           </Button>
         </PopoverTrigger>

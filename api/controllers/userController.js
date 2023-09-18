@@ -9,7 +9,7 @@ exports.register = async (req, res) => {
 
     if (!name || !email || !password) {
       return res.status(400).json({
-        message: 'name, email and password are required',
+        message: 'Name, email and password are required',
       });
     }
 
@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
 
     if (user) {
       return res.status(400).json({
-        message: 'User already registered',
+        message: 'User already registered!',
       });
     }
 
@@ -46,15 +46,15 @@ exports.login = async (req, res) => {
     // check for presence of email and password
     if (!email || !password) {
       return res.status(400).json({
-        message: 'email and password are required',
+        message: 'Email and password are required!',
       });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(400).json({
-        message: 'User does not exist',
+      return res.status(400).json({
+        message: 'User does not exist!',
       });
     }
 
@@ -62,8 +62,8 @@ exports.login = async (req, res) => {
     const isPasswordCorrect = await user.isValidatedPassword(password);
 
     if (!isPasswordCorrect) {
-      res.status(401).json({
-        message: 'email or password is incorrect',
+      return res.status(401).json({
+        message: 'Email or password is incorrect!',
       });
     }
 

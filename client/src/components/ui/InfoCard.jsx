@@ -6,15 +6,15 @@ const InfoCard = ({ place }) => {
   return (
     <Link
       to={`/account/places/${place._id}`}
-      className="flex flex-col md:flex-row gap-4 bg-gray-100 p-4 my-3 rounded-2xl cursor-pointer hover:bg-gray-300 transition-all"
+      className="my-3 flex cursor-pointer flex-col gap-4 rounded-2xl bg-gray-100 p-4 transition-all hover:bg-gray-300 md:flex-row"
       key={place._id}
     >
-      <div className="flex w-full sm:w-32 sm:h-32 bg-gray-300 shrink-0 ">
+      <div className="flex w-full shrink-0 bg-gray-300 sm:h-32 sm:w-32 ">
         <PlaceImg place={place} />
       </div>
       <div className="">
         <h2 className="text-lg md:text-xl">{place.title}</h2>
-        <p className="text-sm mt-2 line-clamp-3">{place.description}</p>
+        <p className="line-clamp-3 mt-2 text-sm">{place.description}</p>
       </div>
     </Link>
   );

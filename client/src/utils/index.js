@@ -16,8 +16,8 @@ export const getItemFromLocalStorage = (key) => {
 };
 
 export const removeItemFromLocalStorage = (key) => {
-  if(!key) {
-    return console.error(`Cannot remove item from LS`)
+  if (!key) {
+    return console.error(`Cannot remove item from LS`);
   }
-  localStorage.removeItem(key)
-}
+  localStorage.removeItem(key);
+};

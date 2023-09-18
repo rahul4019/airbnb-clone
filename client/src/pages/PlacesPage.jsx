@@ -33,7 +33,7 @@ const PlacesPage = () => {
       <AccountNav />
       <div className="text-center ">
         <Link
-          className="inline-flex gap-1 bg-primary text-white py-2 px-6 rounded-full"
+          className="inline-flex gap-1 rounded-full bg-primary py-2 px-6 text-white"
           to={'/account/places/new'}
         >
           <svg
@@ -42,7 +42,7 @@ const PlacesPage = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -53,7 +53,7 @@ const PlacesPage = () => {
           Add new place
         </Link>
       </div>
-      <div className="mt-4 mx-4">
+      <div className="mx-4 mt-4">
         {places.length > 0 &&
           places.map((place) => <InfoCard place={place} key={place._id} />)}
       </div>

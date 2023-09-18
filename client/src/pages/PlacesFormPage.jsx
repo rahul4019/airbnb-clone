@@ -113,8 +113,8 @@ const PlacesFormPage = () => {
   const preInput = (header, description) => {
     return (
       <>
-        <h2 className="text-2xl mt-4">{header}</h2>
-        <p className="text-gray-500 text-sm">{description}</p>
+        <h2 className="mt-4 text-2xl">{header}</h2>
+        <p className="text-sm text-gray-500">{description}</p>
       </>
     );
   };
@@ -138,7 +138,7 @@ const PlacesFormPage = () => {
         // new place
         const { data } = await axiosInstance.post(
           '/places/add-places',
-          placeData
+          placeData,
         );
       }
       setRedirect(true);
@@ -159,7 +159,7 @@ const PlacesFormPage = () => {
       <form onSubmit={savePlace}>
         {preInput(
           'Title',
-          'title for your place. Should be short and catchy as in advertisement'
+          'title for your place. Should be short and catchy as in advertisement',
         )}
         <input
           type="text"
@@ -205,29 +205,9 @@ const PlacesFormPage = () => {
         {preInput(
           'Number of guests & Price',
           // 'add check in and out times, remember to have some time window forcleaning the room between guests. '
-          'Specify the maximum number of guests so that the client stays within the limit.'
+          'Specify the maximum number of guests so that the client stays within the limit.',
         )}
         <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-          {/* <div>
-            <h3 className="mt-2 -mb-1">Check in time</h3>
-            <input
-              type="text"
-              name="checkIn"
-              value={checkIn}
-              onChange={handleFormData}
-              placeholder="14"
-            />
-          </div>
-          <div>
-            <h3 className="mt-2 -mb-1">Check out time</h3>
-            <input
-              type="text"
-              name="checkOut"
-              value={checkOut}
-              onChange={handleFormData}
-              placeholder="11"
-            />
-          </div> */}
           <div>
             <h3 className="mt-2 -mb-1">Max no. of guests</h3>
             <input
@@ -249,7 +229,7 @@ const PlacesFormPage = () => {
             />
           </div>
         </div>
-        <button className="mx-auto my-4 flex bg-primary text-white py-3 px-20 rounded-full font-semibold text-xl">
+        <button className="mx-auto my-4 flex rounded-full bg-primary py-3 px-20 text-xl font-semibold text-white">
           Save
         </button>
       </form>

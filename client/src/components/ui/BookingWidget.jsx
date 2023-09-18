@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { differenceInDays } from 'date-fns';
 import { toast } from 'react-toastify';
 
-import { UserContext } from '@/providers/UserProvider';
+import { useAuth } from '../../../hooks';
 import axiosInstance from '@/utils/axios';
 import DatePickerWithRange from './DatePickerWithRange';
 
@@ -15,7 +15,7 @@ const BookingWidget = ({ place }) => {
     phone: '',
   });
   const [redirect, setRedirect] = useState('');
-  const { user } = useContext(UserContext);
+  const { user } = useAuth();
 
   const { noOfGuests, name, phone } = bookingData;
   const { _id: id, price } = place;
@@ -30,7 +30,7 @@ const BookingWidget = ({ place }) => {
     dateRange.from && dateRange.to
       ? differenceInDays(
           new Date(dateRange.to).setHours(0, 0, 0, 0),
-          new Date(dateRange.from).setHours(0, 0, 0, 0)
+          new Date(dateRange.from).setHours(0, 0, 0, 0),
         )
       : 0;
 
@@ -87,15 +87,15 @@ const BookingWidget = ({ place }) => {
   }
 
   return (
-    <div className="bg-white shadow-xl p-4 rounded-2xl">
-      <div className="text-xl text-center">
+    <div className="rounded-2xl bg-white p-4 shadow-xl">
+      <div className="text-center text-xl">
         Price: <span className="font-semibold">₹{place.price}</span> / per night
       </div>
-      <div className="border rounded-2xl mt-4">
+      <div className="mt-4 rounded-2xl border">
         <div className="flex w-full ">
           <DatePickerWithRange setDateRange={setDateRange} />
         </div>
-        <div className="py-3 px-4 border-t">
+        <div className="border-t py-3 px-4">
           <label>Number of guests: </label>
           <input
             type="number"
@@ -107,7 +107,7 @@ const BookingWidget = ({ place }) => {
             onChange={handleBookingData}
           />
         </div>
-        <div className="py-3 px-4 border-t">
+        <div className="border-t py-3 px-4">
           <label>Your full name: </label>
           <input
             type="text"

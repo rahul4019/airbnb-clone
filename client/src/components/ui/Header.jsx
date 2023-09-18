@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { UserContext } from '../../providers/UserProvider';
+import { useAuth } from '../../../hooks';
 import SearchBar from './SearchBar';
 
 export const Header = () => {
+  const auth = useAuth();
   const location = useLocation();
 
   const [showSearchBar, setShowSearchBar] = useState(true);
-  const { user } = useContext(UserContext);
   const [hasShadow, setHasShadow] = useState(false);
+  const { user } = auth;
 
   const handleScroll = () => {
     const shouldHaveShadow = window.scrollY > 0;
@@ -34,7 +35,7 @@ export const Header = () => {
 
   return (
     <header
-      className={`flex w-screen justify-center fixed top-0 bg-white py-4 z-10 ${
+      className={`fixed top-0 z-10 flex w-screen justify-center bg-white py-4 ${
         hasShadow ? 'shadow-md' : ''
       }`}
     >
@@ -50,7 +51,7 @@ export const Header = () => {
             alt=""
           />
 
-          <span className="hidden md:block font-bold text-2xl text-red-500">
+          <span className="hidden text-2xl font-bold text-red-500 md:block">
             airbnb
           </span>
         </a>
@@ -59,7 +60,7 @@ export const Header = () => {
 
         <Link
           to={user ? '/account' : '/login'}
-          className="flex gap-2 items-center md:border border-gray-300 rounded-full py-2 px-2"
+          className="flex items-center gap-2 rounded-full border-gray-300 py-2 px-2 md:border"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +68,7 @@ export const Header = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="hidden md:block w-6 h-6"
+            className="hidden h-6 w-6 md:block"
           >
             <path
               strokeLinecap="round"
@@ -86,7 +87,7 @@ export const Header = () => {
             enableBackground="new 796 796 200 200"
             xmlSpace="preserve"
             stroke="#858080"
-            className="w-8 h-8"
+            className="h-8 w-8"
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g

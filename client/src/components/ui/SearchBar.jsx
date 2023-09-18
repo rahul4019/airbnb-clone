@@ -1,15 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
-import { PlaceContext } from '@/providers/PlaceProvider';
 import axiosInstance from '@/utils/axios';
-
- 
- 
+import { usePlaces } from '../../../hooks';
 
 const SearchBar = () => {
+  const Places = usePlaces();
+  const { setPlaces, setLoading } = Places;
+
   const [searchText, setSearchText] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(null);
-  const { setPlaces, setLoading } = useContext(PlaceContext);
 
   const handleSearch = async (e) => {
     clearTimeout(searchTimeout);
@@ -20,30 +19,30 @@ const SearchBar = () => {
       setSearchTimeout(
         setTimeout(async () => {
           const { data } = await axiosInstance.get(
-            `/places/search/${searchText.trimStart()}`
+            `/places/search/${searchText.trimStart()}`,
           );
           setPlaces(data);
           setLoading(false);
-        }, 500)
+        }, 500),
       );
     }
   };
 
   return (
     <>
-      <div className="flex w-4/6 md:w-1/2 bg-gray-300 border border-gray-400 rounded-full overflow-hidden shadow-sm hover:shadow-lg">
+      <div className="flex w-4/6 overflow-hidden rounded-full border border-gray-400 bg-gray-300 shadow-sm hover:shadow-lg md:w-1/2">
         <div className="grow">
           <input
             type="search"
             placeholder="Where you want to go?"
-            className="w-full h-full py-2 px-4 border-none focus:outline-none  text-sm md:text-lg"
+            className="h-full w-full border-none py-2 px-4 text-sm  focus:outline-none md:text-lg"
             onChange={(e) => handleSearch(e)}
             value={searchText}
           />
         </div>
-        <div className="flex items-center bg-primary  bg-blue text-white cursor-pointer">
+        <div className="bg-blue flex cursor-pointer  items-center bg-primary text-white">
           <button
-            className="flex py-2 px-4 md:p-2 bg-primary rounded-r-full"
+            className="flex rounded-r-full bg-primary py-2 px-4 md:p-2"
             onClick={handleSearch}
           >
             <svg
@@ -52,7 +51,7 @@ const SearchBar = () => {
               viewBox="0 0 24 24"
               strokeWidth={3}
               stroke="currentColor"
-              className="w-4 h-4 mt-1"
+              className="mt-1 h-4 w-4"
             >
               <path
                 strokeLinecap="round"
@@ -60,7 +59,7 @@ const SearchBar = () => {
                 d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
               />
             </svg>
-            <span className="hidden md:block ml-1">Search</span>
+            <span className="ml-1 hidden md:block">Search</span>
           </button>
         </div>
       </div>

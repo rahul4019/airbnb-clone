@@ -2,15 +2,14 @@ import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Navigate, useParams } from 'react-router-dom';
 
-import { UserContext } from '@/providers/UserProvider';
-
 import AccountNav from '@/components/ui/AccountNav';
-import axiosInstance from '@/utils/axios';
 
 import PlacesPage from './PlacesPage';
+import { useAuth } from '../../hooks';
 
 const ProfilePage = () => {
-  const { user, logout } = useContext(UserContext);
+  const auth = useAuth();
+  const { user, logout } = auth;
   const [redirect, setRedirect] = useState(null);
 
   let { subpage } = useParams();
@@ -19,16 +18,13 @@ const ProfilePage = () => {
   }
 
   const handleLogout = async () => {
-    try {
-      const { data } = await axiosInstance.get('/user/logout');
-      if (data.success) {
-        logout();
-        toast.success(data.message);
-      }
-    } catch (error) {
-      console.log(error);
+    const response = await logout();
+    if (response.success) {
+      toast.success(response.message);
+      setRedirect('/');
+    } else {
+      toast.error(response.message);
     }
-    setRedirect('/');
   };
 
   if (!user && !redirect) {
@@ -43,11 +39,11 @@ const ProfilePage = () => {
     <div>
       <AccountNav />
       {subpage === 'profile' && (
-        <div className="text-center max-w-lg mx-auto">
+        <div className="mx-auto max-w-lg text-center">
           Logged in as {user.name} ({user.email})
           <br />
           <button
-            className="w-3/4 md:w-full text-white bg-primary rounded-2xl p-2 mt-2"
+            className="mt-2 w-3/4 rounded-2xl bg-primary p-2 text-white md:w-full"
             onClick={handleLogout}
           >
             Logout

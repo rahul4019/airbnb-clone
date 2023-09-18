@@ -1,23 +1,20 @@
-import { createContext, useEffect, useState } from 'react';
-import axiosInstance from '../utils/axios';
+import { createContext } from 'react';
 
-export const PlaceContext = createContext([]);
+import { useProvidePlaces } from '../../hooks';
+
+const initialState = {
+  places: [],
+  setPlaces: () => {},
+  loading: true,
+  setLoading: () => {},
+};
+
+export const PlaceContext = createContext(initialState);
 
 export const PlaceProvider = ({ children }) => {
-  const [places, setPlaces] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const getPlaces = async () => {
-      const { data } = await axiosInstance.get('/places');
-      setPlaces(data.places);
-      setLoading(false);
-    };
-    getPlaces();
-  }, []);
+  const allPlaces = useProvidePlaces();
 
   return (
-    <PlaceContext.Provider value={{ places, setPlaces, setLoading, loading }}>
-      {children}
-    </PlaceContext.Provider>
+    <PlaceContext.Provider value={allPlaces}>{children}</PlaceContext.Provider>
   );
 };

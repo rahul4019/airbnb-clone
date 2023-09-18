@@ -3,10 +3,10 @@ import React from 'react';
 const PerksWidget = ({ perks }) => {
   return (
     <div className="mt-4">
-      <hr className="border mb-5" />
+      <hr className="mb-5 border" />
       <p className="text-2xl font-semibold">What this place offers</p>
 
-      <div className="grid flex-col gap-4 mt-4 lg:grid-cols-2 lg:gap-4 lg:justify-items-stretch">
+      <div className="mt-4 grid flex-col gap-4 lg:grid-cols-2 lg:justify-items-stretch lg:gap-4">
         <div className="flex gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +14,7 @@ const PerksWidget = ({ perks }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -33,7 +33,7 @@ const PerksWidget = ({ perks }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -52,7 +52,7 @@ const PerksWidget = ({ perks }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -74,7 +74,7 @@ const PerksWidget = ({ perks }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -93,7 +93,7 @@ const PerksWidget = ({ perks }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -112,7 +112,7 @@ const PerksWidget = ({ perks }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"

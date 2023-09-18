@@ -2,44 +2,44 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <div className="w-full  bg-gray-100 pb-8 flex justify-center">
-      <div className="w-full max-w-screen-xl flex flex-col items-center px-6">
+    <div className="flex  w-full justify-center bg-gray-100 pb-8">
+      <div className="flex w-full max-w-screen-xl flex-col items-center px-6">
         {/* grid for links */}
-        <div className="py-8  w-full grid grid-cols-1 md:grid-cols-3 gap-4 text-sm ">
+        <div className="grid  w-full grid-cols-1 gap-4 py-8 text-sm md:grid-cols-3 ">
           <div className="flex flex-col gap-1">
             <strong className="font-medium">Support</strong>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Help Center
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Get help with a safety issue
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Air cover
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Anti-discrimination
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Disablity support
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Cancellation options
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Report neighbourhood concern
               </span>
             </p>
@@ -47,27 +47,27 @@ const Footer = () => {
           <div className="flex flex-col gap-1">
             <strong className="font-medium">Hosting</strong>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Airbnb your home
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 AirCover for Hosts
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Hosting resources
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Community forum
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Hosting responsibly
               </span>
             </p>
@@ -75,45 +75,45 @@ const Footer = () => {
           <div className="flex flex-col gap-1">
             <strong className="font-medium">Airbnb</strong>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Newsroom
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 New features
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Careers
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Investors
               </span>
             </p>
             <p>
-              <span className="font-normal text-gray-700 cursor-pointer hover:underline underline-offset-1 decoration-1">
+              <span className="cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline">
                 Airbnb.org emergency stays
               </span>
             </p>
           </div>
         </div>
 
-        <div className="border-[1px] border-gray-200 w-full my-4"></div>
+        <div className="my-4 w-full border-[1px] border-gray-200"></div>
 
-        <div className="flex flex-col lg:flex-row w-full justify-between items-center gap-4 md:gap-0">
-          <div className="flex mt-4 gap-10 md:order-last w-full md:w-auto justify-between">
-            <div className="font-semibold text-sm flex">
+        <div className="flex w-full flex-col items-center justify-between gap-4 md:gap-0 lg:flex-row">
+          <div className="mt-4 flex w-full justify-between gap-10 md:order-last md:w-auto">
+            <div className="flex text-sm font-semibold">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-6 h-6 mr-2"
+                className="mr-2 h-6 w-6"
               >
                 <path
                   strokeLinecap="round"
@@ -145,7 +145,7 @@ const Footer = () => {
               {/* instagram icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 cursor-pointer"
+                className="h-6 w-6 cursor-pointer"
                 viewBox="0 0 50 50"
               >
                 <path d="M 16 3 C 8.83 3 3 8.83 3 16 L 3 34 C 3 41.17 8.83 47 16 47 L 34 47 C 41.17 47 47 41.17 47 34 L 47 16 C 47 8.83 41.17 3 34 3 L 16 3 z M 37 11 C 38.1 11 39 11.9 39 13 C 39 14.1 38.1 15 37 15 C 35.9 15 35 14.1 35 13 C 35 11.9 35.9 11 37 11 z M 25 14 C 31.07 14 36 18.93 36 25 C 36 31.07 31.07 36 25 36 C 18.93 36 14 31.07 14 25 C 14 18.93 18.93 14 25 14 z M 25 16 C 20.04 16 16 20.04 16 25 C 16 29.96 20.04 34 25 34 C 29.96 34 34 29.96 34 25 C 34 20.04 29.96 16 25 16 z"></path>
@@ -153,20 +153,20 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="text-gray-700 font-normal flex flex-col md:flex-row md:gap-8 md:items-center w-full md:w-auto gap-2 px-1">
+          <div className="flex w-full flex-col gap-2 px-1 font-normal text-gray-700 md:w-auto md:flex-row md:items-center md:gap-8">
             <p className="text-sm">&copy; 2023 Airbnb, Inc.</p>
             <div>
               <ul className=" flex gap-6 text-sm text-gray-700">
-                <li className="md:list-disc cursor-pointer hover:underline underline-offset-1 decoration-1 text-gray-700">
+                <li className="cursor-pointer text-gray-700 decoration-1 underline-offset-1 hover:underline md:list-disc">
                   Privacy
                 </li>
-                <li className="list-disc cursor-pointer hover:underline underline-offset-1 decoration-1 text-gray-700">
+                <li className="cursor-pointer list-disc text-gray-700 decoration-1 underline-offset-1 hover:underline">
                   Terms
                 </li>
-                <li className="list-disc cursor-pointer hover:underline underline-offset-1 decoration-1 text-gray-700">
+                <li className="cursor-pointer list-disc text-gray-700 decoration-1 underline-offset-1 hover:underline">
                   Sitemap
                 </li>
-                <li className="list-disc cursor-pointer hover:underline underline-offset-1 decoration-1 text-gray-700">
+                <li className="cursor-pointer list-disc text-gray-700 decoration-1 underline-offset-1 hover:underline">
                   Company details
                 </li>
               </ul>

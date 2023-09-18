@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 const AddressLink = ({ placeAddress, className = null }) => {
   if (!className) {
-    className = "my-3 block";
+    className = 'my-3 block';
   }
 
-  className += " flex gap-1 font-semibold underline";
+  className += ' flex gap-1 font-semibold underline';
   return (
     <a
       className={className}
@@ -18,7 +18,7 @@ const AddressLink = ({ placeAddress, className = null }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+        className="h-6 w-6"
       >
         <path
           strokeLinecap="round"

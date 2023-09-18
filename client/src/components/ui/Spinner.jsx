@@ -3,7 +3,7 @@ import { TailSpin } from 'react-loader-spinner';
 
 const Spinner = () => {
   return (
-    <div className='flex flex-col justify-center items-center absolute inset-1/2'>
+    <div className="absolute inset-1/2 flex flex-col items-center justify-center">
       <TailSpin
         height={100}
         width={200}

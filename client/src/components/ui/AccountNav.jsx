@@ -19,7 +19,7 @@ const AccountNav = () => {
     return classes;
   };
   return (
-    <nav className="w-full flex flex-col p-8 md:flex-row md:p-0 justify-center mt-24 gap-2 mb-8">
+    <nav className="mt-24 mb-8 flex w-full flex-col justify-center gap-2 p-8 md:flex-row md:p-0">
       <Link className={linkClases('profile')} to={'/account'}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@ const AccountNav = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -44,7 +44,7 @@ const AccountNav = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -61,7 +61,7 @@ const AccountNav = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
