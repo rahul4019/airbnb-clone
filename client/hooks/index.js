@@ -103,14 +103,43 @@ export const useProvideAuth = () => {
         }
     }
 
+    const uploadPicture = async (picture) => {
+        try {
+            const formData = new FormData()
+            formData.append('picture', picture)
+            const { data } = await axiosInstance.post('/user/upload-picture', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            return data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const updateUser = async (userDetails) => {
+        const { name, password, picture } = userDetails;
+        const email = JSON.parse(getItemFromLocalStorage('user')).email
+        try {
+            const { data } = await axiosInstance.put('/user/update-user', {
+                name, password, email, picture
+            })
+            return data;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     return {
         user,
+        setUser,
         register,
         login,
         googleLogin,
         logout,
-        loading
+        loading,
+        uploadPicture,
+        updateUser
     }
 }
 

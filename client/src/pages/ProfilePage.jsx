@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Navigate, useParams } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import PlacesPage from './PlacesPage';
 import { useAuth } from '../../hooks';
 import { LogOut, Mail, PenSquare, Text } from 'lucide-react';
+import EditProfileDialog from '@/components/ui/EditProfileDialog';
 
 const ProfilePage = () => {
   const auth = useAuth();
@@ -46,7 +47,12 @@ const ProfilePage = () => {
           {/* avatar */}
           <div className="flex h-40 w-40 justify-center rounded-full bg-gray-200 p-4  sm:h-72 sm:w-72 md:h-96 md:w-96">
             <Avatar>
-              <AvatarImage src="https://res.cloudinary.com/rahul4019/image/upload/v1695133265/pngwing.com_zi4cre.png" />
+              {user.picture ? (
+                <AvatarImage src={user.picture} />
+              ) : (
+                <AvatarImage src="https://res.cloudinary.com/rahul4019/image/upload/v1695133265/pngwing.com_zi4cre.png" />
+              )}
+
               <AvatarFallback>{user.name.slice([0], [1])}</AvatarFallback>
             </Avatar>
           </div>
@@ -74,10 +80,8 @@ const ProfilePage = () => {
             {/* Action buttons */}
             <div className="flex w-full justify-around sm:justify-end sm:gap-5 md:gap-10">
               {/* <Button varient="secondary">Edit profile</Button> */}
-              <Button className="bg-blue-600 hover:bg-blue-600 ">
-                <PenSquare className="mr-2 h-4 w-4" />
-                Edit Profile
-              </Button>
+              <EditProfileDialog />
+
               <Button variant="secondary" onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
