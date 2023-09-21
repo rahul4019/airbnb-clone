@@ -50,7 +50,7 @@ const ProfilePage = () => {
               {user.picture ? (
                 <AvatarImage src={user.picture} />
               ) : (
-                <AvatarImage src="https://res.cloudinary.com/rahul4019/image/upload/v1695133265/pngwing.com_zi4cre.png" />
+                <AvatarImage src="https://res.cloudinary.com/rahul4019/image/upload/v1695133265/pngwing.com_zi4cre.png" className="object-cover"/>
               )}
 
               <AvatarFallback>{user.name.slice([0], [1])}</AvatarFallback>

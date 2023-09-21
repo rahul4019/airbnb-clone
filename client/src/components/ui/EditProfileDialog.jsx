@@ -46,8 +46,10 @@ const EditProfileDialog = () => {
 
     // Validation
     if (name.trim() === '') {
+      setLoading(false);
       return toast.error("Name Can't be empty");
     } else if (password !== confirm_password) {
+      setLoading(false);
       return toast.error("Passwords don't match");
     }
 
