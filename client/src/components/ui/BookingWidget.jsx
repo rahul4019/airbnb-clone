@@ -71,13 +71,19 @@ const BookingWidget = ({ place }) => {
         place: id,
         price: numberOfNights * price,
       });
-
+      
       const bookingId = response.data.booking._id;
 
       setRedirect(`/account/bookings/${bookingId}`);
       toast('Congratulations! Enjoy your trip.');
     } catch (error) {
-      toast.error('Something went wrong!');
+    
+      if(error["response"]["data"]["message"]){
+        toast.error(error["response"]["data"]["message"]);
+      }
+      else{
+        toast.error('Something went wrong!');
+      }
       console.log('Error: ', error);
     }
   };

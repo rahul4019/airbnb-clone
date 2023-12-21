@@ -10,7 +10,7 @@
     "api",
     "backend"
   ],
-  "author": "rahul4019",
+  "author": "georgeyoumans",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

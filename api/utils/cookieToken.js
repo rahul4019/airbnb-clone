@@ -9,6 +9,7 @@ const cookieToken = (user, res) => {
         secure: true,   // Only send over HTTPS
         sameSite: 'none' // Allow cross-origin requests
     };
+    // console.log(options)
 
 
     user.password = undefined;
