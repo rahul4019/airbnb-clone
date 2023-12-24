@@ -55,6 +55,9 @@ const SingleBookedPlace = () => {
               <h2 className="mb-4 text-2xl md:text-2xl">
                 Your booking information
               </h2>
+              <div>
+                Status: {booking.status.toUpperCase()}
+              </div>
               <BookingDates booking={booking} />
             </div>
             <div className="mt-5 w-full rounded-2xl bg-primary p-6 text-white sm:mt-0 sm:w-auto">
