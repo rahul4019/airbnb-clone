@@ -34,6 +34,7 @@ exports.createBookings = async (req, res) => {
       name,
       phone,
       price,
+      status: "pending",
     });
 
     res.status(200).json({
@@ -73,6 +74,108 @@ exports.createBookings = async (req, res) => {
 //     });
 //   }
 // };
+
+
+/// Delete a booking 
+exports.deleteBooking = async(req, res) => {
+  try {
+    const bookingId = req.id;
+
+    const bookingObj = Booking.findById(bookingId);
+
+    if(!bookingObj){
+      return res.status(404).json({
+        error:`Booking id ${bookingId} not found`
+      })
+    }
+
+
+    await Booking.findByIdAndDelete(bookingId);
+
+    return res.status(200).json({
+      message: "Booking successfully deleted"
+    })
+  }  catch (err){
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err
+    })
+  }
+}
+
+
+exports.deleteUserBooking = async(req, res) => {
+  try {
+    const userId = req.user.id;
+    const bookingId = req.id;
+
+    const bookingObj = Booking.findById(bookingId);
+
+    if(!bookingObj){
+      return res.status(404).json({
+        error:`Booking id ${bookingId} not found`
+      })
+    }
+
+    if(bookingObj.user.id !== userId){
+      return res.status(403).json({
+        error: "You are not authorized to delete this booking"
+      })
+    }
+    await Booking.findByIdAndDelete(bookingId);
+
+    return res.status(200).json({
+      message: "Booking successfully deleted"
+    })
+  }  catch (err){
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err
+    })
+  }
+}
+
+
+// cancel a user specific bookings
+exports.cancelBookings = async (req, res) => {
+
+  try{
+    const userData = req.user;
+    const bookingId = req.id;
+
+
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({
+        message: 'Booking not found.',
+      });
+    }
+
+    if( booking.status !== 'pending'){
+      return res.status(400).json({
+        error: "Booking can not be cancelled"
+      })
+    }
+
+    booking.status = 'canceled';
+
+    await booking.save();
+    res.status(200).json({
+      message: 'Booking canceled successfully.',
+      booking,
+    });
+
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err
+    })
+  }
+}
+
+
+
+
 
 // Returns user specific bookings
 exports.getBookings = async (req, res) => {
