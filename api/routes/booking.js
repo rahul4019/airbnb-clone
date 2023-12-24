@@ -6,12 +6,16 @@ const {
   createBookings,
   getBookings,
   deleteBooking,
-  cancelBookings
+  cancelBookings,
+  completeBookings,
+  confirmBookings,
 } = require('../controllers/bookingController');
 
 // Protected routes (user must be logged in)
 router.route('/').get(isLoggedIn, getBookings).post(isLoggedIn, createBookings);
 router.route('/delete/:id').delete(isLoggedIn, deleteBooking);
-router.route('/cancel/:id').put(isLoggedIn,cancelBookings);
+router.route('/cancel/:id').patch(isLoggedIn,cancelBookings);
+router.route('/confirm/:id').patch(isLoggedIn,confirmBookings);
+router.route('/complete/:id').patch(isLoggedIn,completeBookings);
 
 module.exports = router;

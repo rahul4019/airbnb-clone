@@ -174,6 +174,73 @@ exports.cancelBookings = async (req, res) => {
 }
 
 
+// confirm a user specific bookings
+exports.confirmBookings = async (req, res) => {
+
+  try{
+    const bookingId = req.id;
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({
+        message: 'Booking not found.',
+      });
+    }
+
+    if( booking.status !== 'pending'){
+      return res.status(400).json({
+        error: `Booking can not be confirmed. It is ${booking.status}`
+      })
+    }
+
+    booking.status = 'confirmed';
+
+    await booking.save();
+    res.status(200).json({
+      message: 'Booking confirmed successfully.',
+      booking,
+    });
+
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err
+    })
+  }
+}
+
+
+exports.completeBookings = async (req, res) => {
+
+  try{
+    const bookingId = req.id;
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({
+        message: 'Booking not found.',
+      });
+    }
+
+    if( booking.status !== 'confirmed'){
+      return res.status(400).json({
+        error: `Booking can not be completed. It is ${booking.status}`
+      })
+    }
+
+    booking.status = 'completed';
+
+    await booking.save();
+    res.status(200).json({
+      message: 'Booking completed successfully.',
+      booking,
+    });
+
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err
+    })
+  }
+}
 
 
 
