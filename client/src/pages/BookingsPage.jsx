@@ -7,6 +7,8 @@ import BookingDates from '@/components/ui/BookingDates';
 import Spinner from '@/components/ui/Spinner';
 import axiosInstance from '@/utils/axios';
 
+import { capitalizeFirstLetter } from '@/utils';
+
 const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,13 +51,15 @@ const BookingsPage = () => {
               <div className="grow py-3 pr-3">
                 <h2 className="md:text-2xl">{booking?.place?.title}</h2>
                 <div className="md:text-xl">
-                  <div className="flex gap-2 border-t "></div>
+                  
                   <div className="md:text-xl">
                     <BookingDates
                       booking={booking}
-                      className="mb-2 mt-4 hidden items-center text-gray-600  md:flex"
+                      className="mb-2 mt-2 hidden items-center text-gray-600  md:flex"
                     />
-
+                    <div className='md:text-sm'>
+                      Status: <span className='font-semibold'>{capitalizeFirstLetter(booking.status)}</span>
+                    </div>
                     <div className="my-2 flex items-center gap-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
