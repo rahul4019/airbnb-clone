@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { toast } from 'react-toastify';
 import AccountNav from '../components/ui/AccountNav';
 import AddressLink from '../components/ui/AddressLink';
 import BookingDates from '../components/ui/BookingDates';
@@ -35,9 +36,65 @@ const SingleBookedPlace = () => {
     getBookings();
   }, [id]);
 
+  const updateLocalState = (updatedBooking) => {
+    setBooking(updatedBooking);
+  };
+
+
+  const handleCancel = async () => {
+    try {
+      const response = await axiosInstance.patch(`/bookings/cancel/${id}`);
+      console.log(response);
+      console.log(response.data.message);
+      if (response.status === 200) {
+        toast(response.data.message);
+      }
+      else {
+        toast.error(response.data.error);
+      }
+    } catch (error) {
+      console.error('Error cancelling booking: ', error);
+    }
+  };
+
+  const handleComplete = async () => {
+    try {
+      const response = await axiosInstance.patch(`/bookings/complete/${id}`);
+      console.log(response);
+      console.log(response.data.message);
+      if (response.status === 200) {
+        toast(response.data.message);
+      }
+      else {
+        toast.error(response.data.error);
+      }
+    } catch (error) {
+      console.error('Error cancelling booking: ', error);
+    }
+  };
+
+  const handleConfirm = async () => {
+    try {
+      const response = await axiosInstance.patch(`/bookings/confirm/${id}`)
+      console.log(response);
+      console.log(response.data.message);
+      if (response.status === 200) {
+        toast(response.data.message);
+      }
+      else {
+        toast.error(response.data.error);
+      }
+    } catch (error) {
+      console.error('Error cancelling booking: ', error);
+    }
+  }
+
+
+
   if (loading) {
     return <Spinner />;
   }
+
 
   return (
     <div>
@@ -60,6 +117,10 @@ const SingleBookedPlace = () => {
               </div>
               <BookingDates booking={booking} />
             </div>
+
+            <div className='mt-3 w-full rounded-2xl p-6 text-dark sm:mt-0 sm:w-auto'>
+              
+            </div>                          
             <div className="mt-5 w-full rounded-2xl bg-primary p-6 text-white sm:mt-0 sm:w-auto">
               <div className="hidden md:block">Total price</div>
               <div className="flex justify-center text-3xl">
