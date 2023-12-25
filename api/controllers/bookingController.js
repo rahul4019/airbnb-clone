@@ -79,7 +79,7 @@ exports.createBookings = async (req, res) => {
 /// Delete a booking 
 exports.deleteBooking = async(req, res) => {
   try {
-    const bookingId = req.id;
+    const bookingId = req.params.id;
 
     const bookingObj = Booking.findById(bookingId);
 
@@ -107,7 +107,7 @@ exports.deleteBooking = async(req, res) => {
 exports.deleteUserBooking = async(req, res) => {
   try {
     const userId = req.user.id;
-    const bookingId = req.id;
+    const bookingId = req.params.id;
 
     const bookingObj = Booking.findById(bookingId);
 
@@ -141,7 +141,7 @@ exports.cancelBookings = async (req, res) => {
 
   try{
     const userData = req.user;
-    const bookingId = req.id;
+    const bookingId = req.params.id;
 
 
     const booking = await Booking.findById(bookingId);
@@ -178,8 +178,9 @@ exports.cancelBookings = async (req, res) => {
 exports.confirmBookings = async (req, res) => {
 
   try{
-    const bookingId = req.id;
+    const bookingId = req.params.id;
     const booking = await Booking.findById(bookingId);
+    // console.log(booking);
     if (!booking) {
       return res.status(404).json({
         message: 'Booking not found.',
@@ -212,7 +213,7 @@ exports.confirmBookings = async (req, res) => {
 exports.completeBookings = async (req, res) => {
 
   try{
-    const bookingId = req.id;
+    const bookingId = req.params.id;
     const booking = await Booking.findById(bookingId);
     if (!booking) {
       return res.status(404).json({

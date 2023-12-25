@@ -23,7 +23,6 @@ const SingleBookedPlace = () => {
       const filteredBooking = data.booking.filter(
         (booking) => booking._id === id,
       );
-
       setBooking(filteredBooking[0]);
     } catch (error) {
       console.log('Error: ', error);
@@ -42,8 +41,9 @@ const SingleBookedPlace = () => {
 
 
   const handleCancel = async () => {
+    const bookingId = booking._id;
     try {
-      const response = await axiosInstance.patch(`/bookings/cancel/${id}`);
+      const response = await axiosInstance.patch(`/bookings/cancel/${bookingId}`);
       console.log(response);
       console.log(response.data.message);
       if (response.status === 200) {
@@ -58,8 +58,9 @@ const SingleBookedPlace = () => {
   };
 
   const handleComplete = async () => {
+    const bookingId = booking._id;
     try {
-      const response = await axiosInstance.patch(`/bookings/complete/${id}`);
+      const response = await axiosInstance.patch(`/bookings/complete/${bookingId}`);
       console.log(response);
       console.log(response.data.message);
       if (response.status === 200) {
@@ -74,8 +75,9 @@ const SingleBookedPlace = () => {
   };
 
   const handleConfirm = async () => {
+    const bookingId = booking._id;
     try {
-      const response = await axiosInstance.patch(`/bookings/confirm/${id}`)
+      const response = await axiosInstance.patch(`/bookings/confirm/${bookingId}`)
       console.log(response);
       console.log(response.data.message);
       if (response.status === 200) {
@@ -118,8 +120,22 @@ const SingleBookedPlace = () => {
               <BookingDates booking={booking} />
             </div>
 
-            <div className='mt-3 w-full rounded-2xl p-6 text-dark sm:mt-0 sm:w-auto'>
-              
+            <div className='mt-3 w-full flex flex-col items-center justify-between space-y-3 rounded-2xl p-6 sm:mt-0 sm:w-auto'>
+              {booking.status === 'pending' && (
+                <button onClick={handleConfirm} className="bg-confirm text-confirm-foreground w-48 px-4 py-2 rounded-md">
+                  Confirm Booking
+                </button>
+              )}
+              {booking.status === 'pending' && (
+                <button onClick={handleCancel} className="bg-cancel text-cancel-foreground w-48 px-4 py-2 rounded-md">
+                  Cancel Booking
+                </button>
+              )}
+              {booking.status === 'confirmed' && (
+                <button onClick={handleComplete} className="bg-primary text-white px-4 py-2 rounded-md">
+                  Mark as Completed
+                </button>
+              )}
             </div>                          
             <div className="mt-5 w-full rounded-2xl bg-primary p-6 text-white sm:mt-0 sm:w-auto">
               <div className="hidden md:block">Total price</div>
