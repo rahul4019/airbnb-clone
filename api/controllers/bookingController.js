@@ -257,8 +257,7 @@ exports.getBookings = async (req, res) => {
 
     const booking = await Booking.find({ user: userData.id }).populate('place')
 
-    res
-      .status(200).json({ booking, success: true })
+    res.status(200).json({ booking, success: true })
 
 
   } catch (err) {
