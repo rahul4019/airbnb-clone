@@ -28,6 +28,31 @@ const placeSchema = new mongoose.Schema({
   price: {
     type: Number,
   },
+  cleanlinessRating: {
+    type: Number,
+    default: 0,
+  },
+  accuracyRating: {
+    type: Number,
+    default: 0,
+  },
+  checkInRating: {
+    type: Number,
+    default: 0,
+  },
+  communicationRating: {
+    type: Number,
+    default: 0,
+  },
+  locationRating: {
+    type: Number,
+    default: 0,
+  },
+  valueRating: {
+    type: Number,
+    default: 0,
+  },
+
 });
 
 const Place = mongoose.model("Place", placeSchema);

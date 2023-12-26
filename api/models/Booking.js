@@ -44,6 +44,10 @@ const bookingSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  review: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Review",
+  },
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);
