@@ -44,8 +44,6 @@ const SingleBookedPlace = () => {
     const bookingId = booking._id;
     try {
       const response = await axiosInstance.patch(`/bookings/cancel/${bookingId}`);
-      // console.log(response);
-      // console.log(response.data.message);
       if (response.status === 200) {
         toast(response.data.message);
         updateLocalState(response.data.booking); 
@@ -63,11 +61,10 @@ const SingleBookedPlace = () => {
     const bookingId = booking._id;
     try {
       const response = await axiosInstance.patch(`/bookings/complete/${bookingId}`);
-      // console.log(response);
-      // console.log(response.data.message);
+      
       if (response.status === 200) {
         toast(response.data.message);
-        updateLocalState(response.data.booking); // Update local state
+        updateLocalState(response.data.booking);
         getBookings();
       }
       else {
@@ -82,8 +79,7 @@ const SingleBookedPlace = () => {
     const bookingId = booking._id;
     try {
       const response = await axiosInstance.patch(`/bookings/confirm/${bookingId}`)
-      // console.log(response);
-      // console.log(response.data.message);
+      
       if (response.status === 200) {
         toast(response.data.message);
         updateLocalState(response.data.booking); // Update local state
