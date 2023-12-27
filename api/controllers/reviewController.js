@@ -56,7 +56,7 @@ exports.createReview = async (req, res) => {
             });
         }
 
-        const review = Review.create({
+        const review = await Review.create({
             user: userData._id,
             booking,
             place,
@@ -70,8 +70,8 @@ exports.createReview = async (req, res) => {
         });
 
         if(review){
-            console.log(review);
             updateAverageRatings(place);
+            // console.log(review);
         }
 
         res.status(200).json({
@@ -152,11 +152,13 @@ exports.deleteReview = async (req, res) => {
     try {
         const userData = req.user;
         const reviewId = req.params.id;
-        const deletedReview = await Review.findByIdAndDelete(req.params.id);
+        const deletedReview = await Review.findByIdAndDelete(reviewId);
         if (!deletedReview) {
             return res.status(404).json({ error: "Review not found" });
         }
-        updateAverageRatings(deletedReview.place);
+        if (deletedReview){
+            updateAverageRatings(deletedReview.place);
+        }
         res.status(200).json({
             message:"Review Deleted Successfully"
         });
@@ -175,22 +177,28 @@ exports.updateReview = async (req, res) => {
     try {
         const userData = req.user;
         const reviewId = req.params.id;
+        const updateValues = {
+            ...req.body,
+            user: userData._id,
+        }
         const updatedReview = await Review.findByIdAndUpdate(
             reviewId,
             {
-                $set: req.body,
+                $set: updateValues,
             },
             { new: true }
         )
-        if (updatedReview){
-            updateAverageRatings(deletedReview.place);
+        if(updatedReview){
+            // console.log(updatedReview);
+            updateAverageRatings(updatedReview.place);
         }
+        
         res.status(200).json({
-            message:"Review Deleted Successfully"
+            message:"Review Updated Successfully"
         });
 
     } catch (err){
-        console.log(err);
+        console.error(err);
         res.status(500).json({
             error: err,
             message: "Internal Server Error",
