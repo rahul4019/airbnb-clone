@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedIn } = require('../middlewares/user');
 
 const {
-    createReviews,
+    createReview,
     updateReview,
     getReviews,
     getPlaceReviews,
@@ -12,12 +12,11 @@ const {
 } = require('../controllers/reviewController');
 
 
-router.route('/').get(isLoggedIn, getReviews).post(isLoggedIn, createReviews);
-router.route('/:id').delete(isLoggedIn,deleteReview);
-router.route('/user').get(isLoggedIn,getUserReviews);
-router.route('/place/:placeId').get(isLoggedIn,getPlaceReviews);
-router.route('/:id/update').put(isLoggedIn,updateReview);
-
-
+router.route('/').get(getReviews)
+// router.route('/').post(isLoggedIn, createReview);
+// router.route('/:id').delete(isLoggedIn,deleteReview);
+// router.route('/user').get(isLoggedIn,getUserReviews);
+// router.route('/place/:placeId').get(isLoggedIn,getPlaceReviews);
+// router.route('/:id/update').put(isLoggedIn,updateReview);
 
 module.exports = router;

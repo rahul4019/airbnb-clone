@@ -37,7 +37,7 @@ async function updateAverageRatings(placeId) {
 
 
 
-exports.createReviews = async (req, res) => {
+exports.createReview = async (req, res) => {
 
     try {
 
@@ -93,7 +93,14 @@ exports.getReviews = async (req, res) => {
 
     try {
         const reviews = await Review.find();
-        res.status(200).json(reviews);
+        if (reviews){
+            res.status(200).json(reviews);
+        }
+        else{
+            res.status(404).json({
+                message: "No reviews Found"
+            })
+        }
     }
     catch (err){
         console.log(err);
