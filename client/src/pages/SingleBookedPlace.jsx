@@ -8,11 +8,18 @@ import BookingDates from '../components/ui/BookingDates';
 import PlaceGallery from '../components/ui/PlaceGallery';
 import Spinner from '../components/ui/Spinner';
 import axiosInstance from '../utils/axios';
+import ReviewDialog from '@/components/ui/ReviewDialog';
 
 const SingleBookedPlace = () => {
   const { id } = useParams();
   const [booking, setBooking] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const [isReviewFormVisible, setReviewFormVisible] = useState(false);
+
+  useEffect(() => {
+    setReviewFormVisible(booking.status === 'completed');
+  }, [booking.status]);
 
   const getBookings = async () => {
     try {
@@ -146,6 +153,10 @@ const SingleBookedPlace = () => {
               </div>
             </div>
           </div>
+
+          {isReviewFormVisible && (
+            <ReviewDialog />
+          )}
           <PlaceGallery place={booking?.place} />
         </div>
       ) : (
