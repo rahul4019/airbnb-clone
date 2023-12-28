@@ -155,7 +155,9 @@ const SingleBookedPlace = () => {
           </div>
 
           {isReviewFormVisible && (
-            <ReviewDialog />
+            <div className='mb-3'>
+              <ReviewDialog booking={booking} />
+            </div>
           )}
           <PlaceGallery place={booking?.place} />
         </div>

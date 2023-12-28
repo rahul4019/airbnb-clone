@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import { Rating } from '@smastrom/react-rating'
+
+import '@smastrom/react-rating/style.css'
 
 import {
   Dialog,
@@ -8,15 +11,15 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Loader2} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
+import axiosInstance from '@/utils/axios';
 import { useAuth } from '../../../hooks';
 
-const ReviewDialog = () => {
+const ReviewDialog = ({ booking }) => {
   
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [reviewForm, setReviewForm] = useState({
     cleanliness: 1,
     accuracy: 1,
@@ -35,62 +38,49 @@ const ReviewDialog = () => {
 
 
   const handleReviewSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     setLoading(true);
 
     if (reviewForm.comment.trim() === '') {
         setLoading(false);
-        return toast.error("comment Can't be empty");
+        toast.error("comment Can't be empty");
     }
+    if (reviewForm)
 
     try {
-      const response = await axiosInstance.post(`/review`, {
-        ...reviewForm,
-        booking: booking._id,
-        place: booking.place._id,
-      });
+        // console.log(reviewForm);
+        const response = await axiosInstance.post(`/review`, {
+            ...reviewForm,
+            booking: booking._id,
+            place: booking.place._id,
+        });
 
-      if (response.status === 201) {
-        return toast.success(response.data.message);
-        // You may want to update the state or perform other actions after successful submission
+      if (response.status == 200) {
+        setLoading(false);
+        toast.success(response.data.message);
+        setIsOpen(false);
       } else {
-        return toast.error(response.data.error);
+        setLoading(false);
+        // console.log(response);
+        toast.error(response.data.error);
       }
     } catch (error) {
         setLoading(false);
         console.error('Error submitting review: ', error);
-        return toast.error('Error submitting review');
+        // console.log(error);
+        if (error.response){
+            return toast.error(error.response.data.error);
+        }
+        return toast.error(error);
     }
   };
 
-  const StarRating = ({ value, onChange }) => {
-    const stars = [1, 2, 3, 4, 5];
-  
-    return (
-      <div>
-        {stars.map((star) => (
-          <label key={star}>
-            {value}
-            <input
-              type="radio"
-              name="rating"
-              value={star}
-              checked={value === star}
-              onChange={onChange}
-            />
-            {star}
-          </label>
-        ))}
-      </div>
-    );
-  };
-  
+ 
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <DialogTrigger asChild>
-        <Button className="bg-blue-600 hover:bg-blue-600 ">
-          
+        <Button className="bg-primary hover:bg-rose-600 " onClick={() => setIsOpen(true)}>
           Write a Review
         </Button>
       </DialogTrigger>
@@ -98,7 +88,9 @@ const ReviewDialog = () => {
         
 
         {/* Update form */}
-        <form onSubmit={handleReviewSubmit} className="my-6">
+        
+
+        <form onSubmit={handleReviewSubmit} className="my-6" style={{maxHeight: "400px", overflowY:"auto"}}>
             <h2 className="text-2xl font-semibold mb-4">Leave a Review</h2>
             <label>
                 Comment
@@ -109,49 +101,100 @@ const ReviewDialog = () => {
             />
             </label>
 
-            <StarRating
-            value={reviewForm.cleanliness}
-            onChange={(e) => handleReviewFormChange({ target: { name: 'cleanliness', value: e.target.value } })}
-            />
-            <StarRating
-            value={reviewForm.accuracy}
-            onChange={(e) => handleReviewFormChange({ target: { name: 'accuracy', value: e.target.value } })}
-            />
-            <StarRating
-            value={reviewForm.checkIn}
-            onChange={(e) => handleReviewFormChange({ target: { name: 'checkIn', value: e.target.value } })}
-            />
-            <StarRating
-            value={reviewForm.communication}
-            onChange={(e) => handleReviewFormChange({ target: { name: 'communication', value: e.target.value } })}
-            />
-            <StarRating
-            value={reviewForm.location}
-            onChange={(e) => handleReviewFormChange({ target: { name: 'location', value: e.target.value } })}
-            />
-            <StarRating
-            value={reviewForm.value}
-            onChange={(e) => handleReviewFormChange({ target: { name: 'value', value: e.target.value } })}
-            />
-            <button
-            type="submit"
-            className="bg-primary text-white px-4 py-2 rounded-md"
+            <div>
+
+                <div id="cleanliness_rating" className='text-md font-semibold'>Cleanliness:</div>
+                <Rating
+                isRequired
+                style={{ maxWidth: 200 }}
+                value={reviewForm.cleanliness}
+                visibleLabelId="cleanliness"
+                onChange={(selectedValue) =>
+                    setReviewForm((prevData) => ({ ...prevData, cleanliness: selectedValue }))
+                }
+                />
+            </div>
+
+            <div>
+
+                <div id="cleanliness_rating" className='text-md font-semibold'>Accuracy</div>
+                <Rating
+                isRequired
+                style={{ maxWidth: 200 }}
+                value={reviewForm.accuracy}
+                visibleLabelId="accuracy"
+                onChange={(selectedValue) =>
+                    setReviewForm((prevData) => ({ ...prevData, accuracy: selectedValue }))
+                }
+                />
+            </div>
+            
+            <div>
+
+                <div id="checkIn_rating" className='text-md font-semibold'>CheckIn</div>
+                <Rating
+                isRequired
+                style={{ maxWidth: 200 }}
+                value={reviewForm.checkIn}
+                visibleLabelId="checkIn"
+                onChange={(selectedValue) =>
+                    setReviewForm((prevData) => ({ ...prevData, checkIn: selectedValue }))
+                }
+                />
+            </div>
+
+            <div>
+
+                <div id="communication_rating" className='text-md font-semibold'>communication</div>
+                <Rating
+                isRequired
+                style={{ maxWidth: 200 }}
+                value={reviewForm.communication}
+                visibleLabelId="communication"
+                onChange={(selectedValue) =>
+                    setReviewForm((prevData) => ({ ...prevData, communication: selectedValue }))
+                }
+                />
+            </div>
+        
+            <div>
+
+                <div id="location_rating" className='text-md font-semibold'>location</div>
+                <Rating
+                isRequired
+                style={{ maxWidth: 200 }}
+                value={reviewForm.location}
+                visibleLabelId="location"
+                onChange={(selectedValue) =>
+                    setReviewForm((prevData) => ({ ...prevData, location: selectedValue }))
+                }
+                />
+            </div>
+            <div>
+
+                <div id="value_rating" className='text-md font-semibold'>value</div>
+                <Rating
+                isRequired
+                style={{ maxWidth: 200 }}
+                value={reviewForm.value}
+                visibleLabelId="value"
+                onChange={(selectedValue) =>
+                    setReviewForm((prevData) => ({ ...prevData, value: selectedValue }))
+                }
+                />
+            </div>
+            
+            <Button
+                disabled={loading}
+                type="submit"
+                className="w-full"
+                onClick={handleReviewSubmit}
             >
-            Submit Review
-            </button>
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Post Review
+            </Button>
         </form>
         
-        <DialogFooter>
-          <Button
-            disabled={loading}
-            type="submit"
-            className="w-full"
-            onClick={handleReviewFormChange}
-          >
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Post Review
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
