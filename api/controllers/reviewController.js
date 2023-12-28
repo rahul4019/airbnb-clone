@@ -148,6 +148,26 @@ exports.getUserReviews = async (req,res) => {
     }
 }
 
+exports.getBookingUserReview = async (req,res) => {
+    try {
+        const userData = req.user;
+        const id = req.params.id
+        const reviews = await Review.find({
+            user : userData._id,
+            booking : id
+        }
+        );
+        res.status(200).json(reviews);
+    }
+    catch (err){
+        console.log(err);
+        res.status(500).json({
+            error: err,
+            message: "Internal Server Error",
+        });
+    }
+}
+
 exports.deleteReview = async (req, res) => {
     try {
         const userData = req.user;

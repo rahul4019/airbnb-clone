@@ -154,12 +154,13 @@ const SingleBookedPlace = () => {
             </div>
           </div>
 
+          <PlaceGallery place={booking?.place} />
+
           {isReviewFormVisible && (
-            <div className='mb-3'>
+            <div className='mb-3 mt-3'>
               <ReviewDialog booking={booking} />
             </div>
           )}
-          <PlaceGallery place={booking?.place} />
         </div>
       ) : (
         <h1> No data</h1>
