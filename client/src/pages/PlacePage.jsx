@@ -8,11 +8,36 @@ import AddressLink from '@/components/ui/AddressLink';
 import BookingWidget from '@/components/ui/BookingWidget';
 import PlaceGallery from '@/components/ui/PlaceGallery';
 import PerksWidget from '@/components/ui/PerksWidget';
+import { Rating } from '@smastrom/react-rating';
 
 const PlacePage = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [placeReview, setPlaceReview] = useState(null);
+
+  const [overallR, setOverallR] = useState(null);
+
+
+  const calculateOverallRating = (placeData) => {
+    
+    const {
+      cleanlinessRating,
+      accuracyRating,
+      checkInRating,
+      communicationRating,
+      locationRating,
+      valueRating,
+    } = placeData;
+
+    
+    const averageRating =
+      (cleanlinessRating + accuracyRating + checkInRating + communicationRating + locationRating + valueRating) / 6;
+
+    
+    setOverallR(averageRating);
+  };
+  
 
   useEffect(() => {
     if (!id) {
@@ -24,19 +49,30 @@ const PlacePage = () => {
     const getPlace = async () => {
       const { data } = await axiosInstance.get(`/places/${id}`);
       setPlace(data.place);
+      if(data){
+        calculateOverallRating(data.place);
+      }
+      setLoading(false);
+    };
+
+    const getPlaceReview = async () => {
+      const { data } = await axiosInstance.get(`/review/place/${id}`);
+      setPlaceReview(data.review);
       setLoading(false);
     };
     getPlace();
+    getPlaceReview();
   }, [id]);
 
   if (loading) {
     return <Spinner />;
   }
 
-  if (!place) {
+  if (!place || !placeReview) {
     return;
   }
 
+  
   return (
     <div className="mt-4 overflow-x-hidden px-8 pt-20 ">
       <h1 className="text-3xl">{place.title}</h1>
@@ -65,6 +101,24 @@ const PlacePage = () => {
           {place.extraInfo}
         </div>
       </div>
+      <div className='mt-4'>
+        <div className='text-center'>
+          <h2 className='mt-1 text-xl font-semibold'>Overall Rating</h2>
+          <div className='flex justify-center'>
+            {overallR !== null && (
+              <Rating style={{ maxWidth: 160 }} value={overallR.toFixed(2)} readOnly />
+            )}
+            <h2 className='text-2xl font-bold'>{overallR.toFixed(2)}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div className='mt-4'>
+        
+
+      </div>
+
+
     </div>
   );
 };
