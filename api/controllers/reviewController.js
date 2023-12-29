@@ -214,7 +214,8 @@ exports.updateReview = async (req, res) => {
         }
         
         res.status(200).json({
-            message:"Review Updated Successfully"
+            message:"Review Updated Successfully",
+            updatedReview
         });
 
     } catch (err){

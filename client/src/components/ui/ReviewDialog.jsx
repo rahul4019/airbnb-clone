@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Rating } from '@smastrom/react-rating'
 
@@ -16,20 +16,34 @@ import { Button } from '@/components/ui/button';
 import axiosInstance from '@/utils/axios';
 import { useAuth } from '../../../hooks';
 
-const ReviewDialog = ({ booking }) => {
+const ReviewDialog = ({ booking, existingReview, handleReviewUpdate }) => {
   
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [reviewForm, setReviewForm] = useState({
-    cleanliness: 1,
-    accuracy: 1,
-    checkIn: 1,
-    communication: 1,
-    location: 1,
-    value: 1,
+    cleanliness: 0,
+    accuracy: 0,
+    checkIn: 0,
+    communication: 0,
+    location: 0,
+    value: 0,
     comment: '',
   });
 
+
+  useEffect(() => {
+    if (existingReview) {
+      setReviewForm({
+        cleanliness: existingReview.cleanliness,
+        accuracy: existingReview.accuracy,
+        checkIn: existingReview.checkIn,
+        communication: existingReview.communication,
+        location: existingReview.location,
+        value: existingReview.value,
+        comment: existingReview.comment,
+      });
+    }
+  }, [existingReview]);
 
   const handleReviewFormChange = (e) => {
     const { name, value } = e.target;
@@ -43,22 +57,39 @@ const ReviewDialog = ({ booking }) => {
 
     if (reviewForm.comment.trim() === '') {
         setLoading(false);
-        toast.error("comment Can't be empty");
+        return toast.error("comment Can't be empty");
     }
-    if (reviewForm)
+    if (reviewForm.cleanliness === 0 || reviewForm.accuracy === 0 || reviewForm.checkIn === 0 || reviewForm.communication === 0 || reviewForm.location === 0 || reviewForm.value === 0){
+        setLoading(false);
+        return toast.error("The rating must be greater than 0");
+    }
 
     try {
+        let response;
         // console.log(reviewForm);
-        const response = await axiosInstance.post(`/review`, {
+        if (existingReview){
+          response = await axiosInstance.put(`/review/${existingReview._id}/update`, {
             ...reviewForm,
             booking: booking._id,
             place: booking.place._id,
         });
+        }
+        else{
+          response = await axiosInstance.post(`/review`, {
+              ...reviewForm,
+              booking: booking._id,
+              place: booking.place._id,
+          });
+        }
 
       if (response.status == 200) {
         setLoading(false);
         toast.success(response.data.message);
         setIsOpen(false);
+        if (handleReviewUpdate) {
+          console.log(response.data);
+          handleReviewUpdate(response.data.updatedReview);
+        }
       } else {
         setLoading(false);
         // console.log(response);
@@ -81,7 +112,7 @@ const ReviewDialog = ({ booking }) => {
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <DialogTrigger asChild>
         <Button className="bg-primary hover:bg-rose-600 " onClick={() => setIsOpen(true)}>
-          Write a Review
+        {existingReview ? 'Edit Review' : 'Write a Review'}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
@@ -170,7 +201,7 @@ const ReviewDialog = ({ booking }) => {
                 }
                 />
             </div>
-            <div>
+            <div className='mb-2'>
 
                 <div id="value_rating" className='text-md font-semibold'>value</div>
                 <Rating
