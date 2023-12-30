@@ -9,6 +9,7 @@ import BookingWidget from '@/components/ui/BookingWidget';
 import PlaceGallery from '@/components/ui/PlaceGallery';
 import PerksWidget from '@/components/ui/PerksWidget';
 import { Rating } from '@smastrom/react-rating';
+import ReviewCard from '@/components/ui/ReviewCard';
 
 const PlacePage = () => {
   const { id } = useParams();
@@ -57,7 +58,8 @@ const PlacePage = () => {
 
     const getPlaceReview = async () => {
       const { data } = await axiosInstance.get(`/review/place/${id}`);
-      setPlaceReview(data.review);
+      setPlaceReview(data);
+      console.log(data);
       setLoading(false);
     };
     getPlace();
@@ -117,19 +119,18 @@ const PlacePage = () => {
         <>
         <h2 className='mt-1 text-xl font-semibold'>This place hasn't been rated yet</h2>
         </>
-      )
-      
-      }
+      )}
         </div>
       </div>
 
       <div className='mt-4'>
             <h3 className='text-xl font-semibold text-center'>User Reviews</h3>
         </div>
-      {placeReview && (
-        <>
-        </>
-      )}
+      {placeReview && 
+        placeReview.map((review) => (
+          <ReviewCard key={review._id} review={review} />
+        ))
+      }
 
 
     </div>
