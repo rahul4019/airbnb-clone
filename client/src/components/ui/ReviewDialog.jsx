@@ -7,14 +7,13 @@ import '@smastrom/react-rating/style.css'
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog';
 
 import { Loader2} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import axiosInstance from '@/utils/axios';
-import { useAuth } from '../../../hooks';
+
 
 const ReviewDialog = ({ booking, existingReview, handleReviewUpdate, getUserReviews }) => {
   
