@@ -118,7 +118,7 @@ exports.getPlaceReviews = async (req, res) => {
         const placeId = req.params.placeId;
         const reviews = await Review.find({
             place: placeId
-        });
+        }).populate({ path:'user', select:'name picture' });
         res.status(200).json(reviews);
     }
     catch (err){

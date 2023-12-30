@@ -34,7 +34,7 @@ const PlacePage = () => {
     const averageRating =
       (cleanlinessRating + accuracyRating + checkInRating + communicationRating + locationRating + valueRating) / 6;
 
-    
+    // console.log(averageRating);
     setOverallR(averageRating);
   };
   
@@ -68,7 +68,7 @@ const PlacePage = () => {
     return <Spinner />;
   }
 
-  if (!place || !placeReview) {
+  if (!place) {
     return;
   }
 
@@ -103,20 +103,33 @@ const PlacePage = () => {
       </div>
       <div className='mt-4'>
         <div className='text-center'>
-          <h2 className='mt-1 text-xl font-semibold'>Overall Rating</h2>
-          <div className='flex justify-center'>
-            {overallR !== null && (
-              <Rating style={{ maxWidth: 160 }} value={overallR.toFixed(2)} readOnly />
-            )}
-            <h2 className='text-2xl font-bold'>{overallR.toFixed(2)}</h2>
-          </div>
+      {(overallR !== null && overallR > 0) ? (
+            <>
+              <h2 className='mt-1 text-xl font-semibold'>Overall Rating</h2>
+              <div className='flex justify-center'>
+                  <Rating style={{ maxWidth: 160 }} value={overallR.toFixed(2)} readOnly />
+                  <h2 className='text-2xl font-bold'>{overallR.toFixed(2)}</h2>
+              </div>
+            </>
+      )
+      :
+      (
+        <>
+        <h2 className='mt-1 text-xl font-semibold'>This place hasn't been rated yet</h2>
+        </>
+      )
+      
+      }
         </div>
       </div>
 
       <div className='mt-4'>
-        
-
-      </div>
+            <h3 className='text-xl font-semibold text-center'>User Reviews</h3>
+        </div>
+      {placeReview && (
+        <>
+        </>
+      )}
 
 
     </div>
