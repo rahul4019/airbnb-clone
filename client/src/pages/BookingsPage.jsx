@@ -57,7 +57,7 @@ const BookingsPage = () => {
                 className="mb-2 mt-2 hidden items-center text-gray-600  md:flex"
               />
               <div className='md:text-sm'>
-                Status: <span className='font-semibold'>{capitalizeFirstLetter(booking.status)}</span>
+              <span className='font-semibold'>Status: </span>{capitalizeFirstLetter(booking.status)}
               </div>
               <div className="my-2 flex items-center gap-1">
                 <svg
@@ -75,7 +75,7 @@ const BookingsPage = () => {
                   />
                 </svg>
                 <span className="text-xl md:text-2xl">
-                  Total price: ₹{booking.price}
+                  Total price: ${booking.price}
                 </span>
               </div>
             </div>

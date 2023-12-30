@@ -12,6 +12,7 @@ import ReviewDialog from '@/components/ui/ReviewDialog';
 import { Rating } from '@smastrom/react-rating'
 
 import ReviewElement from '@/components/ui/ReviewElement';
+import { capitalizeFirstLetter } from '@/utils';
 
 
 
@@ -153,7 +154,7 @@ const SingleBookedPlace = () => {
                 Your booking information
               </h2>
               <div>
-                Status: {booking.status.toUpperCase()}
+              <span className='font-semibold'>Status: </span> {capitalizeFirstLetter(booking.status)}
               </div>
               <BookingDates booking={booking} />
             </div>
@@ -178,7 +179,7 @@ const SingleBookedPlace = () => {
             <div className="mt-5 w-full rounded-2xl bg-primary p-6 text-white sm:mt-0 sm:w-auto">
               <div className="hidden md:block">Total price</div>
               <div className="flex justify-center text-3xl">
-                <span>₹{booking?.price}</span>
+                <span>${booking?.price}</span>
               </div>
             </div>
           </div>
@@ -193,8 +194,8 @@ const SingleBookedPlace = () => {
           ))}
           {(isReviewFormVisible && !isReviewed) && (
             <>
-              <div className='mb-3 mt-3'>
-                <ReviewDialog booking={booking} />
+              <div className='mb-3 mt-4'>
+                <ReviewDialog booking={booking} getUserReviews={getUserReviews}/>
               </div>
             </>
           )}

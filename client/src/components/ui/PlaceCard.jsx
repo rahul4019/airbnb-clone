@@ -15,7 +15,7 @@ const PlaceCard = ({ place }) => {
         <h2 className="truncate font-bold">{address}</h2>
         <h3 className="truncate text-sm text-gray-500">{title}</h3>
         <div className="mt-1">
-          <span className="font-semibold">₹{price} </span>
+          <span className="font-semibold">${price} </span>
           per night
         </div>
       </div>

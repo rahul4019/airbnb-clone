@@ -126,7 +126,7 @@ const PlacePage = () => {
         <div className='mt-1'>
               <h3 className='text-2xl font-semibold'>User Reviews</h3>
         </div>
-        {(placeReview.length > 0) ? 
+        {(placeReview && placeReview.length > 0) ? 
           placeReview.map((review) => (
             <ReviewCard key={review._id} review={review} />
           ))

@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import axiosInstance from '@/utils/axios';
 import { useAuth } from '../../../hooks';
 
-const ReviewDialog = ({ booking, existingReview, handleReviewUpdate }) => {
+const ReviewDialog = ({ booking, existingReview, handleReviewUpdate, getUserReviews }) => {
   
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -87,8 +87,10 @@ const ReviewDialog = ({ booking, existingReview, handleReviewUpdate }) => {
         toast.success(response.data.message);
         setIsOpen(false);
         if (handleReviewUpdate) {
-          console.log(response.data);
           handleReviewUpdate(response.data.updatedReview);
+        }
+        if (getUserReviews){
+          getUserReviews();
         }
       } else {
         setLoading(false);
