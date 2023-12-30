@@ -8,11 +8,26 @@ import BookingDates from '../components/ui/BookingDates';
 import PlaceGallery from '../components/ui/PlaceGallery';
 import Spinner from '../components/ui/Spinner';
 import axiosInstance from '../utils/axios';
+import ReviewDialog from '@/components/ui/ReviewDialog';
+import { Rating } from '@smastrom/react-rating'
+
+import ReviewElement from '@/components/ui/ReviewElement';
+
+
+
 
 const SingleBookedPlace = () => {
   const { id } = useParams();
   const [booking, setBooking] = useState({});
   const [loading, setLoading] = useState(false);
+  const [userReviews, setUserReviews] = useState([]);
+
+  const [isReviewFormVisible, setReviewFormVisible] = useState(false);
+  const [isReviewed, setIsReviewed] = useState(false);
+
+  useEffect(() => {
+    setReviewFormVisible(booking.status === 'completed');
+  }, [booking.status]);
 
   const getBookings = async () => {
     try {
@@ -24,6 +39,7 @@ const SingleBookedPlace = () => {
         (booking) => booking._id === id,
       );
       setBooking(filteredBooking[0]);
+      
     } catch (error) {
       console.log('Error: ', error);
     } finally {
@@ -31,9 +47,29 @@ const SingleBookedPlace = () => {
     }
   };
 
+  const getUserReviews = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/review/user/booking/${id}`);
+      // Process the response and set it in state
+      setUserReviews(data);
+    } catch (error) {
+      console.error('Error fetching user reviews: ', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getBookings();
+    getUserReviews();
+
   }, [id]);
+
+  useEffect(() => {
+    if (userReviews.length > 0 ){
+      setIsReviewed(true);
+    }
+  }, [userReviews])
 
   const updateLocalState = (updatedBooking) => {
     setBooking(updatedBooking);
@@ -146,7 +182,22 @@ const SingleBookedPlace = () => {
               </div>
             </div>
           </div>
+
           <PlaceGallery place={booking?.place} />
+          {(isReviewed && userReviews) && userReviews.map((review) => (
+            <ReviewElement
+              key={review._id}
+              booking = {booking}
+              review={review}
+            />
+          ))}
+          {(isReviewFormVisible && !isReviewed) && (
+            <>
+              <div className='mb-3 mt-3'>
+                <ReviewDialog booking={booking} />
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <h1> No data</h1>

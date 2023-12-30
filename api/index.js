@@ -43,6 +43,8 @@ app.use(cors({
 
 // use express router
 app.use('/', require('./routes'));
+const reviewRouter = require("./routes/review");
+app.use("/review", reviewRouter);
 
 app.listen(process.env.PORT || 8000, (err) => {
   if (err) {
