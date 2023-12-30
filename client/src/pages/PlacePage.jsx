@@ -81,7 +81,25 @@ const PlacePage = () => {
 
       <AddressLink placeAddress={place.address} />
       <PlaceGallery place={place} />
-
+      <div className='mt-8 mb-2'>
+        <div className='text-start'>
+      {(overallR !== null && overallR > 0) ? (
+            <>
+              <h2 className='mt-1 text-2xl font-semibold'>Overall Rating</h2>
+              <div className='flex'>
+                  <Rating style={{ maxWidth: 160 }} value={overallR.toFixed(2)} readOnly />
+                  <h2 className='text-2xl font-bold'>{overallR.toFixed(2)}</h2>
+              </div>
+            </>
+      )
+      :
+      (
+        <>
+        <h2 className='mt-1 text-2xl font-semibold'>This place hasn't been rated yet</h2>
+        </>
+      )}
+        </div>
+      </div>
       <div className="mt-8 mb-8 grid grid-cols-1 gap-8 md:grid-cols-[2fr_1fr]">
         <div className="">
           <div className="my-4 ">
@@ -103,34 +121,24 @@ const PlacePage = () => {
           {place.extraInfo}
         </div>
       </div>
-      <div className='mt-4'>
-        <div className='text-center'>
-      {(overallR !== null && overallR > 0) ? (
+      
+      <div className='mt-3 mb-4'>
+        <div className='mt-1'>
+              <h3 className='text-2xl font-semibold'>User Reviews</h3>
+        </div>
+        {(placeReview.length > 0) ? 
+          placeReview.map((review) => (
+            <ReviewCard key={review._id} review={review} />
+          ))
+          :
+          (
             <>
-              <h2 className='mt-1 text-xl font-semibold'>Overall Rating</h2>
-              <div className='flex justify-center'>
-                  <Rating style={{ maxWidth: 160 }} value={overallR.toFixed(2)} readOnly />
-                  <h2 className='text-2xl font-bold'>{overallR.toFixed(2)}</h2>
-              </div>
+              <p className='mt-1 text-sm'>No One has reviewed this package yet.</p>
             </>
-      )
-      :
-      (
-        <>
-        <h2 className='mt-1 text-xl font-semibold'>This place hasn't been rated yet</h2>
-        </>
-      )}
-        </div>
-      </div>
+          )
 
-      <div className='mt-4'>
-            <h3 className='text-xl font-semibold text-center'>User Reviews</h3>
-        </div>
-      {placeReview && 
-        placeReview.map((review) => (
-          <ReviewCard key={review._id} review={review} />
-        ))
-      }
+        }
+      </div>
 
 
     </div>
