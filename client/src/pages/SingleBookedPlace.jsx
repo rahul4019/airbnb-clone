@@ -190,6 +190,8 @@ const SingleBookedPlace = () => {
               key={review._id}
               booking = {booking}
               review={review}
+              getUserReviews={getUserReviews}
+              setIsReviewed={setIsReviewed}
             />
           ))}
           {(isReviewFormVisible && !isReviewed) && (

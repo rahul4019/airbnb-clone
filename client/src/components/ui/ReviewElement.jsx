@@ -1,8 +1,12 @@
 import React from 'react';
 import { Rating } from '@smastrom/react-rating';
 import ReviewDialog from './ReviewDialog';
-import { capitalizeFirstLetter } from '@/utils';
+import { toast } from 'react-toastify';
 
+import { Loader2} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { capitalizeFirstLetter } from '@/utils';
+import axiosInstance from '@/utils/axios';
 
 const RatingWithTooltip = ({ label, value, readonly }) => (
   <div className="flex">
@@ -11,14 +15,36 @@ const RatingWithTooltip = ({ label, value, readonly }) => (
   </div>
 );
 
-const ReviewElement = ({ booking, review }) => {
+const ReviewElement = ({ booking, review, getUserReviews, setIsReviewed }) => {
   const [updatedReview, setUpdatedReview] = React.useState(review);
-    // console.log(review);
-    // console.log(cleanliness);
-    // console.log(accuracy);
+  const [loading, setLoading] = React.useState(false);
   const handleReviewUpdate = (updatedReview) => {
     setUpdatedReview(updatedReview);
   };
+
+  const handleReviewDelete = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await axiosInstance.delete(`/review/${review._id}`);
+      if (response.status == 200) {
+        setLoading(false);
+        toast.success(response.data.message);
+        getUserReviews();
+        setIsReviewed(false);
+      }
+      else {
+        setLoading(false);
+        toast.error(response.data.error);
+      }
+    } catch (error){
+      console.error(error);
+      setLoading(false);
+      toast.error(response.data.error);
+    }
+
+  }
   
     return (
       <div className="mt-4 mb-3">
@@ -38,6 +64,11 @@ const ReviewElement = ({ booking, review }) => {
           <p>{new Date(updatedReview.createdAt).toLocaleDateString()}</p>
         </div>
         <ReviewDialog booking={booking} existingReview={review} handleReviewUpdate={handleReviewUpdate} />
+        
+        <Button onClick={handleReviewDelete} disabled={loading} className="ml-2 bg-red-800 mt-4">
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Delete Review
+        </Button>
       </div>
     );
   };
