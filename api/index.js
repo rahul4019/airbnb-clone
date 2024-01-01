@@ -5,8 +5,10 @@ const cors = require('cors');
 const connectWithDB = require('./config/db');
 const cookieSession = require('cookie-session')
 const cookieParser = require('cookie-parser')
-const cloudinary = require('cloudinary').v2;
 
+const socketIo = require('socket.io');
+
+const cloudinary = require('cloudinary').v2;
 // connect with database
 connectWithDB();
 
@@ -18,6 +20,8 @@ cloudinary.config({
 });
 
 const app = express();
+const server = require('http').createServer(app);
+const io = socketIo(server);
 
 // For handling cookies
 app.use(cookieParser())
@@ -51,6 +55,22 @@ app.listen(process.env.PORT || 8000, (err) => {
     console.log('Error in connecting to server: ', err);
   }
   console.log(`Server is running on port no. ${process.env.PORT}`);
+});
+
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+
+  // Handle custom events (if needed)
+  // socket.on('custom-event', (data) => {
+  //   console.log('Custom event received:', data);
+  //   io.emit('custom-event-response', 'Custom event response data');
+  // });
 });
 
 module.exports = app;
