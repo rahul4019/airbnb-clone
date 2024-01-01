@@ -17,7 +17,7 @@ router.route('/').get(getReviews).post(isLoggedIn, createReview);
 router.route('/:id').delete(isLoggedIn,deleteReview);
 router.route('/user').get(isLoggedIn,getUserReviews);
 router.route('/user/booking/:id').get(isLoggedIn,getBookingUserReview);
-router.route('/place/:placeId').get(isLoggedIn,getPlaceReviews);
+router.route('/place/:placeId').get(getPlaceReviews);
 
 router.route('/:id/update').put(isLoggedIn,updateReview);
 
