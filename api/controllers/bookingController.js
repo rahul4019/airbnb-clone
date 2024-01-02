@@ -280,15 +280,14 @@ exports.singleBooking = async (req, res) => {
 
     const bookingId = req.params.id;
 
-    const booking = await Booking.findById(bookingId);
-
-    if (booking.user._id !== userData._id){
-      res.status(401).json({
-        error: "You're not authorized to access this booking information" 
-      })
+    const booking = await Booking.findById(bookingId).populate('place');
+    if (booking.user.equals(userData._id)){
+      res.status(200).json({ booking, success: true });
     }
     else{
-      res.status(200).json({ booking, success: true })
+      res.status(401).json({
+        error: "You're not authorized to access this booking information" 
+      });
     }
   } catch (err) {
     console.log(err);

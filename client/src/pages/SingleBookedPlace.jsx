@@ -35,12 +35,12 @@ const SingleBookedPlace = () => {
       setLoading(true);
       const { data } = await axiosInstance.get('/bookings/'+id);
 
-
+      // console.log(data);
       // filter the data to get current booking
-      const filteredBooking = data.booking.filter(
-        (booking) => booking._id === id,
-      );
-      setBooking(filteredBooking[0]);
+      // const filteredBooking = data.booking.filter(
+      //   (booking) => booking._id === id,
+      // );
+      setBooking(data.booking);
       
     } catch (error) {
       
@@ -55,7 +55,7 @@ const SingleBookedPlace = () => {
         }
       }
       else{
-        console.log('Error: ', error);
+        console.error('Error: ', error);
       }
     } finally {
       setLoading(false);
