@@ -30,10 +30,11 @@ const SingleBookedPlace = () => {
     setReviewFormVisible(booking.status === 'completed');
   }, [booking.status]);
 
-  const getBookings = async () => {
+  const getBookingDetail = async () => {
     try {
       setLoading(true);
-      const { data } = await axiosInstance.get('/bookings');
+      const { data } = await axiosInstance.get('/bookings/'+id);
+
 
       // filter the data to get current booking
       const filteredBooking = data.booking.filter(
@@ -42,7 +43,20 @@ const SingleBookedPlace = () => {
       setBooking(filteredBooking[0]);
       
     } catch (error) {
-      console.log('Error: ', error);
+      
+      if (error.response) {
+        
+        const status = error.response.status;
+
+        if (status === 404) {
+          toast.error('Booking not found!');
+        } else if (status === 401) {
+          toast.error(error.response.data.error);
+        }
+      }
+      else{
+        console.log('Error: ', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -61,8 +75,12 @@ const SingleBookedPlace = () => {
   };
 
   useEffect(() => {
-    getBookings();
-    getUserReviews();
+    const fetchData = async () => {
+      await getBookingDetail();
+      await getUserReviews();
+    };
+  
+    fetchData();
 
   }, [id]);
 
@@ -84,7 +102,7 @@ const SingleBookedPlace = () => {
       if (response.status === 200) {
         toast(response.data.message);
         updateLocalState(response.data.booking); 
-        getBookings();
+        getBookingDetail();
       }
       else {
         toast.error(response.data.error);
@@ -102,7 +120,7 @@ const SingleBookedPlace = () => {
       if (response.status === 200) {
         toast(response.data.message);
         updateLocalState(response.data.booking);
-        getBookings();
+        getBookingDetail();
       }
       else {
         toast.error(response.data.error);
@@ -120,7 +138,7 @@ const SingleBookedPlace = () => {
       if (response.status === 200) {
         toast(response.data.message);
         updateLocalState(response.data.booking); // Update local state
-        getBookings();
+        getBookingDetail();
       }
       else {
         toast.error(response.data.error);
