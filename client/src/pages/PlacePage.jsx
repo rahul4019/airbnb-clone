@@ -121,6 +121,23 @@ const PlacePage = () => {
           {place.extraInfo}
         </div>
       </div>
+
+      <div className="-mx-8 border-t bg-white px-8 py-8">
+        <div className="my-4 flex">
+          <div className='align-items-center'>
+            <img
+              className="w-24 h-24 rounded-full"
+              src={place.owner.picture}
+              alt={`${place.owner.name}'s avatar`}
+              />
+          </div>
+          <div className='ml-4'>
+            <h2 className="text-2xl font-semibold">Hosted by {place.owner.name}</h2>
+            <p className='mt-2 text-md text-gray-400'>Joined in {place.owner.createdAt ? new Date(place.owner.createdAt).toLocaleDateString() : "NA"}</p>
+          </div>
+        </div>
+      </div>
+
       
       <div className='mt-3 mb-4'>
         <div className='mt-1'>

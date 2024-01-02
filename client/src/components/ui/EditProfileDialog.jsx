@@ -24,6 +24,7 @@ const EditProfileDialog = () => {
     name: user.name,
     password: '',
     confirm_password: '',
+    bio: ''
   });
 
   const handleImageClick = () => {
@@ -42,7 +43,7 @@ const EditProfileDialog = () => {
 
   const handleSaveChanges = async () => {
     setLoading(true);
-    const { name, password, confirm_password } = userData;
+    const { name, password, confirm_password, bio } = userData;
 
     // Validation
     if (name.trim() === '') {
@@ -65,6 +66,7 @@ const EditProfileDialog = () => {
         name: userData.name,
         password: userData.password,
         picture: pictureUrl,
+        bio: bio
       };
 
       const res = await updateUser(userDetails);
@@ -75,7 +77,7 @@ const EditProfileDialog = () => {
       }
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error('Something went wrong!');
       setLoading(false);
     }
@@ -128,6 +130,18 @@ const EditProfileDialog = () => {
               id="name"
               name="name"
               value={userData.name}
+              className="col-span-3"
+              onChange={handleUserData}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="bio" className="text-right">
+              Bio
+            </Label>
+            <textarea
+              id="bio"
+              name="bio"
+              value={userData.bio}
               className="col-span-3"
               onChange={handleUserData}
             />

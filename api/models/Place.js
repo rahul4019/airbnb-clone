@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const placeSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.ObjectId,
-    ref: "user",
+    ref: "User",
     required: true,
   },
   title: {
