@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,6 +19,7 @@ import { PlaceProvider } from './providers/PlaceProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { getItemFromLocalStorage } from './utils';
 import NotFoundPage from './pages/NotFoundPage';
+// import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   useEffect(() => {
@@ -27,6 +28,9 @@ function App() {
       'Authorization'
     ] = `Bearer ${getItemFromLocalStorage('token')}`;
   }, []);
+
+  const isAuthenticated = !!localStorage.getItem('token'); //to read as a boolean
+  
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -38,14 +42,15 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/place/:id" element={<PlacePage />} />
-              <Route path="/account" element={<ProfilePage />} />
-              <Route path="/account/places" element={<PlacesPage />} />
-              <Route path="/account/places/new" element={<PlacesFormPage />} />
-              <Route path="/account/places/:id" element={<PlacesFormPage />} />
-              <Route path="/account/bookings" element={<BookingsPage />} />
+
+              <Route path="/account" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
+              <Route path="/account/places" element={isAuthenticated ? <PlacesPage /> : <Navigate to="/login" />} />
+              <Route path="/account/places/new" element={isAuthenticated ? <PlacesFormPage /> : <Navigate to="/login" />} />
+              <Route path="/account/places/:id" element={isAuthenticated ? <PlacesFormPage /> : <Navigate to="/login" />} />
+              <Route path="/account/bookings" element={isAuthenticated ? <BookingsPage /> : <Navigate to="/login" />} />
               <Route
                 path="/account/bookings/:id"
-                element={<SingleBookedPlace />}
+                element={isAuthenticated ? <SingleBookedPlace /> : <Navigate to="/login" />}
               />
               <Route path="*" element={<NotFoundPage />} />
             </Route>

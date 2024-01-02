@@ -268,3 +268,33 @@ exports.getBookings = async (req, res) => {
     });
   }
 };
+
+exports.singleBooking = async (req, res) => {
+  try {
+    const userData = req.user;
+    if (!userData) {
+      return res
+        .status(401)
+        .json({ error: 'You are not authorized to access this page!' });
+    }
+
+    const bookingId = req.params.id;
+
+    const booking = await Booking.findById(bookingId).populate('place');
+    if (booking.user.equals(userData._id)){
+      res.status(200).json({ booking, success: true });
+    }
+    else{
+      res.status(401).json({
+        error: "You're not authorized to access this booking information" 
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Internal server error',
+      error: err,
+    });
+  }
+};
+
