@@ -22,9 +22,9 @@ const EditProfileDialog = () => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({
     name: user.name,
-    bio: '',
-    address: '',
-    phone: '',
+    password: '',
+    confirm_password: '',
+    bio: ''
   });
 
   const handleImageClick = () => {
@@ -43,7 +43,7 @@ const EditProfileDialog = () => {
 
   const handleSaveChanges = async () => {
     setLoading(true);
-    const { name, bio, address, phone } = userData;
+    const { name, password, confirm_password, bio } = userData;
 
     // Validation
     if (name.trim() === '') {
@@ -64,9 +64,9 @@ const EditProfileDialog = () => {
 
       const userDetails = {
         name: userData.name,
-        address: userData.address,
-        phone: userData.phone,
-        bio: userData.bio
+        password: userData.password,
+        picture: pictureUrl,
+        bio: bio
       };
 
       const res = await updateUser(userDetails);
@@ -147,28 +147,28 @@ const EditProfileDialog = () => {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="phone" className="text-right">
-              Phone
+            <Label htmlFor="password" className="text-right">
+              New Password
             </Label>
             <Input
-              id="phone"
-              name="phone"
-              value={userData.phone}
+              id="password"
+              name="password"
+              value={userData.password}
               className="col-span-3"
-              type="phone"
+              type="password"
               onChange={handleUserData}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="address" className="text-right">
-              Address
+            <Label htmlFor="confirm_Password" className="text-right">
+              Confirm Password
             </Label>
             <Input
-              id="address"
-              name="address"
-              value={userData.address}
+              id="confirm_password"
+              name="confirm_password"
+              value={userData.confirm_password}
               className="col-span-3"
-              type="address"
+              type="password"
               onChange={handleUserData}
             />
           </div>
@@ -189,4 +189,4 @@ const EditProfileDialog = () => {
   );
 };
 
-export default EditProfileDialog;
+// export default EditProfileDialog;

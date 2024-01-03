@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema({
   bio: {
     type: String,
   },
+  address: {
+    type: String,
+  },
+  phone:{
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
