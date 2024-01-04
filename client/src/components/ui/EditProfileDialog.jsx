@@ -73,7 +73,8 @@ const EditProfileDialog = () => {
         // console.log(res);
         setUser(res.user);
         setLoading(false);
-        return toast.success('Updated successfully!');
+        toast.success('Updated successfully!');
+        setIsOpen(false);
       }
       if(!res.success){
         setLoading(false);
@@ -91,9 +92,9 @@ const EditProfileDialog = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <DialogTrigger asChild>
-        <Button className="bg-blue-600 hover:bg-blue-600 ">
+        <Button className="bg-blue-600 hover:bg-blue-600 " onClick={() => setIsOpen(true)}>
           <PenSquare className="mr-2 h-4 w-4" />
           Edit Profile
         </Button>

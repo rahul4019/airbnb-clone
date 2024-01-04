@@ -179,7 +179,6 @@ exports.updateUserDetailsN = async(req, res) => {
     }
 
     if (phone && !/^\d{10}$/g.test(phone)) {
-      console.log(phone);
       return res.status(400).json({
         error: 'Invalid phone number format',
       });
