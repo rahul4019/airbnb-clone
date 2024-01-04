@@ -49,11 +49,8 @@ const EditProfileDialog = () => {
     if (name.trim() === '') {
       setLoading(false);
       return toast.error("Name Can't be empty");
-    } else if (password !== confirm_password) {
-      setLoading(false);
-      return toast.error("Passwords don't match");
     }
-
+    
     try {
       // first check if picture has been updated or not
       let pictureUrl = '';
@@ -66,7 +63,8 @@ const EditProfileDialog = () => {
         name: userData.name,
         address: userData.address,
         phone: userData.phone,
-        bio: userData.bio
+        bio: userData.bio,
+        picture: pictureUrl
       };
 
       const res = await updateUser(userDetails);

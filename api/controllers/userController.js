@@ -167,10 +167,9 @@ exports.updateUserDetails = async (req, res) => {
 
 exports.updateUserDetailsN = async(req, res) => {
   try {
-    const { name, bio, phone, address } = req.body
+    const { name, bio, email, phone, address, picture } = req.body
 
-    console.log(req.body);
-    console.log(bio);
+
     const user = await User.findOne({ email })
 
     if (!user) {
@@ -179,10 +178,16 @@ exports.updateUserDetailsN = async(req, res) => {
       })
     }
 
+    if (picture) {
+      user.picture = picture;
+    }
+
     user.name = name;
     user.bio = bio;
+    user.email = email;
     user.phone = phone;
     user.address = address;
+    
     const updatedUser = await user.save();
     cookieToken(updatedUser, res);
   } catch (error) {
