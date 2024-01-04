@@ -207,7 +207,23 @@ exports.updateUserDetailsN = async(req, res) => {
 
 
 exports.changePassword = async(req, res) => {
-  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const { email, oldPassword, newPassword } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404), json({
+        message: 'User not found'
+      })
+    }
+
+
+  }
+  catch (error){
+    console.error(error);
+  }
 
 
 
