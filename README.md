@@ -2,8 +2,6 @@
 
 This is a clone of the Airbnb web application built using MERN stack. It is a full-stack web application that allows users to book accommodations in various locations. This application supports user registration, login and authentication. It also features my accommodations for adding and managing places.
 
-### Hosted link: [Airbnb clone](https://airbnb-1.netlify.app)
-
 ## Installation
 
 To install and run the application, please follow these steps:
