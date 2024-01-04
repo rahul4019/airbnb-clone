@@ -11,13 +11,14 @@ const {
   googleLogin,
   uploadPicture,
   updateUserDetails,
+  updateUserDetailsN
 } = require('../controllers/userController');
 
 router.route('/register').post(register);
 router.route('/login').post(login);
 router.route('/google/login').post(googleLogin)
 router.route('/upload-picture').post(upload.single('picture', 1), uploadPicture)
-router.route('/update-user').put(updateUserDetails)
+router.route('/update-user').put(updateUserDetails).patch(updateUserDetailsN);
 router.route('/logout').get(logout);
 
 

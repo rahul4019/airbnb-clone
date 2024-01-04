@@ -47,6 +47,11 @@ exports.createReview = async (req, res) => {
         const {booking, place, cleanliness, accuracy, checkIn, 
             communication, location, value, comment,} = req.body;
 
+        // if(place.owner.equals(userData._id)){
+        //     return res.status(401).json({
+        //         error: "As an owner You are not allowed to review"
+        //     });
+        // }
 
         const existingReview = await Review.find({user: userData._id, booking, place})
 
@@ -55,6 +60,7 @@ exports.createReview = async (req, res) => {
                 error: "Review already exists"
             });
         }
+
 
         const review = await Review.create({
             user: userData._id,

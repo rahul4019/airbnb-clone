@@ -20,12 +20,11 @@ const EditProfileDialog = () => {
   const uploadRef = useRef(null);
   const [picture, setPicture] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [userData, setUserData] = useState({
     name: user.name,
-    bio: user.bio,
-    address: user.address,
-    phone: user.phone,
+    password: '',
+    confirm_password: '',
+    bio: ''
   });
 
   const handleImageClick = () => {
@@ -44,14 +43,17 @@ const EditProfileDialog = () => {
 
   const handleSaveChanges = async () => {
     setLoading(true);
-    const { name, bio, address, phone } = userData;
+    const { name, password, confirm_password, bio } = userData;
 
     // Validation
     if (name.trim() === '') {
       setLoading(false);
       return toast.error("Name Can't be empty");
+    } else if (password !== confirm_password) {
+      setLoading(false);
+      return toast.error("Passwords don't match");
     }
-    
+
     try {
       // first check if picture has been updated or not
       let pictureUrl = '';
@@ -62,30 +64,21 @@ const EditProfileDialog = () => {
 
       const userDetails = {
         name: userData.name,
-        address: userData.address,
-        phone: userData.phone,
-        bio: userData.bio,
-        picture: pictureUrl
+        password: userData.password,
+        picture: pictureUrl,
+        bio: bio
       };
 
       const res = await updateUser(userDetails);
       if (res.success) {
-        // console.log(res);
         setUser(res.user);
         setLoading(false);
         return toast.success('Updated successfully!');
       }
-      if(!res.success){
-        setLoading(false);
-        // console.log(res);
-        return toast.error(res.error.response.data.error);
-      }
       setLoading(false);
     } catch (error) {
-      // console.error("ERror loading : "+error);
-      // console.log(error);
-      toast.error(error);
-
+      console.error(error);
+      toast.error('Something went wrong!');
       setLoading(false);
     }
   };
@@ -154,28 +147,28 @@ const EditProfileDialog = () => {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="phone" className="text-right">
-              Phone
+            <Label htmlFor="password" className="text-right">
+              New Password
             </Label>
             <Input
-              id="phone"
-              name="phone"
-              value={userData.phone}
+              id="password"
+              name="password"
+              value={userData.password}
               className="col-span-3"
-              type="phone"
+              type="password"
               onChange={handleUserData}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="address" className="text-right">
-              Address
+            <Label htmlFor="confirm_Password" className="text-right">
+              Confirm Password
             </Label>
             <Input
-              id="address"
-              name="address"
-              value={userData.address}
+              id="confirm_password"
+              name="confirm_password"
+              value={userData.confirm_password}
               className="col-span-3"
-              type="address"
+              type="password"
               onChange={handleUserData}
             />
           </div>
@@ -196,4 +189,4 @@ const EditProfileDialog = () => {
   );
 };
 
-export default EditProfileDialog;
+// export default EditProfileDialog;

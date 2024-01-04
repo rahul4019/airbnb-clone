@@ -131,8 +131,10 @@ exports.uploadPicture = async (req, res) => {
 // update user
 exports.updateUserDetails = async (req, res) => {
   try {
-    const { name, password, email, picture } = req.body
+    const { name, password, email, bio, picture } = req.body
 
+    console.log(req.body);
+    console.log(bio);
     const user = await User.findOne({ email })
 
     if (!user) {
@@ -143,21 +145,76 @@ exports.updateUserDetails = async (req, res) => {
 
     // user can update only name, only password,only profile pic or all three
 
-    user.name = name
+    user.name = name;
+    user.bio = bio;
     if (picture && !password) {
-      user.picture = picture
+      user.picture = picture;
     } else if (password && !picture) {
-      user.password = password
+      user.password = password;
     } else {
-      user.picture = picture
-      user.password = password
+      user.picture = picture;
+      user.password = password;
     }
-    const updatedUser = await user.save()
-    cookieToken(updatedUser, res)
+    
+    const updatedUser = await user.save();
+    cookieToken(updatedUser, res);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" }, error)
   }
 }
+
+
+exports.updateUserDetailsN = async(req, res) => {
+  try {
+    const { name, bio, email, phone, address, picture } = req.body
+
+
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      return res.status(404), json({
+        message: 'User not found'
+      })
+    }
+
+    if (phone && !/^\d{10}$/g.test(phone)) {
+      console.log(phone);
+      return res.status(400).json({
+        error: 'Invalid phone number format',
+      });
+    }
+
+    if (picture) {
+      user.picture = picture;
+    }
+
+    user.name = name;
+    user.bio = bio;
+    user.email = email;
+    user.phone = phone;
+    user.address = address;
+    
+    const updatedUser = await user.save();
+    if(updatedUser){
+      cookieToken(updatedUser, res);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error", error: error }, error)
+  }
+
+}
+
+
+exports.changePassword = async(req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+
+
+}
+
+
 
 // Logout
 exports.logout = async (req, res) => {
