@@ -20,11 +20,12 @@ const EditProfileDialog = () => {
   const uploadRef = useRef(null);
   const [picture, setPicture] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [userData, setUserData] = useState({
     name: user.name,
-    bio: '',
-    address: '',
-    phone: '',
+    bio: user.bio,
+    address: user.address,
+    phone: user.phone,
   });
 
   const handleImageClick = () => {
@@ -69,14 +70,22 @@ const EditProfileDialog = () => {
 
       const res = await updateUser(userDetails);
       if (res.success) {
+        // console.log(res);
         setUser(res.user);
         setLoading(false);
         return toast.success('Updated successfully!');
       }
+      if(!res.success){
+        setLoading(false);
+        // console.log(res);
+        return toast.error(res.error.response.data.error);
+      }
       setLoading(false);
     } catch (error) {
-      console.error(error);
-      toast.error('Something went wrong!');
+      // console.error("ERror loading : "+error);
+      // console.log(error);
+      toast.error(error);
+
       setLoading(false);
     }
   };

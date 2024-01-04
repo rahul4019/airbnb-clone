@@ -178,6 +178,13 @@ exports.updateUserDetailsN = async(req, res) => {
       })
     }
 
+    if (phone && !/^\d{10}$/g.test(phone)) {
+      console.log(phone);
+      return res.status(400).json({
+        error: 'Invalid phone number format',
+      });
+    }
+
     if (picture) {
       user.picture = picture;
     }
@@ -189,10 +196,12 @@ exports.updateUserDetailsN = async(req, res) => {
     user.address = address;
     
     const updatedUser = await user.save();
-    cookieToken(updatedUser, res);
+    if(updatedUser){
+      cookieToken(updatedUser, res);
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" }, error)
+    res.status(500).json({ message: "Internal server error", error: error }, error)
   }
 
 }

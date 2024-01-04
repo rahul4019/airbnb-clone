@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 import PlacesPage from './PlacesPage';
 import { useAuth } from '../../hooks';
-import { LogOut, Mail, PenSquare, Text, User } from 'lucide-react';
+import { LogOut, Mail, Phone, Text, User, MapPin } from 'lucide-react';
 import EditProfileDialog from '@/components/ui/EditProfileDialog';
 
 const ProfilePage = () => {
@@ -79,6 +79,20 @@ const ProfilePage = () => {
                 <div className="text-xl">
                   <span>Bio: </span>
                   <span className="text-gray-600">{user.bio}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone height="18" width="18" />
+                <div className="text-xl">
+                  <span>phone: </span>
+                  <span className="text-gray-600">{user.phone}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin height="18" width="18" />
+                <div className="text-xl">
+                  <span>Address: </span>
+                  <span className="text-gray-600">{user.address}</span>
                 </div>
               </div>
               <p></p>

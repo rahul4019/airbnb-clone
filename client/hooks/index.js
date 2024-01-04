@@ -123,9 +123,14 @@ export const useProvideAuth = () => {
             const { data } = await axiosInstance.patch('/user/update-user', {
                 name, bio, email, phone, address, picture
             })
+            if (data.user){
+                setUser(data.user);
+                setItemsInLocalStorage('user', data.user);
+            }
             return data;
         } catch (error) {
             console.log(error)
+            return { success: false, error: error }
         }
     }
 
