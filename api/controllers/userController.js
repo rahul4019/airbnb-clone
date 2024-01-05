@@ -170,7 +170,7 @@ exports.updateUserDetailsN = async(req, res) => {
     const { name, bio, email, phone, address, picture } = req.body
 
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404), json({
@@ -207,9 +207,44 @@ exports.updateUserDetailsN = async(req, res) => {
 
 
 exports.changePassword = async(req, res) => {
-  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const { oldPassword, newPassword, email } = req.body;
 
 
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      })
+    }
+
+    const isOldPasswordValid = await user.isValidatedPassword(oldPassword);
+
+    if(!isOldPasswordValid){
+      return res.status(400).json({
+        error: 'Old Password didn\'t match with old one'
+      })
+    }
+
+
+    user.password = newPassword;
+    user.save();
+
+    return res.status(200).json({
+      message: "Password Changed successfully"
+    });
+
+  }
+  catch (error){
+    console.error(error);
+    return res.status(500).json({
+      message: "Password Change Failed",
+      error: error
+    });
+
+  }
 
 }
 
