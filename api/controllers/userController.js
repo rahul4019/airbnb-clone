@@ -228,9 +228,8 @@ exports.changePassword = async(req, res) => {
       })
     }
 
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
-    user.password = hashedNewPassword;
+    user.password = newPassword;
     user.save();
 
     return res.status(200).json({

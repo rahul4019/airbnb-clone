@@ -58,11 +58,15 @@ const ChangePasswordDialog = () => {
       };
 
       const res = await updatePassword(passwordDetails);
-      console.log(res);
       if (res.success) {
         setLoading(false);
         toast.success(res.message);
         setIsOpen(false);
+        setPasswordData({
+          oldPassword: '',
+          newPassword: '',
+          confirmNewPassword: ''
+        });
       }
       if(!res.success){
         setLoading(false);
