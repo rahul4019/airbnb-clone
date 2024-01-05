@@ -3,8 +3,11 @@ require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
 const connectWithDB = require('./config/db');
-const cookieSession = require('cookie-session')
-const cookieParser = require('cookie-parser')
+const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
+
+const logger = require('morgan');
 
 const socketIo = require('socket.io');
 
@@ -44,6 +47,11 @@ app.use(cors({
   origin: process.env.CLIENT_URL,
   credentials: true,
 }));
+
+app.use(helmet()); //helmet middleware to secure with http headers
+
+// for logging resp in express server
+app.use(logger('combined'));
 
 // use express router
 app.use('/', require('./routes'));
