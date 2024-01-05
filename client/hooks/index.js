@@ -134,6 +134,27 @@ export const useProvideAuth = () => {
         }
     }
 
+    const updatePassword = async (passwordDetails) => {
+        const { oldPassword, newPassword, confirmNewPassword} = passwordDetails;
+        const email = JSON.parse(getItemFromLocalStorage('user')).email
+        try {
+            const { data } = await axiosInstance.post('/user/update-password', {
+                oldPassword, newPassword, email
+            })
+            console.log(data);
+            return { success: true, message: data.message };
+        } catch (error) {
+            console.error(error);
+            const  message = error.response.data
+            if (message){
+                return { success: false, error: message.error }
+            }
+            else{
+                return { success: false, error: "Internal Server Error" }
+            }
+        }
+    }
+
 
     return {
         user,
@@ -144,7 +165,8 @@ export const useProvideAuth = () => {
         logout,
         loading,
         uploadPicture,
-        updateUser
+        updateUser,
+        updatePassword
     }
 }
 

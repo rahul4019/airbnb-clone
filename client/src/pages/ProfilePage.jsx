@@ -10,6 +10,8 @@ import PlacesPage from './PlacesPage';
 import { useAuth } from '../../hooks';
 import { LogOut, Mail, Phone, Text, User, MapPin } from 'lucide-react';
 import EditProfileDialog from '@/components/ui/EditProfileDialog';
+import { useSelectRange } from 'react-day-picker';
+import ChangePasswordDialog from '@/components/ui/ChangePasswordDialog';
 
 const ProfilePage = () => {
   const auth = useAuth();
@@ -78,21 +80,21 @@ const ProfilePage = () => {
                 <User height="18" width="18" />
                 <div className="text-xl">
                   <span>Bio: </span>
-                  <span className="text-gray-600">{user.bio}</span>
+                  <span className="text-gray-600">{user.bio ? user.bio : "Add Your Bio"}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <Phone height="18" width="18" />
                 <div className="text-xl">
                   <span>phone: </span>
-                  <span className="text-gray-600">{user.phone}</span>
+                  <span className="text-gray-600">{user.phone ? user.phone : "Add Your Phone"}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin height="18" width="18" />
                 <div className="text-xl">
                   <span>Address: </span>
-                  <span className="text-gray-600">{user.address}</span>
+                  <span className="text-gray-600">{user.address ? user.address : "Add YOur Address"}</span>
                 </div>
               </div>
               <p></p>
@@ -102,6 +104,8 @@ const ProfilePage = () => {
             <div className="flex w-full justify-around sm:justify-end sm:gap-5 md:gap-10">
               {/* <Button varient="secondary">Edit profile</Button> */}
               <EditProfileDialog />
+
+              <ChangePasswordDialog />
 
               <Button variant="secondary" onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />

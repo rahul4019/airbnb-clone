@@ -4,6 +4,7 @@ const multer = require('multer');
 
 const upload = multer({ dest: '/tmp' });
 
+
 const {
   register,
   login,
@@ -11,7 +12,8 @@ const {
   googleLogin,
   uploadPicture,
   updateUserDetails,
-  updateUserDetailsN
+  updateUserDetailsN,
+  changePassword
 } = require('../controllers/userController');
 
 router.route('/register').post(register);
@@ -19,6 +21,7 @@ router.route('/login').post(login);
 router.route('/google/login').post(googleLogin)
 router.route('/upload-picture').post(upload.single('picture', 1), uploadPicture)
 router.route('/update-user').put(updateUserDetails).patch(updateUserDetailsN);
+router.route('/update-password').post(changePassword)
 router.route('/logout').get(logout);
 
 
