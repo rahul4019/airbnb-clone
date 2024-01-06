@@ -300,11 +300,8 @@ exports.forgotPassword = async(req, res) => {
 exports.resetPassword = async(req, res) => {
 
   try {
-    const token = req.params.token;
-    const {newPassword, tokenb} = req.body;
-
-
-    const user = await User.findOne({ resetToken: token });
+    const {email, hash, newPassword} = req.body;
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json({
@@ -312,18 +309,25 @@ exports.resetPassword = async(req, res) => {
       })
     }
 
-    user.password = newPassword;
-
-    user.save()
-    
-    return res.status(200).json({
-      message: "Password Reset success"
-    });
-
+    if (new User(user).verifyPasswordResetHash(hash)) {
+      user.password = newPassword;
+      user.save()
+      return res.status(200).json({
+        message: "Password Reset success"
+      });
+    }
+    else{
+      return res.status(400).json({
+        error: "You have provided an invalid reset link"
+      })
+    }
 
   }
   catch (error){
     console.error(error);
+    return res.status(500).json({
+      error: "Password Reset Failed"
+    })
   }
 
 }

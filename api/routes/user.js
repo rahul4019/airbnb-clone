@@ -14,7 +14,8 @@ const {
   updateUserDetails,
   updateUserDetailsN,
   changePassword,
-  forgotPassword
+  forgotPassword,
+  resetPassword
 } = require('../controllers/userController');
 
 router.route('/register').post(register);
@@ -24,6 +25,7 @@ router.route('/upload-picture').post(upload.single('picture', 1), uploadPicture)
 router.route('/update-user').put(updateUserDetails).patch(updateUserDetailsN);
 router.route('/update-password').post(changePassword)
 router.route('/forgot-password').post(forgotPassword)
+router.route('/reset-password').post(resetPassword)
 
 router.route('/logout').get(logout);
 
