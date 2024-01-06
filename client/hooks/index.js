@@ -176,6 +176,27 @@ export const useProvideAuth = () => {
     }
 
 
+    const resetPassword = async (formData) => {
+        const { email, hash, newPassword, confirmPassword} = formData;
+        try {
+            const { data } = await axiosInstance.post('/user/reset-password', {
+                email, hash, newPassword
+            })
+            console.log(data);
+            return { success: true, message: data.message };
+        } catch (error) {
+            console.error(error);
+            const  message = error.response.data
+            if (message){
+                return { success: false, error: message.error }
+            }
+            else{
+                return { success: false, error: "Internal Server Error" }
+            }
+        }
+    }
+
+
     return {
         user,
         setUser,
@@ -187,7 +208,8 @@ export const useProvideAuth = () => {
         uploadPicture,
         updateUser,
         updatePassword,
-        forgotPassword
+        forgotPassword,
+        resetPassword
     }
 }
 

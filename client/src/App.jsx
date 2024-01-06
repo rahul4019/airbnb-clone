@@ -13,6 +13,7 @@ import BookingsPage from './pages/BookingsPage';
 import PlacesFormPage from './pages/PlacesFormPage';
 import PlacePage from './pages/PlacePage';
 import SingleBookedPlace from './pages/SingleBookedPlace';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import axiosInstance from './utils/axios';
 import { UserProvider } from './providers/UserProvider';
 import { PlaceProvider } from './providers/PlaceProvider';
@@ -42,6 +43,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/place/:id" element={<PlacePage />} />
+              <Route path="/reset" element={<ResetPasswordPage />} />
 
               <Route path="/account" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
               <Route path="/account/places" element={isAuthenticated ? <PlacesPage /> : <Navigate to="/login" />} />
