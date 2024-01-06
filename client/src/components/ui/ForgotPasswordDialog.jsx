@@ -16,7 +16,7 @@ import { Loader2, PenSquare } from 'lucide-react';
 import { useAuth } from '../../../hooks';
 
 const ForgotPasswordDialog = () => {
-  const { updatePassword } = useAuth();
+  const { forgotPassword } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [emailData, setEmailData] = useState({
@@ -34,7 +34,7 @@ const ForgotPasswordDialog = () => {
     const { email } = emailData;
 
     // Validation
-    if (emailData.trim() === '') {
+    if (email.trim() === '') {
       setLoading(false);
       return toast.error("Email Can't be empty");
     }
@@ -45,7 +45,7 @@ const ForgotPasswordDialog = () => {
         email: emailData.email
       };
 
-      const res = await updatePassword(emailDetails);
+      const res = await forgotPassword(emailDetails);
       if (res.success) {
         setLoading(false);
         toast.success(res.message);

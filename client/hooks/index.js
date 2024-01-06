@@ -155,6 +155,26 @@ export const useProvideAuth = () => {
         }
     }
 
+    const forgotPassword = async (emailDetails) => {
+        const { email} = emailDetails;
+        try {
+            const { data } = await axiosInstance.post('/user/forgot-password', {
+                email
+            })
+            console.log(data);
+            return { success: true, message: data.message };
+        } catch (error) {
+            console.error(error);
+            const  message = error.response.data
+            if (message){
+                return { success: false, error: message.error }
+            }
+            else{
+                return { success: false, error: "Internal Server Error" }
+            }
+        }
+    }
+
 
     return {
         user,
@@ -166,7 +186,8 @@ export const useProvideAuth = () => {
         loading,
         uploadPicture,
         updateUser,
-        updatePassword
+        updatePassword,
+        forgotPassword
     }
 }
 
