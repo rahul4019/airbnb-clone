@@ -2,6 +2,8 @@ const User = require('../models/User');
 const cookieToken = require('../utils/cookieToken');
 const bcrypt = require('bcryptjs')
 const cloudinary = require('cloudinary').v2;
+const crypto = require("crypto");
+const sendEmail = require('../utils/sendEmail');
 
 
 // Register/SignUp user
@@ -244,6 +246,84 @@ exports.changePassword = async(req, res) => {
       error: error
     });
 
+  }
+
+}
+
+
+exports.forgotPassword = async(req, res) => {
+
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      })
+    }
+
+
+    const hash = new User(user).generatePasswordResetHash()
+    
+    const resetLink = `${process.env.CLIENT_URL}/reset?email=${user.email}?&hash=${hash}`
+    
+    let emailMessage = '<h4><b>Reset Password</b></h4>' +
+    '<p>To reset your password, Click the below link:</p>' +
+    '<a href="'+resetLink + '">'+resetLink+'</a>' +
+    '<br><br>' +
+    '<p>AirBnb Team</p>';
+    
+    const sendMail = await sendEmail(email, "Reset Your Password",'Reset Password',emailMessage);
+
+
+    if(sendMail){
+      return res.status(200).json({
+          message: "Successfully Sent Email. Check Your Inbox"
+      });
+    }
+    else{
+      return res.status(400).json({
+        error: "Email Sending failed"
+    });
+    }
+  }
+  catch (error){
+    console.error(error);
+  }
+
+}
+
+
+
+exports.resetPassword = async(req, res) => {
+
+  try {
+    const token = req.params.token;
+    const {newPassword, tokenb} = req.body;
+
+
+    const user = await User.findOne({ resetToken: token });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      })
+    }
+
+    user.password = newPassword;
+
+    user.save()
+    
+    return res.status(200).json({
+      message: "Password Reset success"
+    });
+
+
+  }
+  catch (error){
+    console.error(error);
   }
 
 }

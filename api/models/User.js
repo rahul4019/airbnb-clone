@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 
 const userSchema = new mongoose.Schema({
@@ -60,6 +61,20 @@ userSchema.methods.getJwtToken = function () {
 userSchema.methods.isValidatedPassword = async function (userSentPassword) {
   return await bcrypt.compare(userSentPassword, this.password)
 }
+
+userSchema.methods.generatePasswordResetHash = function(){
+  //create hash object, then create a sha512 hash of the user's current password 
+  //and return hash
+  const resetHash = crypto.createHash('sha512').update(this.password).digest('hex')
+  return resetHash;
+}
+
+//verify password reset hash
+userSchema.methods.verifyPasswordResetHash = function(resetHash = undefined){
+  //regenerate hash and check if they are equal
+  return this.passwordResetHash() === resetHash;
+}
+
 
 
 const User = mongoose.model("User", userSchema);
