@@ -54,7 +54,7 @@ const ResetPasswordPage = () => {
       toast.success(response.message);
       setRedirect(true);
     } else {
-      toast.error(response.message);
+      toast.error(response.error);
     }
   };
 
