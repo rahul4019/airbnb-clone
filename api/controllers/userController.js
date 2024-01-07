@@ -265,17 +265,19 @@ exports.forgotPassword = async(req, res) => {
     }
 
 
-    const hash = new User(user).generatePasswordResetHash()
+    const resetToken = await new User(user).generatePasswordResetHash()
     
-    const resetLink = `${process.env.CLIENT_URL}/reset?email=${user.email}?&hash=${hash}`
+    const resetLink = `${process.env.CLIENT_URL}/reset?token=${resetToken}`
     
     let emailMessage = '<h4><b>Reset Password</b></h4>' +
     '<p>To reset your password, Click the below link:</p>' +
     '<a href="'+resetLink + '">'+resetLink+'</a>' +
     '<br><br>' +
+    '<p>The above lInk will expire within 10 minutes</p>'
+    '<br><br>' +
     '<p>AirBnb Team</p>';
     
-    const sendMail = await sendEmail(email, "Reset Your Password",'Reset Password',emailMessage);
+    const sendMail = await sendEmail(email, "Reset Your Password",'',emailMessage);
 
 
     if(sendMail){
@@ -300,8 +302,17 @@ exports.forgotPassword = async(req, res) => {
 exports.resetPassword = async(req, res) => {
 
   try {
-    const {email, hash, newPassword} = req.body;
-    const user = await User.findOne({ email });
+    const {token, newPassword} = req.body;
+    // console.log(Date.now());
+
+    // hashing the token received to match with resetPasswordToken
+    const resetHash = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+
+    // get user object
+    const user = await User.findOne({ resetPasswordToken: resetHash, resetPasswordExpire: { $gt: new Date().toISOString() }  });
 
     if (!user) {
       return res.status(404).json({
@@ -309,7 +320,7 @@ exports.resetPassword = async(req, res) => {
       })
     }
 
-    if (new User(user).verifyPasswordResetHash(hash)) {
+    if (user.verifyPasswordResetHash(resetHash)) {
       user.password = newPassword;
       user.save()
       return res.status(200).json({
@@ -317,9 +328,10 @@ exports.resetPassword = async(req, res) => {
       });
     }
     else{
+      console.log("Unable to verify probably invalid link");
       return res.status(400).json({
         error: "You have provided an invalid reset link"
-      })
+      });
     }
 
   }
@@ -327,7 +339,7 @@ exports.resetPassword = async(req, res) => {
     console.error(error);
     return res.status(500).json({
       error: "Password Reset Failed"
-    })
+    });
   }
 
 }

@@ -177,10 +177,10 @@ export const useProvideAuth = () => {
 
 
     const resetPassword = async (formData) => {
-        const { email, hash, newPassword, confirmPassword} = formData;
+        const { token, newPassword, confirmPassword} = formData;
         try {
             const { data } = await axiosInstance.post('/user/reset-password', {
-                email, hash, newPassword
+                token, newPassword
             })
             console.log(data);
             return { success: true, message: data.message };

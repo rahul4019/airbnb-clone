@@ -43,6 +43,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
 });
 
 // encrypt password before saving it into the DB
@@ -62,17 +64,28 @@ userSchema.methods.isValidatedPassword = async function (userSentPassword) {
   return await bcrypt.compare(userSentPassword, this.password)
 }
 
-userSchema.methods.generatePasswordResetHash = function(){
+userSchema.methods.generatePasswordResetHash = async function(){
   //create hash object, then create a sha512 hash of the user's current password 
   //and return hash
-  const resetHash = crypto.createHash('sha512').update(this.password).digest('hex')
-  return resetHash;
+  const resetToken = crypto.randomBytes(20).toString('hex'); // create a random token
+  const resetHash = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex'); // create a hash of the token
+
+  // set a reset token and its expiration time in the user document
+  this.resetPasswordToken = resetHash;
+  this.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000); // set expiration time (e.g., 10 minutes)
+ 
+  await this.save() //missing piece as changes not taking place
+  
+  return resetToken;
 }
 
 //verify password reset hash
 userSchema.methods.verifyPasswordResetHash = function(resetHash = undefined){
   //regenerate hash and check if they are equal
-  return this.passwordResetHash() === resetHash;
+  return resetHash === this.resetPasswordToken && Date.now() < this.resetPasswordExpire;
 }
 
 

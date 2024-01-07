@@ -5,6 +5,9 @@ import {useSearchParams} from "react-router-dom";
 
 import ProfilePage from './ProfilePage';
 import { useAuth } from '../../hooks';
+import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+// import { Input } from '@/components/ui/input';
 
 
 const ResetPasswordPage = () => {
@@ -12,11 +15,12 @@ const ResetPasswordPage = () => {
     const [redirect, setRedirect] = useState(false);
     const [searchParams] = useSearchParams();
     const [formData, setFormData] = useState({ 
-        email: searchParams.get('email').replace("?",""),
-        hash: searchParams.get("hash"),
+        token: searchParams.get("token").replace("?",""),
         newPassword: '', 
         confirmPassword: '' });
-  const auth = useAuth();
+
+    const auth = useAuth();
+    const [loading, setLoading] = useState(false);
   
 
   const handleFormData = (e) => {
@@ -24,15 +28,13 @@ const ResetPasswordPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  console.log(formData);
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     
 
-    const { email, hash, newPassword, confirmPassword } = formData;
+    const { token, newPassword, confirmPassword } = formData;
 
-    if (email.trim() === "" || hash.trim() === ""){
+    if (token.trim() === ""){
         setLoading(false);
         setRedirect(true);
         return toast.error("Invalid Link use forget Password again");
@@ -42,7 +44,7 @@ const ResetPasswordPage = () => {
     if (newPassword.trim() === '' || confirmPassword.trim() === '') {
         setLoading(false);
         return toast.error("Password Fields Can't be empty");
-    }else if (newPassword === confirmPassword){
+    }else if (newPassword !== confirmPassword){
         setLoading(false);
         return toast.error("Password Fields don't match");
     }
@@ -86,10 +88,16 @@ const ResetPasswordPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleFormData}
             />
-          <button className="primary my-4">Reset Password</button>
+            <Button
+            disabled={loading}
+            type="submit"
+            className="w-full"
+            onClick={handleFormSubmit}
+          >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save changes
+          </Button>
         </form>
-
-        
       </div>
     </div>
   );
