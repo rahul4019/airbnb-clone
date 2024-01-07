@@ -8,6 +8,7 @@ exports.createBookings = async (req, res) => {
     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
       req.body;
 
+     
     // Check if the place is already booked for the specified dates
     const existingBooking = await Booking.findOne({
       place,
@@ -17,13 +18,19 @@ exports.createBookings = async (req, res) => {
       ],
     });
 
-    if (existingBooking) {
+    if (existingBooking && existingBooking.status !=="canceled") {
+
       // Place is already booked for the given dates
       return res.status(400).json({
         message: 'This place is already booked for the selected dates.',
       });
     }
 
+    if (phone && !/^\d{10}$/g.test(phone)) {
+      return res.status(400).json({
+        message: 'Invalid phone number format',
+      });
+    }
     // Create a new booking
     const booking = await Booking.create({
       user: userData.id,

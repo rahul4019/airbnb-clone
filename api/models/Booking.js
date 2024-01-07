@@ -25,7 +25,15 @@ const bookingSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
+    validate: {
+      validator: function (v) {
+        // Basic phone number format validation using a regular expression
+        return /^\d{10}$/g.test(v);
+      },
+      message: 'Invalid phone number format',
+    },
     required: true,
+
   },
   price: {
     type: Number,

@@ -105,7 +105,12 @@ const SingleBookedPlace = () => {
         getBookingDetail();
       }
       else {
-        toast.error(response.data.error);
+        if (response.data.error.message){
+          toast.error(response.data.error.message);
+        }
+        else{
+          toast.error(response.data.message);
+        }
       }
     } catch (error) {
       console.error('Error cancelling booking: ', error);
