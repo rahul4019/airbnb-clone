@@ -2,6 +2,8 @@ const User = require('../models/User');
 const cookieToken = require('../utils/cookieToken');
 const bcrypt = require('bcryptjs')
 const cloudinary = require('cloudinary').v2;
+const crypto = require("crypto");
+const sendEmail = require('../utils/sendEmail');
 
 
 // Register/SignUp user
@@ -244,6 +246,100 @@ exports.changePassword = async(req, res) => {
       error: error
     });
 
+  }
+
+}
+
+
+exports.forgotPassword = async(req, res) => {
+
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      })
+    }
+
+
+    const resetToken = await new User(user).generatePasswordResetHash()
+    
+    const resetLink = `${process.env.CLIENT_URL}/reset?token=${resetToken}`
+    
+    let emailMessage = '<h4><b>Reset Password</b></h4>' +
+    '<p>To reset your password, Click the below link:</p>' +
+    '<a href="'+resetLink + '">'+resetLink+'</a>' +
+    '<br><br>' +
+    '<p>The above lInk will expire within 10 minutes</p>'
+    '<br><br>' +
+    '<p>AirBnb Team</p>';
+    
+    const sendMail = await sendEmail(email, "Reset Your Password",'',emailMessage);
+
+
+    if(sendMail){
+      return res.status(200).json({
+          message: "Successfully Sent Email. Check Your Inbox"
+      });
+    }
+    else{
+      return res.status(400).json({
+        error: "Email Sending failed"
+    });
+    }
+  }
+  catch (error){
+    console.error(error);
+  }
+
+}
+
+
+
+exports.resetPassword = async(req, res) => {
+
+  try {
+    const {token, newPassword} = req.body;
+    // console.log(Date.now());
+
+    // hashing the token received to match with resetPasswordToken
+    const resetHash = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+
+    // get user object
+    const user = await User.findOne({ resetPasswordToken: resetHash, resetPasswordExpire: { $gt: new Date().toISOString() }  });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      })
+    }
+
+    if (user.verifyPasswordResetHash(resetHash)) {
+      user.password = newPassword;
+      user.save()
+      return res.status(200).json({
+        message: "Password Reset success"
+      });
+    }
+    else{
+      console.log("Unable to verify probably invalid link");
+      return res.status(400).json({
+        error: "You have provided an invalid reset link"
+      });
+    }
+
+  }
+  catch (error){
+    console.error(error);
+    return res.status(500).json({
+      error: "Password Reset Failed"
+    });
   }
 
 }

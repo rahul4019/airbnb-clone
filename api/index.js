@@ -51,7 +51,7 @@ app.use(cors({
 app.use(helmet()); //helmet middleware to secure with http headers
 
 // for logging resp in express server
-app.use(logger('combined'));
+app.use(logger('dev'));
 
 // use express router
 app.use('/', require('./routes'));
