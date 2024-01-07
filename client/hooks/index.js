@@ -182,7 +182,7 @@ export const useProvideAuth = () => {
             const { data } = await axiosInstance.post('/user/reset-password', {
                 token, newPassword
             })
-            console.log(data);
+            // console.log(data);
             return { success: true, message: data.message };
         } catch (error) {
             console.error(error);
