@@ -1,4 +1,5 @@
 const Booking = require('../models/Booking');
+const Place = require('../models/Place');
 
 
 // Books a place
@@ -8,7 +9,16 @@ exports.createBookings = async (req, res) => {
     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
       req.body;
 
-     
+
+    const isUserOwner = await Place.findOne({owner: userData._id});
+
+    if(isUserOwner){
+      return res.status(400).json({
+        message: 'As an owner you can\'t book the place.',
+      });
+    }
+
+    
     // Check if the place is already booked for the specified dates
     const existingBooking = await Booking.findOne({
       place,

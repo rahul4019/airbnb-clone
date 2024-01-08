@@ -34,7 +34,7 @@ const SingleBookedPlace = () => {
   const getBookingDetail = async () => {
     try {
       setLoading(true);
-      
+
       const { data } = await axiosInstance.get('/bookings/'+id);
 
       // console.log(data);
@@ -174,7 +174,7 @@ const SingleBookedPlace = () => {
           <h1 className="text-3xl">{booking?.place?.title}</h1>
 
           <AddressLink
-            className="my-2 block"
+            className="my-2"
             placeAddress={booking.place?.address}
           />
           <div className="my-6 flex flex-col items-center justify-between rounded-2xl bg-gray-200 p-6 sm:flex-row">
@@ -212,7 +212,13 @@ const SingleBookedPlace = () => {
               </div>
             </div>
           </div>
-
+          {(isReviewFormVisible && !isReviewed) && (
+            <>
+              <div className='mb-3 mt-4'>
+                <ReviewDialog booking={booking} getUserReviews={getUserReviews}/>
+              </div>
+            </>
+          )}
           <PlaceGallery place={booking?.place} />
           {(isReviewed && userReviews) && userReviews.map((review) => (
             <ReviewElement
@@ -223,13 +229,7 @@ const SingleBookedPlace = () => {
               setIsReviewed={setIsReviewed}
             />
           ))}
-          {(isReviewFormVisible && !isReviewed) && (
-            <>
-              <div className='mb-3 mt-4'>
-                <ReviewDialog booking={booking} getUserReviews={getUserReviews}/>
-              </div>
-            </>
-          )}
+          
         </div>
       ) : (
         <h1> No data</h1>
