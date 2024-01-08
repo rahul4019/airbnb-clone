@@ -22,6 +22,7 @@ const SingleBookedPlace = () => {
   const [booking, setBooking] = useState({});
   const [loading, setLoading] = useState(false);
   const [userReviews, setUserReviews] = useState([]);
+  const [redirect, setRedirect] = useState('');
 
   const [isReviewFormVisible, setReviewFormVisible] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
@@ -33,6 +34,7 @@ const SingleBookedPlace = () => {
   const getBookingDetail = async () => {
     try {
       setLoading(true);
+      
       const { data } = await axiosInstance.get('/bookings/'+id);
 
       // console.log(data);
@@ -157,6 +159,10 @@ const SingleBookedPlace = () => {
 
   if (loading) {
     return <Spinner />;
+  }
+
+  if (redirect) {
+    return <Navigate to={redirect} />;
   }
 
 

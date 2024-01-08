@@ -26,6 +26,7 @@ exports.createBookings = async (req, res) => {
       });
     }
 
+
     if (phone && !/^\d{10}$/g.test(phone)) {
       return res.status(400).json({
         message: 'Invalid phone number format',
@@ -54,33 +55,6 @@ exports.createBookings = async (req, res) => {
     });
   }
 };
-// exports.createBookings = async (req, res) => {
-//   try {
-//     const userData = req.user;
-//     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
-//       req.body;
-
-//     const booking = await Booking.create({
-//       user: userData.id,
-//       place,
-//       checkIn,
-//       checkOut,
-//       numOfGuests,
-//       name,
-//       phone,
-//       price,
-//     });
-
-//     res.status(200).json({
-//       booking,
-//     });
-//   } catch (err) {
-//     res.status(500).json({
-//       message: 'Internal server error',
-//       error: err,
-//     });
-//   }
-// };
 
 
 /// Delete a booking 
@@ -198,6 +172,28 @@ exports.confirmBookings = async (req, res) => {
       return res.status(400).json({
         error: `Booking can not be confirmed. It is ${booking.status}`
       })
+    }
+
+    // checking any other person has already confirmed for same range
+    const conflictingBooking = await Booking.findOne({
+      place: booking.place,
+      status: 'confirmed',
+      $or: [
+        {
+          checkIn: { $lte: booking.checkIn },
+          checkOut: { $gte: booking.checkIn },
+        },
+        {
+          checkIn: { $lte: booking.checkOut },
+          checkOut: { $gte: booking.checkOut },
+        },
+      ],
+    });
+
+    if (conflictingBooking) {
+      return res.status(400).json({
+        error: 'Another booking is already confirmed for the same date range.',
+      });
     }
 
     booking.status = 'confirmed';
