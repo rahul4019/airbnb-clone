@@ -117,17 +117,65 @@ export const useProvideAuth = () => {
     }
 
     const updateUser = async (userDetails) => {
-        const { name, password, picture } = userDetails;
+        const { name, bio, phone, address, picture } = userDetails;
         const email = JSON.parse(getItemFromLocalStorage('user')).email
         try {
-            const { data } = await axiosInstance.put('/user/update-user', {
-                name, password, email, picture
+            const { data } = await axiosInstance.patch('/user/update-user', {
+                name, bio, email, phone, address, picture
             })
+            if (data.user){
+                setUser(data.user);
+                setItemsInLocalStorage('user', data.user);
+            }
             return data;
         } catch (error) {
             console.log(error)
+            return { success: false, error: error }
         }
     }
+
+    const updatePassword = async (passwordDetails) => {
+        const { oldPassword, newPassword, confirmNewPassword} = passwordDetails;
+        const email = JSON.parse(getItemFromLocalStorage('user')).email
+        try {
+            const { data } = await axiosInstance.post('/user/update-password', {
+                oldPassword, newPassword, email
+            })
+            console.log(data);
+            return { success: true, message: data.message };
+        } catch (error) {
+            console.error(error);
+            const  message = error.response.data
+            if (message){
+                return { success: false, error: message.error }
+            }
+            else{
+                return { success: false, error: "Internal Server Error" }
+            }
+        }
+    }
+
+    const forgotPassword = async (emailDetails) => {
+        const { email} = emailDetails;
+        try {
+            const { data } = await axiosInstance.post('/user/forgot-password', {
+                email
+            })
+            console.log(data);
+            return { success: true, message: data.message };
+        } catch (error) {
+            console.error(error);
+            const  message = error.response.data
+            if (message){
+                return { success: false, error: message.error }
+            }
+            else{
+                return { success: false, error: "Internal Server Error" }
+            }
+        }
+    }
+
+
 
 
     return {
@@ -139,7 +187,9 @@ export const useProvideAuth = () => {
         logout,
         loading,
         uploadPicture,
-        updateUser
+        updateUser,
+        updatePassword,
+        forgotPassword
     }
 }
 

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,12 +13,14 @@ import BookingsPage from './pages/BookingsPage';
 import PlacesFormPage from './pages/PlacesFormPage';
 import PlacePage from './pages/PlacePage';
 import SingleBookedPlace from './pages/SingleBookedPlace';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import axiosInstance from './utils/axios';
 import { UserProvider } from './providers/UserProvider';
 import { PlaceProvider } from './providers/PlaceProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { getItemFromLocalStorage } from './utils';
 import NotFoundPage from './pages/NotFoundPage';
+// import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   useEffect(() => {
@@ -28,6 +30,13 @@ function App() {
     ] = `Bearer ${getItemFromLocalStorage('token')}`;
   }, []);
 
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  
+  const updateAuthenticationStatus = () => {
+    setIsAuthenticated(!!localStorage.getItem('token'));
+  };
+
+
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <UserProvider>
@@ -35,17 +44,19 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<IndexPage />} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/login" element={<LoginPage updateAuthenticationStatus={updateAuthenticationStatus} />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/account" element={<ProfilePage />} />
-              <Route path="/account/places" element={<PlacesPage />} />
-              <Route path="/account/places/new" element={<PlacesFormPage />} />
-              <Route path="/account/places/:id" element={<PlacesFormPage />} />
               <Route path="/place/:id" element={<PlacePage />} />
-              <Route path="/account/bookings" element={<BookingsPage />} />
+              <Route path="/reset" element={<ResetPasswordPage />} />
+
+              <Route path="/account" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
+              <Route path="/account/places" element={isAuthenticated ? <PlacesPage /> : <Navigate to="/login" />} />
+              <Route path="/account/places/new" element={isAuthenticated ? <PlacesFormPage /> : <Navigate to="/login" />} />
+              <Route path="/account/places/:id" element={isAuthenticated ? <PlacesFormPage /> : <Navigate to="/login" />} />
+              <Route path="/account/bookings" element={isAuthenticated ? <BookingsPage /> : <Navigate to="/login" />} />
               <Route
                 path="/account/bookings/:id"
-                element={<SingleBookedPlace />}
+                element={isAuthenticated ? <SingleBookedPlace /> : <Navigate to="/login" />}
               />
               <Route path="*" element={<NotFoundPage />} />
             </Route>

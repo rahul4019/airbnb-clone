@@ -1,4 +1,5 @@
 const Booking = require('../models/Booking');
+const Place = require('../models/Place');
 
 
 // Books a place
@@ -8,6 +9,16 @@ exports.createBookings = async (req, res) => {
     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
       req.body;
 
+
+    const isUserOwner = await Place.findOne({owner: userData._id});
+
+    if(isUserOwner){
+      return res.status(400).json({
+        message: 'As an owner you can\'t book the place.',
+      });
+    }
+
+    
     // Check if the place is already booked for the specified dates
     const existingBooking = await Booking.findOne({
       place,
@@ -17,13 +28,20 @@ exports.createBookings = async (req, res) => {
       ],
     });
 
-    if (existingBooking) {
+    if (existingBooking && existingBooking.status !=="canceled") {
+
       // Place is already booked for the given dates
       return res.status(400).json({
         message: 'This place is already booked for the selected dates.',
       });
     }
 
+
+    if (phone && !/^\d{10}$/g.test(phone)) {
+      return res.status(400).json({
+        message: 'Invalid phone number format',
+      });
+    }
     // Create a new booking
     const booking = await Booking.create({
       user: userData.id,
@@ -47,33 +65,6 @@ exports.createBookings = async (req, res) => {
     });
   }
 };
-// exports.createBookings = async (req, res) => {
-//   try {
-//     const userData = req.user;
-//     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
-//       req.body;
-
-//     const booking = await Booking.create({
-//       user: userData.id,
-//       place,
-//       checkIn,
-//       checkOut,
-//       numOfGuests,
-//       name,
-//       phone,
-//       price,
-//     });
-
-//     res.status(200).json({
-//       booking,
-//     });
-//   } catch (err) {
-//     res.status(500).json({
-//       message: 'Internal server error',
-//       error: err,
-//     });
-//   }
-// };
 
 
 /// Delete a booking 
@@ -193,6 +184,28 @@ exports.confirmBookings = async (req, res) => {
       })
     }
 
+    // checking any other person has already confirmed for same range
+    const conflictingBooking = await Booking.findOne({
+      place: booking.place,
+      status: 'confirmed',
+      $or: [
+        {
+          checkIn: { $lte: booking.checkIn },
+          checkOut: { $gte: booking.checkIn },
+        },
+        {
+          checkIn: { $lte: booking.checkOut },
+          checkOut: { $gte: booking.checkOut },
+        },
+      ],
+    });
+
+    if (conflictingBooking) {
+      return res.status(400).json({
+        error: 'Another booking is already confirmed for the same date range.',
+      });
+    }
+
     booking.status = 'confirmed';
 
     await booking.save();
@@ -268,3 +281,33 @@ exports.getBookings = async (req, res) => {
     });
   }
 };
+
+exports.singleBooking = async (req, res) => {
+  try {
+    const userData = req.user;
+    if (!userData) {
+      return res
+        .status(401)
+        .json({ error: 'You are not authorized to access this page!' });
+    }
+
+    const bookingId = req.params.id;
+
+    const booking = await Booking.findById(bookingId).populate('place');
+    if (booking.user.equals(userData._id)){
+      res.status(200).json({ booking, success: true });
+    }
+    else{
+      res.status(401).json({
+        error: "You're not authorized to access this booking information" 
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Internal server error',
+      error: err,
+    });
+  }
+};
+

@@ -10,7 +10,7 @@ const cookieToken = (user, res) => {
         sameSite: 'none' // Allow cross-origin requests
     };
     // console.log(options)
-
+ 
 
     user.password = undefined;
     res.status(200).cookie("token", token, options).json({

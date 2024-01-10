@@ -2,6 +2,8 @@ const User = require('../models/User');
 const cookieToken = require('../utils/cookieToken');
 const bcrypt = require('bcryptjs')
 const cloudinary = require('cloudinary').v2;
+const crypto = require("crypto");
+const sendEmail = require('../utils/sendEmail');
 
 
 // Register/SignUp user
@@ -131,8 +133,10 @@ exports.uploadPicture = async (req, res) => {
 // update user
 exports.updateUserDetails = async (req, res) => {
   try {
-    const { name, password, email, picture } = req.body
+    const { name, password, email, bio, picture } = req.body
 
+    console.log(req.body);
+    console.log(bio);
     const user = await User.findOne({ email })
 
     if (!user) {
@@ -143,21 +147,204 @@ exports.updateUserDetails = async (req, res) => {
 
     // user can update only name, only password,only profile pic or all three
 
-    user.name = name
+    user.name = name;
+    user.bio = bio;
     if (picture && !password) {
-      user.picture = picture
+      user.picture = picture;
     } else if (password && !picture) {
-      user.password = password
+      user.password = password;
     } else {
-      user.picture = picture
-      user.password = password
+      user.picture = picture;
+      user.password = password;
     }
-    const updatedUser = await user.save()
-    cookieToken(updatedUser, res)
+    
+    const updatedUser = await user.save();
+    cookieToken(updatedUser, res);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" }, error)
   }
 }
+
+
+exports.updateUserDetailsN = async(req, res) => {
+  try {
+    const { name, bio, email, phone, address, picture } = req.body
+
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404), json({
+        message: 'User not found'
+      })
+    }
+
+    if (phone && !/^\d{10}$/g.test(phone)) {
+      return res.status(400).json({
+        error: 'Invalid phone number format',
+      });
+    }
+
+    if (picture) {
+      user.picture = picture;
+    }
+
+    user.name = name;
+    user.bio = bio;
+    user.email = email;
+    user.phone = phone;
+    user.address = address;
+    
+    const updatedUser = await user.save();
+    if(updatedUser){
+      cookieToken(updatedUser, res);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error", error: error }, error)
+  }
+
+}
+
+
+exports.changePassword = async(req, res) => {
+
+  try {
+    const { oldPassword, newPassword, email } = req.body;
+
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      })
+    }
+
+    const isOldPasswordValid = await user.isValidatedPassword(oldPassword);
+
+    if(!isOldPasswordValid){
+      return res.status(400).json({
+        error: 'Old Password didn\'t match with old one'
+      })
+    }
+
+
+    user.password = newPassword;
+    user.save();
+
+    return res.status(200).json({
+      message: "Password Changed successfully"
+    });
+
+  }
+  catch (error){
+    console.error(error);
+    return res.status(500).json({
+      message: "Password Change Failed",
+      error: error
+    });
+
+  }
+
+}
+
+
+exports.forgotPassword = async(req, res) => {
+
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      })
+    }
+
+
+    const resetToken = await new User(user).generatePasswordResetHash()
+    
+    const resetLink = `${process.env.CLIENT_URL}/reset?token=${resetToken}`
+    
+    let emailMessage = '<h4><b>Reset Password</b></h4>' +
+    '<p>To reset your password, Click the below link:</p>' +
+    '<a href="'+resetLink + '">'+resetLink+'</a>' +
+    '<br><br>' +
+    '<p>The above lInk will expire within 10 minutes</p>'
+    '<br><br>' +
+    '<p>AirBnb Team</p>';
+    
+    const sendMail = await sendEmail(email, "Reset Your Password",'',emailMessage);
+
+
+    if(sendMail){
+      return res.status(200).json({
+          message: "Successfully Sent Email. Check Your Inbox"
+      });
+    }
+    else{
+      return res.status(400).json({
+        error: "Email Sending failed"
+    });
+    }
+  }
+  catch (error){
+    console.error(error);
+  }
+
+}
+
+
+
+exports.resetPassword = async(req, res) => {
+
+  try {
+    const {token, newPassword} = req.body;
+    // console.log(Date.now());
+
+    // hashing the token received to match with resetPasswordToken
+    const resetHash = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+
+    // get user object
+    const user = await User.findOne({ resetPasswordToken: resetHash, resetPasswordExpire: { $gt: new Date().toISOString() }  });
+
+    if (!user) {
+      return res.status(404).json({
+        error: 'Invalid link. The link might be expired',
+      })
+    }
+
+    if (user.verifyPasswordResetHash(resetHash)) {
+      user.password = newPassword;
+      user.save()
+      return res.status(200).json({
+        message: "Password Reset success"
+      });
+    }
+    else{
+      console.log("Unable to verify probably invalid link");
+      return res.status(400).json({
+        error: "You have provided an invalid reset link"
+      });
+    }
+
+  }
+  catch (error){
+    console.error(error);
+    return res.status(500).json({
+      error: "Password Reset Failed"
+    });
+  }
+
+}
+
+
 
 // Logout
 exports.logout = async (req, res) => {

@@ -82,7 +82,7 @@ const StatusUpdate = ({ place }) => {
       <div className="mt-4 rounded-2xl border">
         <button onClick={handleBooking} className="primary mt-4">
             Book this place
-            {numberOfNights > 0 && <span> ₹{numberOfNights * place.price}</span>}
+            {numberOfNights > 0 && <span> ${numberOfNights * place.price}</span>}
         </button>
       </div>
       

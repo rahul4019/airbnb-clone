@@ -8,32 +8,89 @@ import BookingDates from '../components/ui/BookingDates';
 import PlaceGallery from '../components/ui/PlaceGallery';
 import Spinner from '../components/ui/Spinner';
 import axiosInstance from '../utils/axios';
+import ReviewDialog from '@/components/ui/ReviewDialog';
+import { Rating } from '@smastrom/react-rating'
+
+import ReviewElement from '@/components/ui/ReviewElement';
+import { capitalizeFirstLetter } from '@/utils';
+
+
+
 
 const SingleBookedPlace = () => {
   const { id } = useParams();
   const [booking, setBooking] = useState({});
   const [loading, setLoading] = useState(false);
+  const [userReviews, setUserReviews] = useState([]);
+  const [redirect, setRedirect] = useState('');
 
-  const getBookings = async () => {
+  const [isReviewFormVisible, setReviewFormVisible] = useState(false);
+  const [isReviewed, setIsReviewed] = useState(false);
+
+  useEffect(() => {
+    setReviewFormVisible(booking.status === 'completed');
+  }, [booking.status]);
+
+  const getBookingDetail = async () => {
     try {
       setLoading(true);
-      const { data } = await axiosInstance.get('/bookings');
 
+      const { data } = await axiosInstance.get('/bookings/'+id);
+
+      // console.log(data);
       // filter the data to get current booking
-      const filteredBooking = data.booking.filter(
-        (booking) => booking._id === id,
-      );
-      setBooking(filteredBooking[0]);
+      // const filteredBooking = data.booking.filter(
+      //   (booking) => booking._id === id,
+      // );
+      setBooking(data.booking);
+      
     } catch (error) {
-      console.log('Error: ', error);
+      
+      if (error.response) {
+        
+        const status = error.response.status;
+
+        if (status === 404) {
+          toast.error('Booking not found!');
+        } else if (status === 401) {
+          toast.error(error.response.data.error);
+        }
+      }
+      else{
+        console.error('Error: ', error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getUserReviews = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/review/user/booking/${id}`);
+      // Process the response and set it in state
+      setUserReviews(data);
+    } catch (error) {
+      console.error('Error fetching user reviews: ', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    getBookings();
+    const fetchData = async () => {
+      await getBookingDetail();
+      await getUserReviews();
+    };
+  
+    fetchData();
+
   }, [id]);
+
+  useEffect(() => {
+    if (userReviews.length > 0 ){
+      setIsReviewed(true);
+    }
+  }, [userReviews])
 
   const updateLocalState = (updatedBooking) => {
     setBooking(updatedBooking);
@@ -47,10 +104,15 @@ const SingleBookedPlace = () => {
       if (response.status === 200) {
         toast(response.data.message);
         updateLocalState(response.data.booking); 
-        getBookings();
+        getBookingDetail();
       }
       else {
-        toast.error(response.data.error);
+        if (response.data.error.message){
+          toast.error(response.data.error.message);
+        }
+        else{
+          toast.error(response.data.message);
+        }
       }
     } catch (error) {
       console.error('Error cancelling booking: ', error);
@@ -65,7 +127,7 @@ const SingleBookedPlace = () => {
       if (response.status === 200) {
         toast(response.data.message);
         updateLocalState(response.data.booking);
-        getBookings();
+        getBookingDetail();
       }
       else {
         toast.error(response.data.error);
@@ -83,7 +145,7 @@ const SingleBookedPlace = () => {
       if (response.status === 200) {
         toast(response.data.message);
         updateLocalState(response.data.booking); // Update local state
-        getBookings();
+        getBookingDetail();
       }
       else {
         toast.error(response.data.error);
@@ -99,6 +161,10 @@ const SingleBookedPlace = () => {
     return <Spinner />;
   }
 
+  if (redirect) {
+    return <Navigate to={redirect} />;
+  }
+
 
   return (
     <div>
@@ -108,7 +174,7 @@ const SingleBookedPlace = () => {
           <h1 className="text-3xl">{booking?.place?.title}</h1>
 
           <AddressLink
-            className="my-2 block"
+            className="my-2"
             placeAddress={booking.place?.address}
           />
           <div className="my-6 flex flex-col items-center justify-between rounded-2xl bg-gray-200 p-6 sm:flex-row">
@@ -117,7 +183,7 @@ const SingleBookedPlace = () => {
                 Your booking information
               </h2>
               <div>
-                Status: {booking.status.toUpperCase()}
+              <span className='font-semibold'>Status: </span> {capitalizeFirstLetter(booking.status)}
               </div>
               <BookingDates booking={booking} />
             </div>
@@ -142,11 +208,28 @@ const SingleBookedPlace = () => {
             <div className="mt-5 w-full rounded-2xl bg-primary p-6 text-white sm:mt-0 sm:w-auto">
               <div className="hidden md:block">Total price</div>
               <div className="flex justify-center text-3xl">
-                <span>₹{booking?.price}</span>
+                <span>${booking?.price}</span>
               </div>
             </div>
           </div>
+          {(isReviewFormVisible && !isReviewed) && (
+            <>
+              <div className='mb-3 mt-4'>
+                <ReviewDialog booking={booking} getUserReviews={getUserReviews}/>
+              </div>
+            </>
+          )}
           <PlaceGallery place={booking?.place} />
+          {(isReviewed && userReviews) && userReviews.map((review) => (
+            <ReviewElement
+              key={review._id}
+              booking = {booking}
+              review={review}
+              getUserReviews={getUserReviews}
+              setIsReviewed={setIsReviewed}
+            />
+          ))}
+          
         </div>
       ) : (
         <h1> No data</h1>

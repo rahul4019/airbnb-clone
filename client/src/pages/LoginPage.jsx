@@ -5,8 +5,9 @@ import { GoogleLogin } from '@react-oauth/google';
 
 import ProfilePage from './ProfilePage';
 import { useAuth } from '../../hooks';
+import ForgotPasswordDialog from '@/components/ui/ForgotPasswordDialog';
 
-const LoginPage = () => {
+const LoginPage = ({updateAuthenticationStatus}) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [redirect, setRedirect] = useState(false);
   const auth = useAuth();
@@ -23,6 +24,7 @@ const LoginPage = () => {
     if (response.success) {
       toast.success(response.message);
       setRedirect(true);
+      updateAuthenticationStatus();
     } else {
       toast.error(response.message);
     }
@@ -93,6 +95,9 @@ const LoginPage = () => {
           <Link className="text-black underline" to={'/register'}>
             Register now
           </Link>
+        </div>
+        <div className="py-2 text-center text-gray-500">
+          <ForgotPasswordDialog />
         </div>
       </div>
     </div>
