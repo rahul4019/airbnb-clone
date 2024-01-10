@@ -11,8 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Loader2, PenSquare, Upload } from 'lucide-react';
+import { Loader2, PenSquare } from 'lucide-react';
 import { useAuth } from '../../../hooks';
 
 const ChangePasswordDialog = () => {
@@ -25,6 +24,9 @@ const ChangePasswordDialog = () => {
     confirmNewPassword: ''
   });
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
   
   const handlePasswordData = (e) => {
     const { name, value } = e.target;
@@ -87,7 +89,7 @@ const ChangePasswordDialog = () => {
           Change Password
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-scroll">
+      <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-scroll" onClose={handleClose}>
         {/* Update form */}
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">

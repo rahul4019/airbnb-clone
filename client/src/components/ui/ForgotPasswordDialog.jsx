@@ -23,6 +23,8 @@ const ForgotPasswordDialog = () => {
     email: ''
   });
 
+  // const handleClose = 
+
   
   const handleEmailData = (e) => {
     const { name, value } = e.target;
@@ -72,7 +74,7 @@ const ForgotPasswordDialog = () => {
             Forgot Your Password ?
         </Link>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-scroll">
+      <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-scroll" onClose={() => setIsOpen(false)}>
         <div className='mt-3 mb-2'>
             <h2 className='text-2xl text-primary font-semibold text-center'>Reset Your password</h2>
         </div>

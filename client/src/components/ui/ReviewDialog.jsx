@@ -116,7 +116,7 @@ const ReviewDialog = ({ booking, existingReview, handleReviewUpdate, getUserRevi
         {existingReview ? 'Edit Review' : 'Write a Review'}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px]" onClose={() => setIsOpen(false)}>
         
 
         {/* Update form */}

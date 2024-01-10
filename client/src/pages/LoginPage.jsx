@@ -7,7 +7,7 @@ import ProfilePage from './ProfilePage';
 import { useAuth } from '../../hooks';
 import ForgotPasswordDialog from '@/components/ui/ForgotPasswordDialog';
 
-const LoginPage = () => {
+const LoginPage = ({updateAuthenticationStatus}) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [redirect, setRedirect] = useState(false);
   const auth = useAuth();
@@ -24,6 +24,7 @@ const LoginPage = () => {
     if (response.success) {
       toast.success(response.message);
       setRedirect(true);
+      updateAuthenticationStatus();
     } else {
       toast.error(response.message);
     }

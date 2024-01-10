@@ -110,7 +110,7 @@ exports.singlePlace = async (req, res) => {
   try {
     const { id } = req.params;
     const place = await Place.findById(id).populate({path:'owner', select:'name picture email createdAt'});
-    console.log(place);
+    // console.log(place);
     if (!place) {
       return res.status(400).json({
         message: 'Place not found',

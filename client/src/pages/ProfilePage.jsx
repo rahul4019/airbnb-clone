@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Navigate, useParams } from 'react-router-dom';
 
@@ -12,12 +12,19 @@ import { LogOut, Mail, Phone, Text, User, MapPin } from 'lucide-react';
 import EditProfileDialog from '@/components/ui/EditProfileDialog';
 import { useSelectRange } from 'react-day-picker';
 import ChangePasswordDialog from '@/components/ui/ChangePasswordDialog';
+import Spinner from '@/components/ui/Spinner';
 
 const ProfilePage = () => {
   const auth = useAuth();
-  const { user, logout } = auth;
+  const { user, logout , loading} = auth;
   const [redirect, setRedirect] = useState(null);
 
+  useEffect(() => {
+    if (!user && !loading) {
+      setRedirect('/login');
+    }
+  }, [user, loading]);
+  
   let { subpage } = useParams();
   if (!subpage) {
     subpage = 'profile';
@@ -33,10 +40,12 @@ const ProfilePage = () => {
     }
   };
 
-  if (!user && !redirect) {
-    return <Navigate to={'/login'} />;
+  if (loading) {
+    // Add a loading indicator or some placeholder content while user data is loading
+    return <Spinner />;
   }
 
+  
   if (redirect) {
     return <Navigate to={redirect} />;
   }

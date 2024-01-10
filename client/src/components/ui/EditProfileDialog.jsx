@@ -28,6 +28,8 @@ const EditProfileDialog = () => {
     phone: user.phone,
   });
 
+  
+
   const handleImageClick = () => {
     uploadRef.current.click();
   };
@@ -99,7 +101,7 @@ const EditProfileDialog = () => {
           Edit Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-scroll">
+      <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-scroll" onClose={() => setIsOpen(false)}>
         <div className="flex justify-center">
           <div className="relative h-40 w-40 cursor-pointer overflow-hidden rounded-full bg-gray-200">
             <div

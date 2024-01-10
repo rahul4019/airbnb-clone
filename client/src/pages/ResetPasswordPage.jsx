@@ -3,24 +3,43 @@ import { Link, Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {useSearchParams} from "react-router-dom";
 
-import ProfilePage from './ProfilePage';
-import { useAuth } from '../../hooks';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import axiosInstance from '@/utils/axios';
 // import { Input } from '@/components/ui/input';
 
 
 const ResetPasswordPage = () => {
 
-    const [redirect, setRedirect] = useState(false);
+    const [redirectS, setRedirectS] = useState(false);
     const [searchParams] = useSearchParams();
     const [formData, setFormData] = useState({ 
         token: searchParams.get("token").replace("?",""),
         newPassword: '', 
         confirmPassword: '' });
 
-    const auth = useAuth();
+    
     const [loading, setLoading] = useState(false);
+
+    const resetPassword = async (formData) => {
+      const { token, newPassword, confirmPassword} = formData;
+      try {
+          const { data } = await  axiosInstance.post('/user/reset-password', {
+              token, newPassword
+          })
+          // console.log(data);
+          return { success: true, message: data.message };
+      } catch (error) {
+          console.error(error);
+          const  message = error.response.data
+          if (message){
+              return { success: false, error: message.error }
+          }
+          else{
+              return { success: false, error: "Internal Server Error" }
+          }
+      }
+  }
   
 
   const handleFormData = (e) => {
@@ -34,11 +53,11 @@ const ResetPasswordPage = () => {
 
     const { token, newPassword, confirmPassword } = formData;
 
-    if (token.trim() === ""){
-        setLoading(false);
-        setRedirect(true);
-        return toast.error("Invalid Link use forget Password again");
-    }
+    // if (token.trim() === ""){
+    //     setLoading(false);
+    //     setRedirect(true);
+    //     return toast.error("Invalid Link use forget Password again");
+    // }
 
 
     if (newPassword.trim() === '' || confirmPassword.trim() === '') {
@@ -49,10 +68,10 @@ const ResetPasswordPage = () => {
         return toast.error("Password Fields don't match");
     }
 
-    const response = await auth.resetPassword(formData);
+    const response = await resetPassword(formData);
     if (response.success) {
       toast.success(response.message);
-      setRedirect(true);
+      setRedirectS(true);
     } else {
       toast.error(response.error);
     }
@@ -60,12 +79,8 @@ const ResetPasswordPage = () => {
 
   
 
-  if (redirect) {
+  if (redirectS) {
     return <Navigate to={'/login'} />;
-  }
-
-  if (auth.user) {
-    return <ProfilePage />;
   }
 
   return (

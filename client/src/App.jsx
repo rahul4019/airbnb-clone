@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,8 +30,12 @@ function App() {
     ] = `Bearer ${getItemFromLocalStorage('token')}`;
   }, []);
 
-  const isAuthenticated = !!localStorage.getItem('token'); //to read as a boolean
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
   
+  const updateAuthenticationStatus = () => {
+    setIsAuthenticated(!!localStorage.getItem('token'));
+  };
+
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -40,7 +44,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<IndexPage />} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/login" element={<LoginPage updateAuthenticationStatus={updateAuthenticationStatus} />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/place/:id" element={<PlacePage />} />
               <Route path="/reset" element={<ResetPasswordPage />} />
