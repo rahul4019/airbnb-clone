@@ -2,8 +2,9 @@ const nodemailer = require("nodemailer");
 
 const sendEmail = async (email, subject, text, html=None ) => {
     try {
-        if (process.env.SERVICE != ""){
-            const transporter = nodemailer.createTransport({
+        let transporter;
+        if (process.env.SERVICE && process.env.SERVICE != ""){
+            transporter = nodemailer.createTransport({
                 host: process.env.HOST,
                 service: process.env.SERVICE,
                 port: process.env.MAIL_PORT,
@@ -16,7 +17,7 @@ const sendEmail = async (email, subject, text, html=None ) => {
     
         }
         else{
-            const transporter = nodemailer.createTransport({
+            transporter = nodemailer.createTransport({
                 host: process.env.HOST,
                 port: process.env.MAIL_PORT,
                 secure: true,
