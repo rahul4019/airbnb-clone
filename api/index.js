@@ -44,7 +44,9 @@ app.use(express.json());
 
 // CORS
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  // origin: process.env.CLIENT_URL,
   credentials: true,
 }));
 
@@ -54,9 +56,9 @@ app.use(helmet()); //helmet middleware to secure with http headers
 app.use(logger('dev'));
 
 // use express router
-app.use('/', require('./routes'));
+app.use('/api', require('./routes'));
 const reviewRouter = require("./routes/review");
-app.use("/review", reviewRouter);
+app.use("/api/review", reviewRouter);
 
 app.listen(process.env.PORT || 8000, (err) => {
   if (err) {
