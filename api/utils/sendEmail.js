@@ -2,16 +2,30 @@ const nodemailer = require("nodemailer");
 
 const sendEmail = async (email, subject, text, html=None ) => {
     try {
-        const transporter = nodemailer.createTransport({
-            host: process.env.HOST,
-            service: process.env.SERVICE,
-            port: process.env.MAIL_PORT,
-            secure: true,
-            auth: {
-                user: process.env.USER,
-                pass: process.env.PASS,
-            },
-        });
+        if (process.env.SERVICE != ""){
+            const transporter = nodemailer.createTransport({
+                host: process.env.HOST,
+                service: process.env.SERVICE,
+                port: process.env.MAIL_PORT,
+                secure: true,
+                auth: {
+                    user: process.env.USER,
+                    pass: process.env.PASS,
+                },
+            });
+    
+        }
+        else{
+            const transporter = nodemailer.createTransport({
+                host: process.env.HOST,
+                port: process.env.MAIL_PORT,
+                secure: true,
+                auth: {
+                    user: process.env.USER,
+                    pass: process.env.PASS,
+                },
+            });
+        }
 
         if (html){
             await transporter.sendMail({
