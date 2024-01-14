@@ -10,7 +10,7 @@ const sendEmail = async (email, subject, text, html=null ) => {
                 port: process.env.MAIL_PORT,
                 secure: true,
                 auth: {
-                    user: process.env.USER,
+                    user: process.env.USER_EMAIL,
                     pass: process.env.PASS,
                 },
             });
@@ -22,7 +22,7 @@ const sendEmail = async (email, subject, text, html=null ) => {
                 port: process.env.MAIL_PORT,
                 secure: true,
                 auth: {
-                    user: process.env.USER,
+                    user: process.env.USER_EMAIL,
                     pass: process.env.PASS,
                 },
             });
@@ -30,7 +30,7 @@ const sendEmail = async (email, subject, text, html=null ) => {
         console.log(transporter);
         if (html){
             await transporter.sendMail({
-                from: process.env.USER,
+                from: process.env.USER_EMAIL,
                 to: email,
                 subject: subject,
                 text: text,
@@ -39,7 +39,7 @@ const sendEmail = async (email, subject, text, html=null ) => {
         }
         else{
             await transporter.sendMail({
-                from: process.env.USER,
+                from: process.env.USER_EMAIL,
                 to: email,
                 subject: subject,
                 text: text,
