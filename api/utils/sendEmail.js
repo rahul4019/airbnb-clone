@@ -25,13 +25,9 @@ const sendEmail = async (email, subject, text, html=null ) => {
                     user: process.env.USER,
                     pass: process.env.PASS,
                 },
-                tls: {
-                    ciphers:'SSLv3',
-                    rejectUnauthorized: false
-                }
             });
         }
-
+        console.log(transporter);
         if (html){
             await transporter.sendMail({
                 from: process.env.USER,

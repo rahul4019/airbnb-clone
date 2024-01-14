@@ -193,7 +193,9 @@ exports.updateUserDetailsN = async(req, res) => {
     user.name = name;
     user.bio = bio;
     user.email = email;
-    user.phone = phone;
+    if(phone){
+      user.phone = phone;
+    }
     user.address = address;
     
     const updatedUser = await user.save();
@@ -229,14 +231,15 @@ exports.changePassword = async(req, res) => {
         error: 'Old Password didn\'t match with old one'
       })
     }
+    else{
+      user.password = newPassword;
+      user.save();
+  
+      return res.status(200).json({
+        message: "Password Changed successfully"
+      });
+    }
 
-
-    user.password = newPassword;
-    user.save();
-
-    return res.status(200).json({
-      message: "Password Changed successfully"
-    });
 
   }
   catch (error){
