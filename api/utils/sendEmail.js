@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (email, subject, text, html=None ) => {
+const sendEmail = async (email, subject, text, html=null ) => {
     try {
         let transporter;
         if (process.env.SERVICE && process.env.SERVICE != ""){
@@ -25,6 +25,10 @@ const sendEmail = async (email, subject, text, html=None ) => {
                     user: process.env.USER,
                     pass: process.env.PASS,
                 },
+                tls: {
+                    ciphers:'SSLv3',
+                    rejectUnauthorized: false
+                }
             });
         }
 
