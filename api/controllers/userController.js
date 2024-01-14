@@ -135,8 +135,8 @@ exports.updateUserDetails = async (req, res) => {
   try {
     const { name, password, email, bio, picture } = req.body
 
-    console.log(req.body);
-    console.log(bio);
+    // console.log(req.body);
+    // console.log(bio);
     const user = await User.findOne({ email })
 
     if (!user) {
