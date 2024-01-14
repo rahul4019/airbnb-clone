@@ -53,6 +53,10 @@ const EditProfileDialog = () => {
       setLoading(false);
       return toast.error("Name Can't be empty");
     }
+    if (phone.trim() === ''){
+      setLoading(false);
+      return toast.error("Phone can't be empty");
+    }
     
     try {
       // first check if picture has been updated or not
