@@ -9,12 +9,12 @@ exports.createBookings = async (req, res) => {
     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
       req.body;
 
-
-    const isUserOwner = await Place.findOne({owner: userData._id});
+    // console.log(place);
+    const isUserOwner = await Place.findOne({_id: place, owner: userData._id});
 
     if(isUserOwner){
       return res.status(400).json({
-        message: 'As an owner you can\'t book the place.',
+        message: 'As an owner you can\'t book this place.',
       });
     }
 

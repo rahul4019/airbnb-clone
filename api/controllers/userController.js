@@ -214,9 +214,10 @@ exports.changePassword = async(req, res) => {
 
   try {
     const { oldPassword, newPassword, email } = req.body;
+    console.log(req.body);
 
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email:email });
 
     if (!user) {
       return res.status(404).json({
@@ -225,20 +226,19 @@ exports.changePassword = async(req, res) => {
     }
 
     const isOldPasswordValid = await user.isValidatedPassword(oldPassword);
-
+    console.log(isOldPasswordValid);
     if(!isOldPasswordValid){
-      return res.status(400).json({
+      return res.status(401).json({
         error: 'Old Password didn\'t match with old one'
       })
     }
-    else{
+
       user.password = newPassword;
       user.save();
   
       return res.status(200).json({
         message: "Password Changed successfully"
       });
-    }
 
 
   }
