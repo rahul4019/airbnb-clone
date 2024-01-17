@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../hooks';
 import SearchBar from './SearchBar';
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
+import apiConfig from '@/utils/config';
 
 export const Header = () => {
   const auth = useAuth();
@@ -13,6 +14,7 @@ export const Header = () => {
   const [showSearchBar, setShowSearchBar] = useState(true);
   const [hasShadow, setHasShadow] = useState(false);
   const { user } = auth;
+  const apiUrl = apiConfig.baseUrl;
 
   const handleScroll = () => {
     const shouldHaveShadow = window.scrollY > 0;
@@ -82,7 +84,7 @@ export const Header = () => {
             {user ? (
               <Avatar>
                 {user?.picture ? (
-                  <AvatarImage src={user.picture} className="h-full w-full" />
+                  <AvatarImage src={apiUrl+user.picture} className="h-full w-full" />
                 ) : (
                   <AvatarImage
                     src="https://res.cloudinary.com/rahul4019/image/upload/v1695133265/pngwing.com_zi4cre.png"

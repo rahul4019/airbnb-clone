@@ -6,6 +6,7 @@ const connectWithDB = require('./config/db');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
+const path = require('path');
 
 const logger = require('morgan');
 
@@ -49,7 +50,13 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(helmet()); //helmet middleware to secure with http headers
+app.use(helmet(
+  {
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginEmbedderPolicy: false,
+    //to unblock net err cross orgin access
+  }
+)); //helmet middleware to secure with http headers
 
 // for logging resp in express server
 app.use(logger('dev'));
@@ -59,6 +66,14 @@ app.use('/api', require('./routes'));
 const reviewRouter = require("./routes/review");
 app.use("/api/review", reviewRouter);
 
+
+//serving the uploaded static content 
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// app.use('/uploads/Users', express.static(path.join(__dirname, 'uploads','Users')));
+// app.use('/uploads/Places', express.static(path.join(__dirname, 'uploads','Places')));
+
+//listening on port
 app.listen(process.env.PORT || 8000, (err) => {
   if (err) {
     console.log('Error in connecting to server: ', err);

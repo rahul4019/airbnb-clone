@@ -106,7 +106,7 @@ export const useProvideAuth = () => {
     const uploadPicture = async (picture) => {
         try {
             const formData = new FormData()
-            formData.append('picture', picture)
+            formData.append('picture', picture);
             const { data } = await axiosInstance.post('/user/upload-picture', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
@@ -137,7 +137,6 @@ export const useProvideAuth = () => {
     const updatePassword = async (passwordDetails) => {
         const { oldPassword, newPassword, confirmNewPassword} = passwordDetails;
         const email = JSON.parse(getItemFromLocalStorage('user')).email
-        console.log(oldPassword, newPassword, confirmNewPassword); 
         try {
             const { data } = await axiosInstance.post('/user/update-password', {
                 oldPassword, newPassword, email

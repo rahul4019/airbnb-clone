@@ -6,16 +6,16 @@ import axiosInstance from '../../utils/axios';
 const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   const [photoLink, setphotoLink] = useState('');
 
-  const addPhotoByLink = async (e) => {
-    e.preventDefault();
-    const { data: filename } = await axiosInstance.post('/upload-by-link', {
-      link: photoLink,
-    });
-    setAddedPhotos((prev) => {
-      return [...prev, filename];
-    });
-    setphotoLink('');
-  };
+  // const addPhotoByLink = async (e) => {
+  //   e.preventDefault();
+  //   const { data: filename } = await axiosInstance.post('/upload-by-link', {
+  //     link: photoLink,
+  //   });
+  //   setAddedPhotos((prev) => {
+  //     return [...prev, filename];
+  //   });
+  //   setphotoLink('');
+  // };
 
   const uploadPhoto = async (e) => {
     const files = e.target.files;
@@ -46,7 +46,7 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
 
   return (
     <>
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <input
           value={photoLink}
           onChange={(e) => setphotoLink(e.target.value)}
@@ -59,7 +59,7 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
         >
           Add&nbsp;photo
         </button>
-      </div>
+      </div> */}
       <div className="mt-2 grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-6 ">
         {addedPhotos?.length > 0 &&
           addedPhotos.map((link) => (
