@@ -1,3 +1,4 @@
+import apiConfig from '@/utils/config';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ const PlaceCard = ({ place }) => {
     locationRating,
     valueRating,
   } = place;
+  const apiUrl = apiConfig.baseUrl;
 
   const avgRating = (accuracyRating + checkInRating + cleanlinessRating + communicationRating + locationRating + valueRating)/6
 
@@ -19,7 +21,7 @@ const PlaceCard = ({ place }) => {
       <div className="card ">
         {photos?.[0] && (
           <img
-            src={`${photos?.[0]}`}
+            src={`${photos?.[0]}`.startsWith('http') ? photos[0] : (apiUrl + photos[0])}
             className="h-4/5 w-full rounded-xl object-cover"
           />
         )}

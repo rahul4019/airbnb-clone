@@ -1,7 +1,9 @@
+import apiConfig from '@/utils/config';
 import React, { useState } from 'react';
 
 const PlaceGallery = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
+  const apiUrl = apiConfig.baseUrl
 
   if (showAllPhotos) {
     return (
@@ -31,7 +33,7 @@ const PlaceGallery = ({ place }) => {
             place.photos.map((photo, index) => (
               <div key={index} className="max-w-full">
                 {/* <Image src={photo} /> */}
-                <img src={photo} alt="" />
+                <img src={photo.startsWith('http') ?  photo : (apiUrl+photo)} alt="" />
               </div>
             ))}
         </div>

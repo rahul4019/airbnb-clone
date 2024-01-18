@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Image from './Image';
 import axiosInstance from '../../utils/axios';
+import apiConfig from '@/utils/config';
 
 const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   const [photoLink, setphotoLink] = useState('');
+  const apiUrl = apiConfig.baseUrl;
 
   // const addPhotoByLink = async (e) => {
   //   e.preventDefault();
@@ -15,7 +17,22 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   //     return [...prev, filename];
   //   });
   //   setphotoLink('');
+
   // };
+
+  // const updateAddedPic = () => {
+  //   setAddedPhotos(addedPhotos.map((photo) =>{
+  //     return photo.startsWith('http') ? photo : (apiUrl + photo);
+  //   }))
+  // }
+  // useEffect(() => {
+  //   updateAddedPic();
+    
+  // },[]);
+  useEffect(() => {
+    console.log(addedPhotos);
+  },[addedPhotos]);
+
 
   const uploadPhoto = async (e) => {
     const files = e.target.files;
@@ -23,12 +40,33 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
     for (let i = 0; i < files.length; i++) {
       data.append('photos', files[i]); // adding all the photos to data one by one
     }
-    const { data: filenames } = await axiosInstance.post('/upload', data, {
-      headers: { 'Content-type': 'multipart/form-data' },
-    });
-    setAddedPhotos((prev) => {
-      return [...prev, ...filenames];
-    });
+    // const { data: filenames } = await axiosInstance.post('/upload', data, {
+    //   headers: { 'Content-type': 'multipart/form-data' },
+    // });
+    // //when post promise is fulfilled.
+    // if(filenames){
+    //   console.log(filenames);  
+    //   setAddedPhotos([...addedPhotos, ...filenames]);
+    //   // console.log(addedPhotos);
+    //   // updateAddedPic();
+    //   console.log(addedPhotos);
+    // }
+
+    try {
+      const { data: filenames } = await axiosInstance.post('/upload', data, {
+        headers: { 'Content-type': 'multipart/form-data' },
+      });
+  
+      // when post promise is fulfilled.
+      if (filenames) {
+        setAddedPhotos((prev) => [...prev, ...filenames]);
+  
+        // Log the state inside the callback to ensure it reflects the latest state
+        console.log('Updated addedPhotos:', [...addedPhotos, ...filenames]);
+      }
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    }
   };
 
   const removePhoto = (filename) => {
@@ -38,10 +76,14 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   const selectAsMainPhoto = (e, filename) => {
     e.preventDefault();
 
+    // console.log(addedPhotos);
+
     setAddedPhotos([
       filename,
       ...addedPhotos.filter((photo) => photo !== filename),
     ]);
+    // console.log(addedPhotos);
+    // updateAddedPic();
   };
 
   return (
@@ -66,7 +108,7 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
             <div className="relative flex h-32" key={link}>
               <Image
                 className="w-full rounded-2xl object-cover"
-                src={link}
+                src={apiUrl + link}
                 alt=""
               />
               <button

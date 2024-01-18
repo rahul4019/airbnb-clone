@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-
+const path = require('path');
 
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '../uploads/Places'); // Destination folder for storing the uploaded files
+    cb(null, path.join(__dirname, '../uploads/Places')); // Destination folder for storing the uploaded files
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -17,7 +17,9 @@ const storage = multer.diskStorage({
 });
 
 // multer
-const  upload = multer({ dest: '/tmp' });
+// const  upload = multer({ dest: '/tmp' });
+
+const upload = multer({ storage });
 
 router.get('/', (req, res) => {
   res.status(200).json({
@@ -74,9 +76,10 @@ router.post('/upload', upload.array('photos', 100), async (req, res) => {
       let { filename } = req.files[index];
       imageArray.push(`/uploads/Places/${filename}`);
     }
-
+    console.log(imageArray)
     res.status(200).json(imageArray);
   } catch (error) {
+    // console.log(req.files);
     console.log('Error: ', error);
     res.status(500).json({
       error,
