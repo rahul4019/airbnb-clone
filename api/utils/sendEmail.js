@@ -1,21 +1,36 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (email, subject, text, html=None ) => {
+const sendEmail = async (email, subject, text, html=null ) => {
     try {
-        const transporter = nodemailer.createTransport({
-            host: process.env.HOST,
-            service: process.env.SERVICE,
-            port: 587,
-            secure: true,
-            auth: {
-                user: process.env.USER,
-                pass: process.env.PASS,
-            },
-        });
-
+        let transporter;
+        if (process.env.SERVICE && process.env.SERVICE != ""){
+            transporter = nodemailer.createTransport({
+                host: process.env.HOST,
+                service: process.env.SERVICE,
+                port: process.env.MAIL_PORT,
+                secure: true,
+                auth: {
+                    user: process.env.USER_EMAIL,
+                    pass: process.env.PASS,
+                },
+            });
+    
+        }
+        else{
+            transporter = nodemailer.createTransport({
+                host: process.env.HOST,
+                port: process.env.MAIL_PORT,
+                secure: true,
+                auth: {
+                    user: process.env.USER_EMAIL,
+                    pass: process.env.PASS,
+                },
+            });
+        }
+        console.log(transporter);
         if (html){
             await transporter.sendMail({
-                from: process.env.USER,
+                from: process.env.USER_EMAIL,
                 to: email,
                 subject: subject,
                 text: text,
@@ -24,7 +39,7 @@ const sendEmail = async (email, subject, text, html=None ) => {
         }
         else{
             await transporter.sendMail({
-                from: process.env.USER,
+                from: process.env.USER_EMAIL,
                 to: email,
                 subject: subject,
                 text: text,

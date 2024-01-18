@@ -35,6 +35,7 @@ const LoginPage = ({updateAuthenticationStatus}) => {
     if (response.success) {
       toast.success(response.message);
       setRedirect(true);
+      updateAuthenticationStatus();
     } else {
       toast.error(response.message);
     }

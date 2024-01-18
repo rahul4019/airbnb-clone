@@ -135,8 +135,8 @@ exports.updateUserDetails = async (req, res) => {
   try {
     const { name, password, email, bio, picture } = req.body
 
-    console.log(req.body);
-    console.log(bio);
+    // console.log(req.body);
+    // console.log(bio);
     const user = await User.findOne({ email })
 
     if (!user) {
@@ -193,7 +193,9 @@ exports.updateUserDetailsN = async(req, res) => {
     user.name = name;
     user.bio = bio;
     user.email = email;
-    user.phone = phone;
+    if(phone){
+      user.phone = phone;
+    }
     user.address = address;
     
     const updatedUser = await user.save();
@@ -212,9 +214,10 @@ exports.changePassword = async(req, res) => {
 
   try {
     const { oldPassword, newPassword, email } = req.body;
+    console.log(req.body);
 
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email:email });
 
     if (!user) {
       return res.status(404).json({
@@ -223,20 +226,20 @@ exports.changePassword = async(req, res) => {
     }
 
     const isOldPasswordValid = await user.isValidatedPassword(oldPassword);
-
+    console.log(isOldPasswordValid);
     if(!isOldPasswordValid){
-      return res.status(400).json({
+      return res.status(401).json({
         error: 'Old Password didn\'t match with old one'
       })
     }
 
+      user.password = newPassword;
+      user.save();
+  
+      return res.status(200).json({
+        message: "Password Changed successfully"
+      });
 
-    user.password = newPassword;
-    user.save();
-
-    return res.status(200).json({
-      message: "Password Changed successfully"
-    });
 
   }
   catch (error){
