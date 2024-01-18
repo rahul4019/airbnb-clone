@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Loader2, PenSquare, Upload } from 'lucide-react';
 import { useAuth } from '../../../hooks';
+import apiConfig from '@/utils/config';
 
 const EditProfileDialog = () => {
   const { user, setUser, uploadPicture, updateUser } = useAuth();
@@ -27,6 +28,8 @@ const EditProfileDialog = () => {
     address: user.address,
     phone: user.phone,
   });
+
+  const apiUrl = apiConfig.baseUrl;
 
   
 
@@ -64,6 +67,9 @@ const EditProfileDialog = () => {
       if (picture) {
         // upload picture and save the image url
         pictureUrl = await uploadPicture(picture);
+        if(pictureUrl){
+          pictureUrl = apiUrl + pictureUrl;
+        }
       }
 
       const userDetails = {

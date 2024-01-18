@@ -13,11 +13,13 @@ import EditProfileDialog from '@/components/ui/EditProfileDialog';
 import { useSelectRange } from 'react-day-picker';
 import ChangePasswordDialog from '@/components/ui/ChangePasswordDialog';
 import Spinner from '@/components/ui/Spinner';
+import apiConfig from '@/utils/config';
 
 const ProfilePage = () => {
   const auth = useAuth();
   const { user, logout , loading} = auth;
   const [redirect, setRedirect] = useState(null);
+  const apiUrl = apiConfig.baseUrl;
 
   useEffect(() => {
     if (!user && !loading) {
@@ -29,6 +31,11 @@ const ProfilePage = () => {
   if (!subpage) {
     subpage = 'profile';
   }
+
+  // if(user){
+  //   console.log(apiUrl + user.picture);
+
+  // }
 
   const handleLogout = async () => {
     const response = await logout();
@@ -59,7 +66,7 @@ const ProfilePage = () => {
           <div className="flex h-40 w-40 justify-center rounded-full bg-gray-200 p-4  sm:h-72 sm:w-72 md:h-96 md:w-96">
             <Avatar>
               {user.picture ? (
-                <AvatarImage src={user.picture} />
+                <AvatarImage src={apiUrl+user.picture} />
               ) : (
                 <AvatarImage src="https://res.cloudinary.com/rahul4019/image/upload/v1695133265/pngwing.com_zi4cre.png" className="object-cover"/>
               )}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Rating } from '@smastrom/react-rating';
+import apiConfig from "@/utils/config";
 
 
 const ReviewCard = ({ review }) => {
@@ -13,13 +14,14 @@ const ReviewCard = ({ review }) => {
         value,
         comment, createdAt } = review;
     const average = (cleanliness + accuracy + checkIn + communication + location + value) / 6;
+    const apiUrl = apiConfig.baseUrl;
 
     return (
         <div className="bg-white rounded-lg p-6 shadow-md mb-4">
         <div className="flex items-center mb-4">
             <img
             className="w-12 h-12 rounded-full mr-4"
-            src={user.picture}
+            src={apiUrl+user.picture}
             alt={`${user.name}'s avatar`}
             />
             <div>

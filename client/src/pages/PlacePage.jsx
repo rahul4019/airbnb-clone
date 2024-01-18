@@ -10,12 +10,14 @@ import PlaceGallery from '@/components/ui/PlaceGallery';
 import PerksWidget from '@/components/ui/PerksWidget';
 import { Rating } from '@smastrom/react-rating';
 import ReviewCard from '@/components/ui/ReviewCard';
+import apiConfig from '@/utils/config';
 
 const PlacePage = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
   const [loading, setLoading] = useState(false);
   const [placeReview, setPlaceReview] = useState(null);
+  const apiUrl = apiConfig.baseUrl;
 
   const [overallR, setOverallR] = useState(null);
 
@@ -127,7 +129,7 @@ const PlacePage = () => {
           <div className='align-items-center'>
             <img
               className="w-24 h-24 rounded-full"
-              src={place.owner.picture}
+              src={place.owner.picture.startsWith('http')? place.owner.picture : (apiUrl + place.owner.picture) }
               alt={`${place.owner.name}'s avatar`}
               />
           </div>

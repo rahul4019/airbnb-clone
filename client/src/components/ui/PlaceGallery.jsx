@@ -1,7 +1,9 @@
+import apiConfig from '@/utils/config';
 import React, { useState } from 'react';
 
 const PlaceGallery = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
+  const apiUrl = apiConfig.baseUrl
 
   if (showAllPhotos) {
     return (
@@ -31,7 +33,7 @@ const PlaceGallery = ({ place }) => {
             place.photos.map((photo, index) => (
               <div key={index} className="max-w-full">
                 {/* <Image src={photo} /> */}
-                <img src={photo} alt="" />
+                <img src={photo.startsWith('http') ?  photo : (apiUrl+photo)} alt={photo} />
               </div>
             ))}
         </div>
@@ -49,8 +51,8 @@ const PlaceGallery = ({ place }) => {
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="h-full w-full cursor-pointer object-cover"
-                src={place.photos[0]}
-                alt=""
+                src={place.photos[0].startsWith('http') ? place.photos[0] : (apiUrl+place.photos[0]) }
+                alt={place.photos[0]}
               />
             </div>
           )}
@@ -65,7 +67,7 @@ const PlaceGallery = ({ place }) => {
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="h-full w-full cursor-pointer object-cover"
-                  src={place.photos[1]}
+                  src={place.photos[1].startsWith('http') ? place.photos[1] : (apiUrl+place.photos[1])}
                   alt=""
                 />
               </div>
@@ -77,7 +79,7 @@ const PlaceGallery = ({ place }) => {
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="h-full w-full cursor-pointer object-cover"
-                  src={place.photos[2]}
+                  src={place.photos[2].startsWith('http') ? place.photos[2] : (apiUrl+place.photos[2])}
                   alt=""
                 />
               </div>
@@ -94,7 +96,7 @@ const PlaceGallery = ({ place }) => {
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="h-full w-full cursor-pointer object-cover"
-                  src={place.photos[3]}
+                  src={place.photos[3].startsWith('http') ? place.photos[3] : (apiUrl+place.photos[3])}
                   alt=""
                 />
               </div>
@@ -106,7 +108,7 @@ const PlaceGallery = ({ place }) => {
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="h-full w-full cursor-pointer object-cover"
-                  src={place.photos[4]}
+                  src={place.photos[4].startsWith('http') ? place.photos[4] : (apiUrl+place.photos[4])}
                   alt=""
                 />
               </div>
@@ -122,7 +124,7 @@ const PlaceGallery = ({ place }) => {
             <img
               onClick={() => setShowAllPhotos(true)}
               className="h-full cursor-pointer object-cover"
-              src={place.photos[0]}
+              src={place.photos[0].startsWith('http') ? place.photos[0] : (apiUrl+place.photos[0])}
               alt=""
             />
           </div>

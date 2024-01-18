@@ -1,34 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Image from './Image';
 import axiosInstance from '../../utils/axios';
+import apiConfig from '@/utils/config';
 
 const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   const [photoLink, setphotoLink] = useState('');
+  const apiUrl = apiConfig.baseUrl;
 
-  const addPhotoByLink = async (e) => {
-    e.preventDefault();
-    const { data: filename } = await axiosInstance.post('/upload-by-link', {
-      link: photoLink,
-    });
-    setAddedPhotos((prev) => {
-      return [...prev, filename];
-    });
-    setphotoLink('');
-  };
+  // const addPhotoByLink = async (e) => {
+  //   e.preventDefault();
+  //   const { data: filename } = await axiosInstance.post('/upload-by-link', {
+  //     link: photoLink,
+  //   });
+  //   setAddedPhotos((prev) => {
+  //     return [...prev, filename];
+  //   });
+  //   setphotoLink('');
 
+  // };
+  
   const uploadPhoto = async (e) => {
     const files = e.target.files;
     const data = new FormData(); // creating new form data
     for (let i = 0; i < files.length; i++) {
       data.append('photos', files[i]); // adding all the photos to data one by one
     }
-    const { data: filenames } = await axiosInstance.post('/upload', data, {
-      headers: { 'Content-type': 'multipart/form-data' },
-    });
-    setAddedPhotos((prev) => {
-      return [...prev, ...filenames];
-    });
+
+    try {
+      const { data: filenames } = await axiosInstance.post('/upload', data, {
+        headers: { 'Content-type': 'multipart/form-data' },
+      });
+  
+      if (filenames) {
+        setAddedPhotos((prev) => [...prev, ...filenames]);
+  
+        // Log the state inside the callback to ensure it reflects the latest state
+        console.log('Updated addedPhotos:', [...addedPhotos, ...filenames]);
+      }
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    }
   };
 
   const removePhoto = (filename) => {
@@ -37,16 +49,17 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
 
   const selectAsMainPhoto = (e, filename) => {
     e.preventDefault();
-
     setAddedPhotos([
       filename,
       ...addedPhotos.filter((photo) => photo !== filename),
     ]);
+    
+    
   };
 
   return (
     <>
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <input
           value={photoLink}
           onChange={(e) => setphotoLink(e.target.value)}
@@ -59,14 +72,14 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
         >
           Add&nbsp;photo
         </button>
-      </div>
+      </div> */}
       <div className="mt-2 grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-6 ">
         {addedPhotos?.length > 0 &&
           addedPhotos.map((link) => (
             <div className="relative flex h-32" key={link}>
               <Image
                 className="w-full rounded-2xl object-cover"
-                src={link}
+                src={apiUrl + link}
                 alt=""
               />
               <button

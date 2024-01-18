@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const cookieToken = require('../utils/cookieToken');
 const bcrypt = require('bcryptjs')
-const cloudinary = require('cloudinary').v2;
+// const cloudinary = require('cloudinary').v2;
 const crypto = require("crypto");
 const sendEmail = require('../utils/sendEmail');
 
@@ -115,20 +115,36 @@ exports.googleLogin = async (req, res) => {
 }
 
 // Upload picture
+// exports.uploadPicture = async (req, res) => {
+//   const { path } = req.file
+//   try {
+//     let result = await cloudinary.uploader.upload(path, {
+//       folder: 'Airbnb/Users',
+//     });
+//     res.status(200).json(result.secure_url)
+//   } catch (error) {
+//     res.status(500).json({
+//       error,
+//       message: 'Internal server error',
+//     });
+//   }
+// }
+
+//upload locally 
 exports.uploadPicture = async (req, res) => {
-  const { path } = req.file
   try {
-    let result = await cloudinary.uploader.upload(path, {
-      folder: 'Airbnb/Users',
-    });
-    res.status(200).json(result.secure_url)
+    const { filename } = req.file;
+    res.status(200).json(`/uploads/Users/${filename}`);
   } catch (error) {
+    console.error('Error: ', error);
     res.status(500).json({
       error,
       message: 'Internal server error',
     });
   }
-}
+};
+
+
 
 // update user
 exports.updateUserDetails = async (req, res) => {
