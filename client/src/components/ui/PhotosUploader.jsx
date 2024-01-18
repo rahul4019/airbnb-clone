@@ -19,45 +19,19 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
   //   setphotoLink('');
 
   // };
-
-  // const updateAddedPic = () => {
-  //   setAddedPhotos(addedPhotos.map((photo) =>{
-  //     return photo.startsWith('http') ? photo : (apiUrl + photo);
-  //   }))
-  // }
-  // useEffect(() => {
-  //   updateAddedPic();
-    
-  // },[]);
-  useEffect(() => {
-    console.log(addedPhotos);
-  },[addedPhotos]);
-
-
+  
   const uploadPhoto = async (e) => {
     const files = e.target.files;
     const data = new FormData(); // creating new form data
     for (let i = 0; i < files.length; i++) {
       data.append('photos', files[i]); // adding all the photos to data one by one
     }
-    // const { data: filenames } = await axiosInstance.post('/upload', data, {
-    //   headers: { 'Content-type': 'multipart/form-data' },
-    // });
-    // //when post promise is fulfilled.
-    // if(filenames){
-    //   console.log(filenames);  
-    //   setAddedPhotos([...addedPhotos, ...filenames]);
-    //   // console.log(addedPhotos);
-    //   // updateAddedPic();
-    //   console.log(addedPhotos);
-    // }
 
     try {
       const { data: filenames } = await axiosInstance.post('/upload', data, {
         headers: { 'Content-type': 'multipart/form-data' },
       });
   
-      // when post promise is fulfilled.
       if (filenames) {
         setAddedPhotos((prev) => [...prev, ...filenames]);
   
@@ -75,15 +49,12 @@ const PhotosUploader = ({ addedPhotos, setAddedPhotos }) => {
 
   const selectAsMainPhoto = (e, filename) => {
     e.preventDefault();
-
-    // console.log(addedPhotos);
-
     setAddedPhotos([
       filename,
       ...addedPhotos.filter((photo) => photo !== filename),
     ]);
-    // console.log(addedPhotos);
-    // updateAddedPic();
+    
+    
   };
 
   return (

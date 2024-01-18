@@ -76,7 +76,7 @@ router.post('/upload', upload.array('photos', 100), async (req, res) => {
       let { filename } = req.files[index];
       imageArray.push(`/uploads/Places/${filename}`);
     }
-    console.log(imageArray)
+    // console.log(imageArray)
     res.status(200).json(imageArray);
   } catch (error) {
     // console.log(req.files);
