@@ -84,7 +84,7 @@ export const Header = () => {
             {user ? (
               <Avatar>
                 {user?.picture ? (
-                  <AvatarImage src={apiUrl+user.picture} className="h-full w-full" />
+                  <AvatarImage src={user.picture.startsWith('http')? user.picture : (apiUrl+user.picture)} className="h-full w-full" />
                 ) : (
                   <AvatarImage
                     src="https://res.cloudinary.com/rahul4019/image/upload/v1695133265/pngwing.com_zi4cre.png"

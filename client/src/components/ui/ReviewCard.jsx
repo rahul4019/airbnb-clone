@@ -21,7 +21,7 @@ const ReviewCard = ({ review }) => {
         <div className="flex items-center mb-4">
             <img
             className="w-12 h-12 rounded-full mr-4"
-            src={apiUrl+user.picture}
+            src={ user.picture.startsWith('http') ? user.picture : (apiUrl+user.picture)}
             alt={`${user.name}'s avatar`}
             />
             <div>

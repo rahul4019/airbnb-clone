@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Loader2, PenSquare, Upload } from 'lucide-react';
 import { useAuth } from '../../../hooks';
+import apiConfig from '@/utils/config';
 
 const EditProfileDialog = () => {
   const { user, setUser, uploadPicture, updateUser } = useAuth();
@@ -114,7 +115,7 @@ const EditProfileDialog = () => {
               </Avatar>
             ) : (
               <Avatar className="transition-all ease-in-out hover:z-0 hover:hidden ">
-                <AvatarImage src={user.picture} />
+                <AvatarImage src={user.picture.startsWith('http') ? user.picture : (apiConfig.baseUrl + user.picture)} />
               </Avatar>
             )}
           </div>

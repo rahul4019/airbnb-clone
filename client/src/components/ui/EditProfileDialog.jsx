@@ -67,9 +67,9 @@ const EditProfileDialog = () => {
       if (picture) {
         // upload picture and save the image url
         pictureUrl = await uploadPicture(picture);
-        if(pictureUrl){
-          pictureUrl = apiUrl + pictureUrl;
-        }
+        // if(pictureUrl){
+        //   pictureUrl = apiUrl + pictureUrl;
+        // }
       }
 
       const userDetails = {
@@ -134,7 +134,7 @@ const EditProfileDialog = () => {
               </Avatar>
             ) : (
               <Avatar className="transition-all ease-in-out hover:z-0 hover:hidden ">
-                <AvatarImage src={user.picture} />
+                <AvatarImage src={user.picture.startsWith('http') ? user.picture : (apiUrl+ user.picture)} />
               </Avatar>
             )}
           </div>

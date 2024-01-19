@@ -66,7 +66,7 @@ const ProfilePage = () => {
           <div className="flex h-40 w-40 justify-center rounded-full bg-gray-200 p-4  sm:h-72 sm:w-72 md:h-96 md:w-96">
             <Avatar>
               {user.picture ? (
-                <AvatarImage src={apiUrl+user.picture} />
+                <AvatarImage src={user.picture.startsWith('http') ? user.picture : (apiUrl+user.picture)} />
               ) : (
                 <AvatarImage src="https://res.cloudinary.com/rahul4019/image/upload/v1695133265/pngwing.com_zi4cre.png" className="object-cover"/>
               )}
