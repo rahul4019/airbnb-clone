@@ -1,51 +1,107 @@
-# Airbnb clone
+# Airbnb Clone
 
-This is a clone of the Airbnb web application built using MERN stack. It is a full-stack web application that allows users to book accommodations in various locations. This application supports user registration, login and authentication. It also features my accommodations for adding and managing places.
+## Overview
 
-### Hosted link: [Airbnb clone](https://airbnb-1.netlify.app)
+This project is a full-stack web application developed as a clone of Airbnb using the MERN stack (MongoDB, Express.js, React.js, Node.js). It aims to replicate the core functionality of Airbnb, allowing users to search for accommodations, view details, make bookings, and manage their listings.
 
-## Installation
+## Getting Started
 
-To install and run the application, please follow these steps:
+1. **Clone the Repository:**
 
-- Clone the repository to your local machine.
-- Navigate to the project root folder in the terminal
-- Install dependencies using the command `yarn`.
-- You can either work with MongoDB atlas or use your locally installed MongoDB
-- Create a .env file in your project api folder and add your variables.
+   ```bash
+   git clone https://github.com/rahul4019/airbnb-clone.git
 
----
+   ```
 
-## env variables
+2. **Install dependencies:**
 
-#### DB_URL=
+   Navigate to client directory and install frontend dependencies using yarn
 
-#### JWT_SECRET=
+   ```
+   yarn install
+   ```
 
-#### JWT_EXPIRY=
+   Similary navigate to api folder and install backend dependencies
 
-#### COOKIE_TIME=
+   ```
+   yarn install
+   ```
 
----
+3. **ENV variables:**
+
+   - create .env file in the client folder and add these variables
+
+     #### VITE_BASE_URL= http://localhost:4000
+
+     #### VITE_GOOGLE_CLIENT_ID= your google client id
+
+   - create .env file in the api folder and add these variables
+
+     #### PORT= 4000
+
+     #### DB_URL= your db url
+
+     #### JWT_SECRET= your secret (string)
+
+     #### JWT_EXPIRY= 20d
+
+     #### COOKIE_TIME= 7
+
+     #### SESSION_SECRET= your secret session (string)
+
+     #### CLOUDINARY_NAME= your secret session
+
+     #### CLOUDINARY_API_KEY= your cloudinary key
+
+     #### CLOUDINARY_API_SECRET= your cloudinary api secret
+
+     #### CLIENT_URL= http://localhost:5173
+
+4. **Run project:**
+   - Open terminal, navigate to client directory and run below command to start frontend
+   ```
+       yarn run dev
+   ```
+   - Open another terminal, navigate to api directory and run this command to start backend server
+   ```
+       yarn start
+   ```
 
 ## Features
 
-The application has following features:
+- **User Authentication:** Users can sign up, log in, and log out securely. Passwords are hashed for security.
+- **Google Login:** Users can sign up and log in using their gmail.
 
-- User authentication and autherization
-- View accommodation details, amenities, and pricing
-- Book an accommodation by selecting check-in and check-out dates
-- View and manage bookings as a registered user
-- Add and manage accommodations as a registered user
+  ![Airbnb Logo](client/public/assets/auth.png)
 
-## Dependencies
+- **Search Listings:** Users can search for accommodations.
 
-This project uses the following dependencies:
+  ![Airbnb Logo](client/public/assets/search.png)
 
-- MongoDB - NoSQL database used to store application data.
-- Express - Node.js framework used to build the server-side of the application.
-- React - JavaScript library used to build the client-side of the application.
-- Node.js - JavaScript runtime used to execute server-side code.
-- Mongoose - Object Data Modeling (ODM) library used to interface with MongoDB.
-- React Router: Declarative routing library for React applications.
-- Axios - Promise based HTTP client for making API requests from the client-side.
+- **View Listings:** Users can view detailed information about each accommodation, including photos, descriptions, amenities.
+
+  ![Airbnb Logo](client/public/assets/view.png)
+
+- **Make Bookings:** Authenticated users can book accommodations for specific dates.
+
+  ![Airbnb Logo](client/public/assets/book.png)
+
+- **Manage Listings:** Hosts can create, edit, and delete their listings.
+
+  ![Airbnb Logo](client/public/assets/manage.png)
+
+- **Responsive Design:** The application is designed to be responsive and work seamlessly across different devices.
+
+  ![Airbnb Logo](client/public/assets/hero.png)
+
+## Technologies Used
+
+- **MongoDB:** NoSQL database for storing user data, listings.
+- **Express.js:** Web application framework for building the backend server.
+- **React.js:** JavaScript library for building the user interface.
+- **Node.js:** JavaScript runtime environment for executing server-side code.
+- **Tailwind CSS:** A utility-first CSS framework
+- **Shadcn:** UI library for styling based on Tailwind CSS
+- **JWT:** JSON Web Tokens for secure user authentication.
+- **Cloudinary:** Cloud-based image management for storing and serving images.
+- **Google Cloud:** For gmail based authentication
