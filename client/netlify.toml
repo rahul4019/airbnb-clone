@@ -1,6 +1,6 @@
 [build]
   base = "client"
-  publish = "client/dist"
+  publish = "/dist"
   command = "yarn build"
 
 [[redirects]]
